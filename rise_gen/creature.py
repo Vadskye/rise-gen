@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import argparse
 from rise_gen.ability import Ability
 from rise_gen.dice import Die, DieCollection, d20

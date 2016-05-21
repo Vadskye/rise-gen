@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import argparse
 from rise_gen.creature import get_sample_creature
 import cProfile

@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from rise_gen.dice import Die, DieCollection
 import yaml
 
