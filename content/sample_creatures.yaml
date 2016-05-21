@@ -1,14 +1,17 @@
 standard_warrior_equipment: &STANDARD_WARRIOR_EQUIPMENT
-  armor_name: breastplate
-  weapon_name: longsword
+  armor: breastplate
+  weapons:
+    - longsword
   shield: heavy shield
 light_warrior_equipment: &LIGHT_WARRIOR_EQUIPMENT
-  armor_name: studded leather
-  weapon_name: short sword
+  armor: studded leather
+  weapons:
+    - short sword
   shield: light shield
 mage_equipment: &MAGE_EQUIPMENT
-  armor_name: mage armor
-  weapon_name: club
+  armor: mage armor
+  weapons:
+    - club
 barbarian: &BARBARIAN
   <<: *STANDARD_WARRIOR_EQUIPMENT
   race: human
@@ -22,23 +25,25 @@ barbarian: &BARBARIAN
     - magic items
 barbarian_greatsword:
   <<: *BARBARIAN
-  weapon_name: greatsword
+  weapons:
+    - greatsword
   shield: ~
 barbarian_full_plate:
   <<: *BARBARIAN
-  armor_name: full plate
+  armor: full plate
 barbarian_ranged:
   <<: *BARBARIAN
   attributes:
     constitution: full
     perception: full
-  weapon_name: longbow
+  weapons:
+    - longbow
   feats:
     - deadly aim
     - mighty blows
 barbarian_studded:
   <<: *BARBARIAN
-  armor_name: studded leather
+  armor: studded leather
 cleric: &CLERIC
   <<: *STANDARD_WARRIOR_EQUIPMENT
   race: human
@@ -106,7 +111,7 @@ fighter_dex: &FIGHTER_DEX
   attributes:
     strength: full
     dexterity: full
-  armor_name: studded leather
+  armor: studded leather
   feats:
     - dodge
     - weapon finesse
@@ -135,7 +140,7 @@ ranger_dex: &RANGER_DEX
   attributes:
     strength: full
     dexterity: full
-  armor_name: studded leather
+  armor: studded leather
   feats:
     - dodge
     - weapon finesse
@@ -188,8 +193,9 @@ warrior_dex:
   attributes:
     dexterity: full
     constitution: full
-  armor_name: studded leather
-  weapon_name: short sword
+  armor: studded leather
+  weapons:
+    - short sword
   feats:
     - dodge
     - weapon finesse
@@ -200,7 +206,7 @@ warrior_str_dex:
   attributes:
     strength: full
     dexterity: full
-  armor_name: studded leather
+  armor: studded leather
   feats:
     - dodge
     - mighty blows
@@ -243,14 +249,16 @@ dummy:
 summoned_monster:
   race: monster
   rise_class: monster
-  weapon_name: bite
+  weapons:
+    - bite
   templates:
     - summoned monster
 summoned_monster_large:
   race: monster
   rise_class: monster
   size: large
-  weapon_name: bite
+  weapons:
+    - bite
   templates:
     - summoned monster
 # monsters!
@@ -258,8 +266,9 @@ angel:
   race: monster
   rise_class: outsider
   level: 8
-  weapon_name: greatsword
-  armor_name: full plate
+  weapons:
+    - greatsword
+  armor: full plate
   attributes:
     strength: primary
     dexterity: tertiary
@@ -275,7 +284,8 @@ arkite_caster:
   race: monster
   rise_class: monster
   level: 8
-  weapon_name: staff
+  weapons:
+    - staff
   attack_type: spell
   special_attack_name: inflict wounds
   attributes:
@@ -292,7 +302,8 @@ arkite_grappler:
   race: monster
   rise_class: monster
   level: 8
-  weapon_name: grapple
+  weapons:
+    - grapple
   attributes:
     strength: primary
     dexterity: secondary
@@ -303,14 +314,15 @@ arkite_grappler:
   templates:
     - martial
   traits:
-    - arcanite sigil - armor_name
+    - arcanite sigil - armor
     - arcanite sigil - mind control
     - improved grab
 arkite_monk:
   race: monster
   rise_class: monster
   level: 8
-  weapon_name: unarmed monk
+  weapons:
+    - unarmed monk
   attributes:
     strength: secondary
     dexterity: secondary
@@ -328,8 +340,9 @@ assassin:
   race: human
   rise_class: rogue
   level: 2
-  weapon_name: dual short swords
-  armor_name: studded leather
+  weapons:
+    - dual short swords
+  armor: studded leather
   attributes:
     dexterity: full
     intelligence: full
@@ -343,7 +356,8 @@ brown_bear: &BROWN_BEAR
   size: medium
   rise_class: animal
   level: 6
-  weapon_name: bite
+  weapons:
+    - bite
   attributes:
     strength: primary
     dexterity: tertiary
@@ -355,8 +369,9 @@ demogorgon:
   race: monster
   rise_class: outsider
   level: 16
-  weapon_name: longsword
-  armor_name: breastplate
+  weapons:
+    - longsword
+  armor: breastplate
   attributes:
     strength: primary
     dexterity: secondary
@@ -377,8 +392,9 @@ planetar:
   size: large
   rise_class: outsider
   level: 12
-  weapon_name: greatsword
-  armor_name: full plate
+  weapons:
+    - greatsword
+  armor: full plate
   attributes:
     strength: primary
     dexterity: tertiary
@@ -395,8 +411,9 @@ torvid:
   rise_class: monster
   size: huge
   level: 14
-  weapon_name: greatsword
-  armor_name: full plate
+  weapons:
+    - greatsword
+  armor: full plate
   attributes:
     strength: primary
     dexterity: secondary
@@ -416,8 +433,9 @@ troll_mech:
   rise_class: monster
   size: large
   level: 9
-  weapon_name: greatsword
-  armor_name: full plate
+  weapons:
+    - greatsword
+  armor: full plate
   attributes:
     strength: primary
     dexterity: tertiary
@@ -434,7 +452,8 @@ yeti:
   race: human
   rise_class: warrior
   level: 9
-  weapon_name: greatsword
+  weapons:
+    - greatsword
   attributes:
     strength: full
     constitution: full

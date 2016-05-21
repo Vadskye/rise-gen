@@ -1,21 +1,21 @@
 dwarf:
-  speed: 20
+  land speed: 20
   size: medium
 elf:
-  speed: 30
+  land speed: 30
   size: medium
 gnome:
-  speed: 20
+  land speed: 20
   size: small
 halfling:
-  speed: 20
+  land speed: 20
   size: small
 half-orc:
-  speed: 20
+  land speed: 20
   size: small
 human:
-  speed: 30
+  land speed: 30
   size: medium
 monster:
-  speed: 30
+  land speed: 30
   size: medium

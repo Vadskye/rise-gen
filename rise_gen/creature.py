@@ -24,9 +24,9 @@ class CreatureStatistics(object):
             rise_class,
             attributes=None,
             level=None,
-            armor_name=None,
+            armor=None,
             shield=None,
-            weapon_name=None,
+            weapons=None,
             feats=None,
             templates=None,
             traits=None,
@@ -34,7 +34,8 @@ class CreatureStatistics(object):
             combat_description=None,
             size=None,
             attack_type=None,
-            special_attack_name=None
+            special_attack_name=None,
+            speeds=None,
     ):
         """Create a creature with all necessary statistics, attributes, etc.
 
@@ -49,13 +50,14 @@ class CreatureStatistics(object):
         self.rise_class = rise_class
         self.attributes = attributes or dict()
         self.level = level or 1
-        self.armor_name = armor_name
+        self.armor_name = armor
         self.shield = shield
-        self.weapon_name = weapon_name
+        self.weapon_names = weapons
         self.description = description
         self.combat_description = combat_description
         self.attack_type = attack_type or 'physical'
         self.special_attack_name = special_attack_name
+        self.speeds = speeds or dict()
 
         if isinstance(self.race, str):
             self.race = Race.from_name(self.race)
@@ -413,15 +415,17 @@ class CreatureStatistics(object):
             reflex = effect(self, reflex)
         return reflex
 
-    def _calculate_speed(self):
+    def _calculate_land_speed(self):
         """The creature's land speed in feet (int)"""
-        speed = self.race.speed
-        for effect in self.active_effects_with_tag('speed'):
-            speed = effect(self, speed)
-        return speed
+        land_speed = self.speeds.get('land') or self.race.land_speed
+        for effect in self.active_effects_with_tag('land speed') + self.active_effects_with_tag('speed'):
+            land_speed = effect(self, land_speed)
+        return land_speed
 
     def _calculate_armor(self):
         """The creature's weapon (Weapon)"""
+        if self.armor_name is None:
+            return None
         armor = Armor.from_name(self.armor_name)
         for effect in self.active_effects_with_tag('armor'):
             armor = effect(self, armor)
@@ -429,7 +433,9 @@ class CreatureStatistics(object):
 
     def _calculate_weapon(self):
         """The creature's weapon (Weapon)"""
-        weapon = Weapon.from_name(self.weapon_name)
+        if self.weapon_names is None:
+            return None
+        weapon = Weapon.from_name(self.weapon_names[0])
         for effect in self.active_effects_with_tag('weapon'):
             weapon = effect(self, weapon)
         return weapon
@@ -534,7 +540,7 @@ class CreatureStatistics(object):
         return '[Space] {0}, [Reach] {1}, [Speed] {2}'.format(
             self.space,
             self.reach,
-            self.speed,
+            self.land_speed,
         )
 
     def _to_string_abilities(self):
@@ -579,10 +585,10 @@ cached_properties = """
     damage_dice
     fortitude
     hit_points
+    land_speed
     maneuver_defense
     mental
     reflex
-    speed
     weapon
 """.split()
 for property_name in cached_properties:

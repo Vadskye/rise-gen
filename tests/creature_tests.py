@@ -22,11 +22,11 @@ def test_fighter_properties():
         'hit_points': 10,
         'maneuver_defense': 14,
         'mental': 13,
+        'land_speed': 30,
         'name': 'fighter',
         'reach': 5,
         'reflex': 10,
         'space': 5,
-        'speed': 30,
         'weapon_encumbrance': 'medium',
     }
     for key in sorted(correct_properties.keys()):
@@ -50,7 +50,7 @@ def test_fighter_properties_at_higher_level():
         'reach': 5,
         'reflex': 17,
         'space': 5,
-        'speed': 30,
+        'land_speed': 30,
         'weapon_encumbrance': 'medium',
     }
     for key in sorted(correct_properties.keys()):
@@ -66,3 +66,8 @@ human fighter 1
 [Space] 5, [Reach] 5, [Speed] 30
 [Abil] Armor Discipline (Resilience), Magic Items, Size Modifiers
     """.strip())
+
+def test_all_samples():
+    # currently missing: paladin, spellwarped
+    for sample_name in 'barbarian cleric druid fighter ranger rogue sorcerer wizard'.split():
+        assert_equals(type(Creature.from_sample_creature(sample_name)), Creature)

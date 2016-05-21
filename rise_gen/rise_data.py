@@ -80,7 +80,7 @@ class Race(RiseData):
         return "Race({}, {}, {})".format(
             self.name,
             self.size,
-            self.speed,
+            self.land_speed,
         )
 
 
