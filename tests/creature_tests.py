@@ -55,3 +55,14 @@ def test_fighter_properties_at_higher_level():
     }
     for key in sorted(correct_properties.keys()):
         assert_equals(getattr(c, key), correct_properties[key])
+
+def test_fighter_string():
+    c = Creature.from_sample_creature('fighter')
+    assert_equals(str(c), """
+human fighter 1
+[HP] 10; [Defs] AD 21, MD 14; Fort 20, Ref 10, Ment 13
+[Atk] 8: 1d8+2; [Prowess] 3
+[Attr] 4 0 4 0 0 0
+[Space] 5, [Reach] 5, [Speed] 30
+[Abil] Armor Discipline (Resilience), Magic Items, Size Modifiers
+    """.strip())
