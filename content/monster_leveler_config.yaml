@@ -1,12 +1,21 @@
 default properties:
   size: medium
 meta properties:
+  - attack type
+  - level
+  - race
+  - rise class
   - skip validation
+  - special attack name
+  # these are not meta properties, but are here for testing
+  - armor
+  - feats
+  - templates
+  - traits
 possible properties:
   - attributes
-  - land speed
+  - speeds
   - size
-  - swim speed
   - weapons
 required properties:
   - size

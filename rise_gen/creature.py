@@ -1,10 +1,10 @@
 import argparse
-import yaml
 from rise_gen.ability import Ability
 from rise_gen.dice import Die, DieCollection, d20
 from rise_gen.rise_data import (
     Armor, Race, RiseClass, Shield, Weapon, calculate_attribute_progression
 )
+import rise_gen.util as util
 
 ATTRIBUTES = """
     strength
@@ -741,8 +741,9 @@ class Creature(CreatureStatistics):
     @classmethod
     def from_sample_creature(cls, sample_name, **kwargs):
         if cls.sample_creatures is None:
-            with open('content/sample_creatures.yaml', 'r') as sample_creatures_file:
-                cls.sample_creatures = yaml.load(sample_creatures_file)
+            cls.sample_creatures = util.import_yaml_file('content/sample_creatures.yaml')
+            # also add monsters, which are stored separately
+            cls.sample_creatures.update(util.import_yaml_file('content/monsters.yaml'))
 
         try:
             sample_data = cls.sample_creatures[sample_name].copy()
@@ -752,9 +753,17 @@ class Creature(CreatureStatistics):
                     sample_name
                 )
             )
+
+        # enforce underscores instead of spaces
+        for key in sample_data:
+            python_key = key.replace(' ', '_')
+            if key != python_key:
+                sample_data[python_key] = sample_data.pop(key)
+
         for key, value in kwargs.items():
             if value is not None:
                 sample_data[key] = value
+
         return cls(
             name=sample_name,
             **sample_data

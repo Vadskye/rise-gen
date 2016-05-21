@@ -68,6 +68,11 @@ human fighter 1
     """.strip())
 
 def test_all_samples():
+    # first check PCs
     # currently missing: paladin, spellwarped
     for sample_name in 'barbarian cleric druid fighter ranger rogue sorcerer wizard'.split():
+        assert_equals(type(Creature.from_sample_creature(sample_name)), Creature)
+
+    # now check monsters
+    for sample_name in 'aboleth angel arkite_caster arkite_grappler arkite_monk black_bear brown_bear demogorgon dummy planetar super_bear torvid troll_mech wee_bear'.split():
         assert_equals(type(Creature.from_sample_creature(sample_name)), Creature)

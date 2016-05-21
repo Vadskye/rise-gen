@@ -1,28 +1,205 @@
 aboleth:
-  land speed: 10
+  race: monster
+  rise class: monster
   size: large
-  swim speed: 60
   weapons:
     - tentacle
-black bear:
   attributes:
-    strength: primary
-    dexterity: secondary
+    strength: tertiary
+    dexterity: -2
     constitution: primary
-    intelligence: -8
+    intelligence: primary
+    perception: tertiary
+    willpower: primary
+  speeds:
+    land: 10
+    swim: 60
+dummy:
+  race: monster
+  rise class: monster
+  attributes:
+    strength: 0
+    dexterity: 0
+    constitution: 0
+    intelligence: 0
+    perception: 0
+    willpower: 0
+  templates:
+    - training dummy
+angel:
+  race: monster
+  rise class: outsider
+  level: 8
   weapons:
-    - bite
-    - claw
-    - claw
-brown bear:
+    - greatsword
+  armor: full plate
+  attributes:
+    strength: primary
+    dexterity: tertiary
+    constitution: tertiary
+    intelligence: tertiary
+    perception: secondary
+    willpower: primary
+  feats:
+    - mighty blows
+  templates:
+    - martial
+arkite_caster:
+  race: monster
+  rise class: monster
+  level: 8
   weapons:
-    - bite
-    - claw
-    - claw
-  size: large
+    - staff
+  attack type: spell
+  special attack name: inflict wounds
+  attributes:
+    strength: 0
+    dexterity: tertiary
+    constitution: secondary
+    intelligence: 0
+    perception: tertiary
+    willpower: -2
+  traits:
+    - arcanite sigil - armor
+    - arcanite sigil - mind control
+arkite_grappler:
+  race: monster
+  rise class: monster
+  level: 8
+  weapons:
+    - grapple
   attributes:
     strength: primary
     dexterity: secondary
+    constitution: secondary
+    intelligence: 0
+    perception: 0
+    willpower: -2
+  templates:
+    - martial
+  traits:
+    - arcanite sigil - armor
+    - arcanite sigil - mind control
+    - improved grab
+arkite_monk:
+  race: monster
+  rise class: monster
+  level: 8
+  weapons:
+    - unarmed monk
+  attributes:
+    strength: secondary
+    dexterity: secondary
+    constitution: secondary
+    intelligence: 0
+    perception: tertiary
+    willpower: -2
+  templates:
+    - martial
+  traits:
+    - arcanite sigil - armor
+    - arcanite sigil - flaming fists
+    - arcanite sigil - mind control
+brown_bear: &BROWN_BEAR
+  race: monster
+  size: large
+  rise class: animal
+  level: 6
+  weapons:
+    - bite
+    - claw
+    - claw
+  attributes:
+    strength: primary
+    dexterity: tertiary
     constitution: primary
     intelligence: -7
-useless: {}
+    perception: secondary
+    willpower: tertiary
+black_bear:
+  <<: *BROWN_BEAR
+  size: medium
+  level: 3
+demogorgon:
+  race: monster
+  rise class: outsider
+  level: 16
+  weapons:
+    - longsword
+  armor: breastplate
+  attributes:
+    strength: primary
+    dexterity: secondary
+    constitution: secondary
+    intelligence: primary
+    perception: secondary
+    willpower: primary
+  templates:
+    - martial
+super_bear:
+  <<: *BROWN_BEAR
+  size: colossal
+wee_bear:
+  <<: *BROWN_BEAR
+  size: fine
+planetar:
+  race: monster
+  size: large
+  rise class: outsider
+  level: 12
+  weapons:
+    - greatsword
+  armor: full plate
+  attributes:
+    strength: primary
+    dexterity: tertiary
+    constitution: tertiary
+    intelligence: tertiary
+    perception: secondary
+    willpower: primary
+  feats:
+    - mighty blows
+  templates:
+    - martial
+torvid:
+  race: monster
+  rise class: monster
+  size: huge
+  level: 14
+  weapons:
+    - greatsword
+  armor: full plate
+  attributes:
+    strength: primary
+    dexterity: secondary
+    constitution: primary
+    intelligence: 3
+    perception: tertiary
+    willpower: tertiary
+  templates:
+    - martial
+  traits:
+    - mighty blows
+    - magic items
+    - fast healing
+    - arcanite mech
+troll_mech:
+  race: monster
+  rise class: monster
+  size: large
+  level: 9
+  weapons:
+    - greatsword
+  armor: full plate
+  attributes:
+    strength: primary
+    dexterity: tertiary
+    constitution: primary
+    intelligence: -2
+    perception: 1
+    willpower: 2
+  templates:
+    - martial
+  traits:
+    - tough hide
+    - arcanite mech

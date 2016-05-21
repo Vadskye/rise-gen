@@ -30,12 +30,22 @@ class MonsterLeveler(Leveler):
                 self.die("Unable to recognize attribute value '{}'".format(value))
         return modifier
 
+    def _speeds_modifier(self):
+        modifier = 0
+        for speed_type in self.speeds:
+            modifier += getattr(
+                self,
+                '_{}_speed_modifier'.format(speed_type)
+            )()
+        return modifier
+
     def _land_speed_modifier(self):
         difference_type = None
-        if self.land_speed == 0:
+        land_speed = self.speeds['land']
+        if land_speed == 0:
             difference_type = 'none'
         else:
-            speed_difference = self.land_speed / default_land_speed(self.size)
+            speed_difference = land_speed / default_land_speed(self.size)
             if speed_difference < 1:
                 difference_type = 'slower'
             elif speed_difference == 1:
