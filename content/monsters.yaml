@@ -1,0 +1,28 @@
+aboleth:
+  land speed: 10
+  size: large
+  swim speed: 60
+  weapons:
+    - tentacle
+black bear:
+  attributes:
+    strength: primary
+    dexterity: secondary
+    constitution: primary
+    intelligence: -8
+  weapons:
+    - bite
+    - claw
+    - claw
+brown_bear:
+  weapons:
+    - bite
+    - claw
+    - claw
+  size: large
+  attributes:
+    strength: primary
+    dexterity: secondary
+    constitution: primary
+    intelligence: -7
+useless: {}

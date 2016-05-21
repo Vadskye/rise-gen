@@ -1,0 +1,12 @@
+default properties:
+  size: medium
+meta properties:
+  - skip validation
+possible properties:
+  - attributes
+  - land speed
+  - size
+  - swim speed
+  - weapons
+required properties:
+  - size

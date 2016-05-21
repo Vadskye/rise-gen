@@ -1,0 +1,176 @@
+barbarian:
+  combat prowess: good
+  fortitude: good
+  reflex: average
+  mental: poor
+  class features:
+    - rage
+    - damage reduction
+    - fast movement
+    - larger than life
+    - larger than belief
+cleric:
+  combat prowess: average
+  fortitude: average
+  reflex: poor
+  mental: good
+druid:
+  combat prowess: average
+  fortitude: good
+  reflex: poor
+  mental: average
+fighter:
+  combat prowess: good
+  fortitude: good
+  reflex: poor
+  mental: average
+  class features:
+    # skip armor discipline because it's a choice
+    # assume specialist for weapon discipline for simplicity
+    - weapon discipline
+    - improved weapon discipline
+    - greater weapon discipline
+monk:
+  combat prowess: good
+  fortitude: average
+  reflex: good
+  mental: good
+  class features:
+    - unarmed warrior
+paladin:
+  combat prowess: good
+  fortitude: good
+  reflex: poor
+  mental: good
+ranger:
+  combat prowess: good
+  fortitude: good
+  reflex: good
+  mental: average
+  class features:
+    - quarry
+rogue:
+  combat prowess: average
+  fortitude: poor
+  reflex: good
+  mental: average
+  class features:
+    - sneak attack
+sorcerer:
+  combat prowess: poor
+  fortitude: poor
+  reflex: poor
+  mental: good
+spellwarped:
+  combat prowess: good
+  fortitude: good
+  reflex: average
+  mental: average
+warrior:
+  combat prowess: good
+  fortitude: good
+  reflex: poor
+  mental: poor
+wizard:
+  combat prowess: poor
+  fortitude: poor
+  reflex: poor
+  mental: good
+  attack mode: damage spells
+# monsters!
+aberration:
+  combat prowess: average
+  fortitude: average
+  reflex: poor
+  mental: good
+  traits:
+    - darkvision
+    - natural armor (poor)
+animal:
+  combat prowess: average
+  fortitude: poor
+  reflex: poor
+  mental: poor
+  traits:
+    - low-light vision
+    - scent
+    - natural armor (poor)
+construct:
+  combat prowess: average
+  fortitude: poor
+  reflex: poor
+  mental: poor
+  traits:
+    - darkvision
+    - construct
+    - natural armor (average)
+fey:
+  combat prowess: poor
+  fortitude: poor
+  reflex: average
+  mental: average
+  traits:
+    - natural armor (average)
+humanoid:
+  combat prowess: poor
+  fortitude: poor
+  reflex: poor
+  mental: poor
+ideal:
+  combat prowess: good
+  fortitude: average
+  reflex: average
+  mental: average
+  traits:
+    - ideal
+magical beast:
+  combat prowess: average
+  fortitude: average
+  reflex: average
+  mental: poor
+  traits:
+    - low-light vision
+    - natural armor (poor)
+monstrous humanoid:
+  combat prowess: average
+  fortitude: average
+  reflex: poor
+  mental: poor
+  traits:
+    - natural armor (poor)
+ooze:
+  combat prowess: poor
+  fortitude: average
+  reflex: poor
+  mental: poor
+  traits:
+    - ooze
+outsider:
+  combat prowess: average
+  fortitude: average
+  reflex: average
+  mental: average
+  traits:
+    - low-light vision
+    - natural armor (poor)
+plant:
+  combat prowess: poor
+  fortitude: average
+  reflex: poor
+  mental: poor
+  traits:
+    - plant
+    - natural armor (poor)
+undead:
+  combat prowess: poor
+  fortitude: poor
+  reflex: poor
+  mental: average
+  traits:
+    - undead
+    - natural armor (poor)
+monster:
+  combat prowess: poor
+  fortitude: poor
+  reflex: poor
+  mental: poor

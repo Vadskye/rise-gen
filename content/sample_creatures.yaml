@@ -1,0 +1,442 @@
+standard_warrior_equipment: &STANDARD_WARRIOR_EQUIPMENT
+  armor_name: breastplate
+  weapon_name: longsword
+  shield: heavy shield
+light_warrior_equipment: &LIGHT_WARRIOR_EQUIPMENT
+  armor_name: studded leather
+  weapon_name: short sword
+  shield: light shield
+mage_equipment: &MAGE_EQUIPMENT
+  armor_name: mage armor
+  weapon_name: club
+barbarian: &BARBARIAN
+  <<: *STANDARD_WARRIOR_EQUIPMENT
+  race: human
+  rise_class: barbarian
+  attributes:
+    strength: full
+    constitution: full
+  feats:
+    - mighty blows
+  traits:
+    - magic items
+barbarian_greatsword:
+  <<: *BARBARIAN
+  weapon_name: greatsword
+  shield: ~
+barbarian_full_plate:
+  <<: *BARBARIAN
+  armor_name: full plate
+barbarian_ranged:
+  <<: *BARBARIAN
+  attributes:
+    constitution: full
+    perception: full
+  weapon_name: longbow
+  feats:
+    - deadly aim
+    - mighty blows
+barbarian_studded:
+  <<: *BARBARIAN
+  armor_name: studded leather
+cleric: &CLERIC
+  <<: *STANDARD_WARRIOR_EQUIPMENT
+  race: human
+  rise_class: cleric
+  attributes:
+    strength: full
+    constitution: full
+  feats:
+    - mighty blows
+  traits:
+    - magic items
+cleric_spells:
+  <<: *CLERIC
+  attack_type: spell
+  special_attack_name: inflict wounds
+druid: &DRUID
+  <<: *STANDARD_WARRIOR_EQUIPMENT
+  race: human
+  rise_class: druid
+  attributes:
+    strength: full
+    constitution: full
+  feats:
+    - mighty blows
+  traits:
+    - magic items
+druid_healing:
+  <<: *DRUID
+  traits:
+    - magic items
+    - fast healing
+druid_dr:
+  <<: *DRUID
+  traits:
+    - magic items
+    - armor discipline (resilience)
+    - acanite armor
+druid_spells:
+  <<: *DRUID
+  attack_type: spell
+  special_attack_name: inflict wounds
+fighter: &FIGHTER
+  <<: *STANDARD_WARRIOR_EQUIPMENT
+  race: human
+  rise_class: fighter
+  attributes:
+    strength: full
+    constitution: full
+  feats:
+    - mighty blows
+  traits:
+    - magic items
+    - armor discipline (resilience)
+fighter_healing:
+  <<: *FIGHTER
+  traits:
+    - magic items
+    - armor discipline (resilience)
+    - fast healing
+fighter_halfling:
+  <<: *FIGHTER
+  race: halfling
+fighter_dex: &FIGHTER_DEX
+  <<: *FIGHTER
+  attributes:
+    strength: full
+    dexterity: full
+  armor_name: studded leather
+  feats:
+    - dodge
+    - weapon finesse
+    - mighty blows
+  traits:
+    - magic items
+    - armor discipline (agility)
+fighter_dex_resilience:
+  <<: *FIGHTER_DEX
+  traits:
+    - magic items
+    - armor discipline (resilience)
+ranger: &RANGER
+  <<: *STANDARD_WARRIOR_EQUIPMENT
+  race: human
+  rise_class: ranger
+  attributes:
+    strength: full
+    constitution: full
+  feats:
+    - mighty blows
+  traits:
+    - magic items
+ranger_dex: &RANGER_DEX
+  <<: *RANGER
+  attributes:
+    strength: full
+    dexterity: full
+  armor_name: studded leather
+  feats:
+    - dodge
+    - weapon finesse
+    - mighty blows
+  traits:
+    - magic items
+rogue: &ROGUE
+  <<: *LIGHT_WARRIOR_EQUIPMENT
+  race: human
+  rise_class: rogue
+  attributes:
+    dexterity: full
+    intelligence: full
+  traits:
+    - magic items
+rogue_str:
+  <<: *ROGUE
+  attributes:
+    strength: full
+    dexterity: full
+sorcerer: &SORCERER
+  <<: *MAGE_EQUIPMENT
+  race: human
+  rise_class: sorcerer
+  attack_type: spell
+  special_attack_name: inflict wounds
+  attributes:
+    constitution: full
+    willpower: full
+  traits:
+    - magic items
+warrior: &WARRIOR
+  <<: *STANDARD_WARRIOR_EQUIPMENT
+  race: human
+  rise_class: warrior
+  attributes:
+    strength: full
+    constitution: full
+  feats:
+    - mighty blows
+  traits:
+    - magic items
+wenley:
+  <<: *WARRIOR
+  attributes:
+    strength: full
+    willpower: full
+warrior_dex:
+  <<: *WARRIOR
+  attributes:
+    dexterity: full
+    constitution: full
+  armor_name: studded leather
+  weapon_name: short sword
+  feats:
+    - dodge
+    - weapon finesse
+  traits:
+    - magic items
+warrior_str_dex:
+  <<: *WARRIOR
+  attributes:
+    strength: full
+    dexterity: full
+  armor_name: studded leather
+  feats:
+    - dodge
+    - mighty blows
+    - weapon finesse
+  traits:
+    - magic items
+warrior_int:
+  <<: *WARRIOR
+  attributes:
+    strength: full
+    intelligence: full
+  feats:
+    - mighty blows
+  traits:
+    - magic items
+wizard:
+  <<: *MAGE_EQUIPMENT
+  race: human
+  rise_class: wizard
+  attack_type: spell
+  special_attack_name: inflict wounds
+  attributes:
+    constitution: full
+    intelligence: full
+  traits:
+    - magic items
+dummy:
+  race: monster
+  rise_class: monster
+  attributes:
+    strength: 0
+    dexterity: 0
+    constitution: 0
+    intelligence: 0
+    perception: 0
+    willpower: 0
+  templates:
+    - training dummy
+# special stuff!
+summoned_monster:
+  race: monster
+  rise_class: monster
+  weapon_name: bite
+  templates:
+    - summoned monster
+summoned_monster_large:
+  race: monster
+  rise_class: monster
+  size: large
+  weapon_name: bite
+  templates:
+    - summoned monster
+# monsters!
+angel:
+  race: monster
+  rise_class: outsider
+  level: 8
+  weapon_name: greatsword
+  armor_name: full plate
+  attributes:
+    strength: primary
+    dexterity: tertiary
+    constitution: tertiary
+    intelligence: tertiary
+    perception: secondary
+    willpower: primary
+  feats:
+    - mighty blows
+  templates:
+    - martial
+arkite_caster:
+  race: monster
+  rise_class: monster
+  level: 8
+  weapon_name: staff
+  attack_type: spell
+  special_attack_name: inflict wounds
+  attributes:
+    strength: 0
+    dexterity: tertiary
+    constitution: secondary
+    intelligence: 0
+    perception: tertiary
+    willpower: -2
+  traits:
+    - arcanite sigil - armor
+    - arcanite sigil - mind control
+arkite_grappler:
+  race: monster
+  rise_class: monster
+  level: 8
+  weapon_name: grapple
+  attributes:
+    strength: primary
+    dexterity: secondary
+    constitution: secondary
+    intelligence: 0
+    perception: 0
+    willpower: -2
+  templates:
+    - martial
+  traits:
+    - arcanite sigil - armor_name
+    - arcanite sigil - mind control
+    - improved grab
+arkite_monk:
+  race: monster
+  rise_class: monster
+  level: 8
+  weapon_name: unarmed monk
+  attributes:
+    strength: secondary
+    dexterity: secondary
+    constitution: secondary
+    intelligence: 0
+    perception: tertiary
+    willpower: -2
+  templates:
+    - martial
+  traits:
+    - arcanite sigil - armor
+    - arcanite sigil - flaming fists
+    - arcanite sigil - mind control
+assassin:
+  race: human
+  rise_class: rogue
+  level: 2
+  weapon_name: dual short swords
+  armor_name: studded leather
+  attributes:
+    dexterity: full
+    intelligence: full
+  feats:
+    - dodge
+    - weapon finesse
+  description: Assassins are typically garbed in black or dark grey.
+  combat_description: Assassins strike from the shadows and use concealment and cover to their advantage.
+brown_bear: &BROWN_BEAR
+  race: monster
+  size: medium
+  rise_class: animal
+  level: 6
+  weapon_name: bite
+  attributes:
+    strength: primary
+    dexterity: tertiary
+    constitution: primary
+    intelligence: -7
+    perception: secondary
+    willpower: tertiary
+demogorgon:
+  race: monster
+  rise_class: outsider
+  level: 16
+  weapon_name: longsword
+  armor_name: breastplate
+  attributes:
+    strength: primary
+    dexterity: secondary
+    constitution: secondary
+    intelligence: primary
+    perception: secondary
+    willpower: primary
+  templates:
+    - martial
+super_bear:
+  <<: *BROWN_BEAR
+  size: colossal
+wee_bear:
+  <<: *BROWN_BEAR
+  size: fine
+planetar:
+  race: monster
+  size: large
+  rise_class: outsider
+  level: 12
+  weapon_name: greatsword
+  armor_name: full plate
+  attributes:
+    strength: primary
+    dexterity: tertiary
+    constitution: tertiary
+    intelligence: tertiary
+    perception: secondary
+    willpower: primary
+  feats:
+    - mighty blows
+  templates:
+    - martial
+torvid:
+  race: monster
+  rise_class: monster
+  size: huge
+  level: 14
+  weapon_name: greatsword
+  armor_name: full plate
+  attributes:
+    strength: primary
+    dexterity: secondary
+    constitution: primary
+    intelligence: 3
+    perception: tertiary
+    willpower: tertiary
+  templates:
+    - martial
+  traits:
+    - mighty blows
+    - magic items
+    - fast healing
+    - arcanite mech
+troll_mech:
+  race: monster
+  rise_class: monster
+  size: large
+  level: 9
+  weapon_name: greatsword
+  armor_name: full plate
+  attributes:
+    strength: primary
+    dexterity: tertiary
+    constitution: primary
+    intelligence: -2
+    perception: 1
+    willpower: 2
+  templates:
+    - martial
+  traits:
+    - tough hide
+    - arcanite mech
+yeti:
+  race: human
+  rise_class: warrior
+  level: 9
+  weapon_name: greatsword
+  attributes:
+    strength: full
+    constitution: full
+  feats:
+    - mighty blows

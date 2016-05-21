@@ -1,0 +1,16 @@
+breastplate:
+  armor check penalty: 3
+  bonus: 4
+  encumbrance: medium
+full plate:
+  armor check penalty: 6
+  bonus: 6
+  encumbrance: heavy
+studded leather:
+  armor check penalty: 2
+  bonus: 2
+  encumbrance: light
+mage armor:
+  armor check penalty: 0
+  bonus: 2
+  encumbrance: light

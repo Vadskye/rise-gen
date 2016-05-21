@@ -1,0 +1,22 @@
+attributes:
+  primary: 0.5
+  secondary: 0.25
+  tertiary: 0
+land speed:  # special handling to calculate the multipliers
+  none: -1
+  slower: -0.5
+  normal: 0
+  faster: 0.5
+  double: 1
+size:
+  fine: 4
+  diminuitive: 3
+  tiny: 2
+  small: 1
+  medium: 0
+  large: 2
+  huge: 4
+  gargantuan: 6
+  colossal: 8
+swim speed: 0.5
+weapons: 0.25  # per weapon; has special handling

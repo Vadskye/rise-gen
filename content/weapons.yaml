@@ -1,0 +1,41 @@
+bite:
+  die: d8
+  encumbrance: medium
+  group: natural weapons
+greatsword:
+  die: d10
+  encumbrance: heavy
+  group: heavy blades
+longbow:
+  die: d8
+  encumbrance: heavy
+  group: bows
+  range: 100
+longsword:
+  die: d8
+  encumbrance: medium
+  group: heavy blades
+short sword:
+  die: d6
+  encumbrance: light
+  group: light blades
+dual short swords:
+  die: d6
+  encumbrance: light
+  group: light blades
+  dual wielding: True
+club:
+  die: d6
+  encumbrance: medium
+  group: blunt
+unarmed monk:
+  die: d6
+  encumbrance: light
+  group: natural
+grapple:
+  encumbrance: medium
+  group: maneuver
+staff:
+  die: d6
+  encumbrance: medium
+  group: blunt

@@ -1,0 +1,51 @@
+default properties:
+  casting time: standard
+  components: all
+  dispellable: true
+  range: touch
+  spell resistance: true
+  targets: one
+meta properties:
+  - skip validation
+primary properties:
+  - attack subeffects
+  - battlefield effects
+  - buffs
+  - conditions
+  - damage
+  - knowledge
+  - instant effect
+  - subeffects
+  - teleport
+possible properties:
+  - attack subeffects
+  - area
+  - battlefield effects
+  - breakable
+  - buffs
+  - casting time
+  - choose effect
+  - components
+  - conditions
+  - damage
+  - dispellable
+  - duration
+  - expended
+  - instant effect
+  - knowledge
+  - limit affected
+  - misc
+  - noncombat
+  - range
+  - shadow
+  - shapeable
+  - spell resistance
+  - subeffects
+  - targets
+  - teleport
+  - trigger
+recursive properties:
+  - subeffects
+required properties:
+  - range
+  - targets
