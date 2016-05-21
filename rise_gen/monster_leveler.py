@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 from docopt import docopt
-from leveler import Leveler
-import rise_data.util as util
+from rise_gen.leveler import Leveler
+import rise_gen.util as util
 
 doc = """
 Usage:
