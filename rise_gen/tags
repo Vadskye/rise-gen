@@ -1,0 +1,67 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	Development	//
+Creature	creature.py	/^class Creature(CreatureStatistics):$/;"	c
+CreatureStatistics	creature.py	/^class CreatureStatistics(object):$/;"	c
+__init__	creature.py	/^    def __init__($/;"	m	class:Creature
+__init__	creature.py	/^    def __init__($/;"	m	class:CreatureStatistics
+__str__	creature.py	/^    def __str__(self):$/;"	m	class:CreatureStatistics	file:
+_calculate_accuracy	creature.py	/^    def _calculate_accuracy(self):$/;"	m	class:CreatureStatistics
+_calculate_armor	creature.py	/^    def _calculate_armor(self):$/;"	m	class:CreatureStatistics
+_calculate_armor_check_penalty	creature.py	/^    def _calculate_armor_check_penalty(self):$/;"	m	class:CreatureStatistics
+_calculate_armor_defense	creature.py	/^    def _calculate_armor_defense(self):$/;"	m	class:CreatureStatistics
+_calculate_attack_count	creature.py	/^    def _calculate_attack_count(self):$/;"	m	class:CreatureStatistics
+_calculate_attribute	creature.py	/^    def _calculate_attribute(self, attribute_name):$/;"	m	class:CreatureStatistics
+_calculate_combat_prowess	creature.py	/^    def _calculate_combat_prowess(self):$/;"	m	class:CreatureStatistics
+_calculate_critical_multiplier	creature.py	/^    def _calculate_critical_multiplier(self):$/;"	m	class:CreatureStatistics
+_calculate_critical_threshold	creature.py	/^    def _calculate_critical_threshold(self):$/;"	m	class:CreatureStatistics
+_calculate_damage_bonus	creature.py	/^    def _calculate_damage_bonus(self):$/;"	m	class:CreatureStatistics
+_calculate_damage_dice	creature.py	/^    def _calculate_damage_dice(self):$/;"	m	class:CreatureStatistics
+_calculate_fortitude	creature.py	/^    def _calculate_fortitude(self):$/;"	m	class:CreatureStatistics
+_calculate_hit_points	creature.py	/^    def _calculate_hit_points(self):$/;"	m	class:CreatureStatistics
+_calculate_maneuver_defense	creature.py	/^    def _calculate_maneuver_defense(self):$/;"	m	class:CreatureStatistics
+_calculate_mental	creature.py	/^    def _calculate_mental(self):$/;"	m	class:CreatureStatistics
+_calculate_numerical_statistic	creature.py	/^    def _calculate_numerical_statistic(self, statistic_tag_name):$/;"	m	class:CreatureStatistics
+_calculate_reflex	creature.py	/^    def _calculate_reflex(self):$/;"	m	class:CreatureStatistics
+_calculate_speed	creature.py	/^    def _calculate_speed(self):$/;"	m	class:CreatureStatistics
+_calculate_weapon	creature.py	/^    def _calculate_weapon(self):$/;"	m	class:CreatureStatistics
+_to_string_abilities	creature.py	/^    def _to_string_abilities(self):$/;"	m	class:CreatureStatistics
+_to_string_attacks	creature.py	/^    def _to_string_attacks(self):$/;"	m	class:CreatureStatistics
+_to_string_attributes	creature.py	/^    def _to_string_attributes(self):$/;"	m	class:CreatureStatistics
+_to_string_core	creature.py	/^    def _to_string_core(self):$/;"	m	class:CreatureStatistics
+_to_string_defenses	creature.py	/^    def _to_string_defenses(self):$/;"	m	class:CreatureStatistics
+active_abilities	creature.py	/^    def active_abilities(self):$/;"	m	class:CreatureStatistics
+active_effects_with_tag	creature.py	/^    def active_effects_with_tag(self, effect_tag):$/;"	m	class:CreatureStatistics
+add_ability	creature.py	/^    def add_ability(self, ability):$/;"	m	class:CreatureStatistics
+attack_range	creature.py	/^    def attack_range(self):$/;"	m	class:CreatureStatistics
+attack_with_spell	creature.py	/^    def attack_with_spell(self, creature):$/;"	m	class:Creature
+cache	creature.py	/^    def cache(self, key, value):$/;"	m	class:CreatureStatistics
+calculation_args	creature.py	/^    calculation_args='damage reduction'$/;"	v
+calculation_args	creature.py	/^    calculation_args='temporary hit points'$/;"	v
+calculation_function	creature.py	/^        calculation_function = '_calculate_{0}'.format(property_name)$/;"	v
+calculation_function	creature.py	/^    calculation_function='_calculate_numerical_statistic',$/;"	v
+clear_cache	creature.py	/^    def clear_cache(self):$/;"	m	class:CreatureStatistics
+create_cached_property	creature.py	/^def create_cached_property($/;"	f
+from_sample_creature	creature.py	/^    def from_sample_creature(cls, sample_name, **kwargs):$/;"	m	class:Creature
+get_cached_property	creature.py	/^    def get_cached_property(creature):$/;"	f
+has_ability	creature.py	/^    def has_ability(self, ability_name, ignore_prerequisites=False):$/;"	m	class:CreatureStatistics
+heal	creature.py	/^    def heal(self, hit_points):$/;"	m	class:Creature
+initialize_argument_parser	creature.py	/^def initialize_argument_parser():$/;"	f
+is_alive	creature.py	/^    def is_alive(self):$/;"	m	class:Creature
+main	creature.py	/^def main():$/;"	f
+property_name	creature.py	/^    property_name='damage_reduction',$/;"	v
+property_name	creature.py	/^    property_name='temporary_hit_points',$/;"	v
+reach	creature.py	/^    def reach(self):$/;"	m	class:CreatureStatistics
+refresh_combat	creature.py	/^    def refresh_combat(self):$/;"	m	class:Creature
+refresh_round	creature.py	/^    def refresh_round(self):$/;"	m	class:Creature
+roll_damage	creature.py	/^    def roll_damage(self):$/;"	m	class:CreatureStatistics
+sample_creatures	creature.py	/^    sample_creatures = None$/;"	v	class:Creature
+space	creature.py	/^    def space(self):$/;"	m	class:CreatureStatistics
+standard_attack	creature.py	/^    def standard_attack(self, creature):$/;"	m	class:Creature
+strike	creature.py	/^    def strike(self, creature):$/;"	m	class:Creature
+strike_hits	creature.py	/^    def strike_hits(self, creature):$/;"	m	class:Creature
+take_damage	creature.py	/^    def take_damage(self, damage):$/;"	m	class:Creature
+weapon_encumbrance	creature.py	/^    def weapon_encumbrance(self):$/;"	m	class:CreatureStatistics
