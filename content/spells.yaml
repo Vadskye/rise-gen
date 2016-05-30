@@ -2305,8 +2305,13 @@ go away:
   targets: enemies
 
 
-## MONSTER ABILITIES
+## MONSTER TRAITS
 
+babble:
+  $ref: confusion
+  area: medium radius burst
+  targets: all
+  range: ~
 enslave:
   $ref: dominate person
 mucus cloud:

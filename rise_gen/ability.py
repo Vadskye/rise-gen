@@ -44,10 +44,12 @@ class Ability:
         name,
         effects,
         prerequisite=None,
+        power=None,
     ):
         self.name = name
         self.effects = effects
         self.prerequisite = prerequisite or (lambda creature: True)
+        self.power = power or 'average'
 
     @classmethod
     def by_name(cls, ability_name):
@@ -58,7 +60,8 @@ class Ability:
             return Ability(
                 name=ability_name,
                 effects=ability_definition.get('effects', list()),
-                prerequisite=ability_definition.get('prerequisite')
+                prerequisite=ability_definition.get('prerequisite'),
+                power=ability_definition.get('power', None),
             )
         except KeyError:
             raise Exception(
@@ -472,8 +475,10 @@ def get_ability_definitions():
         },
 
         # these traits have no effects that can be calculated for now
-        'amphibious': {},
+        'amphibious': {'power': 'weak'},
+        'babble': {},
         'enslave': {},
+        'incorporeal': {'power': 'extreme'},
         'mucus cloud': {},
         'slime': {},
     }

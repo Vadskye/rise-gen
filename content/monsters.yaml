@@ -1,7 +1,7 @@
 aboleth:
   race: monster
   rise class: monster
-  size: large
+  size: huge
   weapons:
     - tentacle
   attributes:
@@ -33,6 +33,19 @@ dummy:
     willpower: 0
   templates:
     - training dummy
+allip:
+  race: monster
+  rise class: monster
+  weapons:
+    - touch
+  attributes:
+    strength: ~
+    dexterity: secondary
+    constitution: ~
+    willpower: primary
+  traits:
+    - babble
+    - incorporeal
 angel:
   race: monster
   rise class: outsider

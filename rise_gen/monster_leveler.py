@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from docopt import docopt
+from rise_gen.ability import Ability
 from rise_gen.leveler import Leveler
 import rise_gen.util as util
 
@@ -21,13 +22,15 @@ class MonsterLeveler(Leveler):
         """We don't care about the names - just the values"""
         modifier = 0
         for name in self.attributes:
-            value = self.attributes[name]
-            if isinstance(value, str):
-                modifier += RAW_MODIFIERS['attributes'][value]
-            elif isinstance(value, int):
+            attribute_value = self.attributes[name]
+            if isinstance(attribute_value, str):
+                modifier += RAW_MODIFIERS['attributes'][attribute_value]
+            elif isinstance(attribute_value, int):
+                pass
+            elif attribute_value is None:
                 pass
             else:
-                self.die("Unable to recognize attribute value '{}'".format(value))
+                self.die("Unable to recognize attribute value '{}'".format(attribute_value))
         return modifier
 
     def _speeds_modifier(self):
@@ -71,9 +74,9 @@ class MonsterLeveler(Leveler):
 
     def _traits_modifier(self):
         modifier = 0
-        for trait in self.traits:
-            # TODO: make this make sense
-            modifier += RAW_MODIFIERS['traits']
+        for trait_name in self.traits:
+            ability = Ability.by_name(trait_name)
+            modifier += RAW_MODIFIERS['traits'][ability.power]
         return modifier
 
     def _weapons_modifier(self):
