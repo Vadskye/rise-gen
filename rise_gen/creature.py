@@ -22,23 +22,7 @@ class CreatureStatistics(object):
     def __init__(
             self,
             name,
-            race,
-            rise_class,
-            attributes=None,
-            level=None,
-            armor=None,
-            shield=None,
-            weapons=None,
-            feats=None,
-            templates=None,
-            traits=None,
-            description=None,
-            combat_description=None,
-            size=None,
-            attack_type=None,
-            special_attack_name=None,
-            speeds=None,
-            abilities=None,  # todo: handle these
+            properties,
     ):
         """Create a creature with all necessary statistics, attributes, etc.
 
@@ -49,18 +33,29 @@ class CreatureStatistics(object):
         """
 
         self.name = name
-        self.race = race
-        self.rise_class = rise_class
-        self.attributes = attributes or dict()
-        self.level = level or 1
-        self.armor_name = armor
-        self.shield = shield
-        self.weapon_names = weapons
-        self.description = description
-        self.combat_description = combat_description
-        self.attack_type = attack_type or 'physical'
-        self.special_attack_name = special_attack_name
-        self.speeds = speeds or dict()
+        # set defaults
+        self.armor_name = None
+        self.attack_type = 'physical'
+        self.attributes = dict()
+        self.feats = None
+        self.level = 1
+        self.shield = None
+        self.speeds = dict()
+        self.templates = None
+        self.traits = None
+        self.weapon_names = None
+
+        for property_name in properties:
+            # some properties have special handling
+            if property_name == 'armor':
+                self.armor_name = properties[property_name]
+            elif property_name == 'weapons':
+                self.weapon_names = properties[property_name]
+            else:
+                try:
+                    setattr(self, property_name, properties[property_name])
+                except AttributeError:
+                    raise Exception("Invalid property '{}'".format(property_name))
 
         if isinstance(self.race, str):
             self.race = Race.from_name(self.race)
@@ -69,7 +64,9 @@ class CreatureStatistics(object):
         if isinstance(self.shield, str):
             self.shield = Shield.from_name(self.shield)
 
-        self.size = size or self.race.size
+        # use the race's size as a default if no size is specified
+        if not hasattr(self, 'size'):
+            self.size = self.race.size
 
         self._cache = dict()
 
@@ -81,14 +78,14 @@ class CreatureStatistics(object):
         except AttributeError:
             # not all classes has class features (yet)
             pass
-        if feats is not None:
-            for feat in feats:
+        if self.feats is not None:
+            for feat in self.feats:
                 self.add_ability(feat)
-        if templates is not None:
-            for template in templates:
+        if self.templates is not None:
+            for template in self.templates:
                 self.add_ability(template)
-        if traits is not None:
-            for trait in traits:
+        if self.traits is not None:
+            for trait in self.traits:
                 self.add_ability(trait)
 
         self.add_ability('size modifiers')
@@ -769,7 +766,7 @@ class Creature(CreatureStatistics):
 
         return cls(
             name=sample_name,
-            **sample_data
+            properties=sample_data
         )
 
 

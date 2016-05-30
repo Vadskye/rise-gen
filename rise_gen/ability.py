@@ -57,7 +57,7 @@ class Ability:
             ability_definition = Ability.ability_definitions[ability_name]
             return Ability(
                 name=ability_name,
-                effects=ability_definition.get('effects'),
+                effects=ability_definition.get('effects', list()),
                 prerequisite=ability_definition.get('prerequisite')
             )
         except KeyError:
@@ -472,9 +472,10 @@ def get_ability_definitions():
         },
 
         # these traits have no effects that can be calculated for now
-        'enslave': {'effects': []},
-        'mucus cloud': {'effects': []},
-        'slime': {'effects': []},
+        'amphibious': {},
+        'enslave': {},
+        'mucus cloud': {},
+        'slime': {},
     }
 
     all_abilities = dict()

@@ -18,5 +18,7 @@ size:
   huge: 4
   gargantuan: 6
   colossal: 8
+spells: 1  # for now, each spell costs 1 level
 swim speed: 0.5
+traits: 1  # for now, each trait costs 1 level
 weapons: 0.25  # per weapon; has special handling

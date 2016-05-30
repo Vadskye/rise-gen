@@ -14,7 +14,10 @@ aboleth:
   speeds:
     land: 10
     swim: 60
+  spells:
+    - persistent image
   traits:
+    - amphibious
     - enslave
     - mucus cloud
     - slime

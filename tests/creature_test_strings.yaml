@@ -65,7 +65,7 @@ aboleth: |
   [Atk] 4: 2d6+0; [Prowess] 1
   [Attr] 0 -2 5 5 0 5
   [Space] 5, [Reach] 5, [Speed] 10
-  [Abil] Enslave, Mucus Cloud, Size Modifiers, Slime
+  [Abil] Amphibious, Enslave, Mucus Cloud, Size Modifiers, Slime
 angel: |
   monster angel 8
   [HP] 120; [Defs] AD 26, MD 22; Fort 26, Ref 20, Ment 30

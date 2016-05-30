@@ -62,6 +62,20 @@ class MonsterLeveler(Leveler):
     def _size_modifier(self):
         return RAW_MODIFIERS['size'][self.size]
 
+    def _spells_modifier(self):
+        modifier = 0
+        for spell in self.spells:
+            # TODO: make this make sense
+            modifier += RAW_MODIFIERS['spells']
+        return modifier
+
+    def _traits_modifier(self):
+        modifier = 0
+        for trait in self.traits:
+            # TODO: make this make sense
+            modifier += RAW_MODIFIERS['traits']
+        return modifier
+
     def _weapons_modifier(self):
         return len(self.weapons) * RAW_MODIFIERS['weapons']
 

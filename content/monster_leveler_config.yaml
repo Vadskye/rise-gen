@@ -11,11 +11,12 @@ meta properties:
   - armor
   - feats
   - templates
-  - traits
 possible properties:
   - attributes
   - speeds
+  - spells
   - size
+  - traits
   - weapons
 required properties:
   - size
