@@ -1,0 +1,100 @@
+domain aspect - air: 3
+domain aspect - chaos: 4
+domain aspect - death: 3
+domain aspect - destruction: 5
+domain aspect - earth: 4
+domain aspect - evil: 4
+domain aspect - fire: 4
+domain aspect - good: 4
+domain aspect - knowledge: 4
+domain aspect - law: 4
+domain aspect - magic: 4
+domain aspect - travel: 4
+domain aspect - trickery: 5
+domain aspect - vitality: 3
+domain aspect - war: 4
+domain aspect - water: 4
+domain gift - air: 1
+domain gift - chaos: 2
+domain gift - death: 2
+domain gift - destruction: 2
+domain gift - earth: 2
+domain gift - evil: 2
+domain gift - fire: 1
+domain gift - good: 2
+domain gift - knowledge: 2
+domain gift - law: 1
+domain gift - protection: 3
+domain gift - strength: 2
+domain gift - travel: 2
+domain gift - trickery: 2
+domain gift - vitality: 2
+domain gift - war: 1
+domain gift - water: 2
+domain gift - wild: 2
+domain invocation - normal: 0
+domain invocation greater - air: 5
+domain invocation greater - chaos: 5
+domain invocation greater - death: 5
+domain invocation greater - earth: 6
+domain invocation greater - evil: 6
+domain invocation greater - fire: 5
+domain invocation greater - good: 6
+domain invocation greater - knowledge: 5
+domain invocation greater - law: 6
+domain invocation greater - magic: 5
+domain invocation greater - protection: 5.0
+domain invocation greater - strength: 5
+domain invocation greater - travel: 6
+domain invocation greater - trickery: 5
+domain invocation greater - vitality: 5
+domain invocation greater - water: 5
+domain invocation greater - wild: 5
+fast movement: 1
+larger than life: 3
+natural aspect 12 - fire shield: 5
+natural aspect 12 - fluid motion: 6
+natural aspect 12 - stoneskin: 6
+natural aspect 14 - earth glide: 7
+natural aspect 14 - flight: 7
+natural aspect 16 - solar radiance: 8
+rage - athletic rage: 3
+rage - critical rage: 5
+rage - destructive rage: 0
+rage - invulnerable rage: 6
+rage - mindless rage: 9
+rage - overpowering rage: 6
+rage - overwhelming rage: 2
+rage - rapid rage: 1
+rage - savage rage: 1
+rage - taunting rage: 6
+rage - terrifying rage: 3
+rage - wary rage: 1
+strike feat - basic: 1
+strike feat - bonus damage: 3
+strike feat - driving assault: 2
+wild aspect 10 - natural renewal: 6
+wild aspect 10 - swiftstrike: 6
+wild aspect 10 - wings: 6
+wild aspect 2 - animal affinity: 2
+wild aspect 2 - armaments of the bear: 1
+wild aspect 2 - climb: 1
+wild aspect 2 - gore: 2
+wild aspect 2 - lope: 2
+wild aspect 2 - senses: 1
+wild aspect 2 - talons: 0
+wild aspect 2 - woodland stride: 0
+wild aspect 4 - hawk: 3
+wild aspect 4 - scent: 3
+wild aspect 4 - shrink: 3
+wild aspect 4 - slither: 3
+wild aspect 4 - totemic mind: 3
+wild aspect 4 - totemic power: 3
+wild aspect 6 - constrict: 4
+wild aspect 6 - enhanced natural weapons: 3
+wild aspect 6 - thousand faces: 3
+wild aspect 6 - venom: 4
+wild aspect 8 - grow: 5
+wild aspect 8 - natural grab: 5
+wild aspect 8 - natural trip: 5
+wild aspect 8 - wolfpack: 5

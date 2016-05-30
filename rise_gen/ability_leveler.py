@@ -368,6 +368,9 @@ class AbilityLeveler(Leveler):
     def _components_modifier(self):
         return RAW_MODIFIERS['components'][self.components]
 
+    def _delay_effect_modifier(self):
+        return RAW_MODIFIERS['delay effect'][self.delay_effect]
+
     def _damage_modifier(self):
         try:
             return RAW_MODIFIERS['damage'][self.damage]
@@ -473,16 +476,27 @@ class AbilityLeveler(Leveler):
         return modifier
 AbilityLeveler.import_config('content/ability_leveler_config.yaml')
 
-def calculate_ability_levels(data):
+def calculate_ability_levels(abilities, ability_type):
     levels = dict()
-    for name in data:
-        ability = AbilityLeveler(name, data[name])
-        levels[name] = ability.level('spell')
+    for name in abilities:
+        ability = AbilityLeveler(name, abilities[name])
+        levels[name] = ability.level(ability_type)
     return levels
 
 def main(args):
-    data = util.import_yaml_file('content/spells.yaml')
-    ability_levels = calculate_ability_levels(data)
+    if args['items']:
+        abilities = util.import_yaml_file('content/magic_items.yaml')
+        ability_type = 'magic item'
+    elif args['spells']:
+        abilities = util.import_yaml_file('content/spells.yaml')
+        ability_type = 'spell'
+    elif args['class']:
+        abilities = util.import_yaml_file('content/class_features.yaml')
+        ability_type = 'class feature'
+    else:
+        raise Exception("I don't know what ability data to use")
+
+    ability_levels = calculate_ability_levels(abilities, ability_type)
     for ability_name in sorted(ability_levels.keys()):
         print("{}: {}".format(
             ability_name,

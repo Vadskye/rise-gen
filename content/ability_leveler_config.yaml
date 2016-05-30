@@ -28,6 +28,7 @@ possible properties:
   - components
   - conditions
   - damage
+  - delay effect
   - dispellable
   - duration
   - expended

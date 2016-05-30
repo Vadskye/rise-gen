@@ -95,6 +95,7 @@ enervation: 4
 enervation greater: 8
 enlarge: 2
 enlarge mass: 5.5
+enslave: 6
 entangle: 1
 entangle greater: 4
 entropic shield: 1
@@ -193,6 +194,7 @@ mirror image greater: 6
 missile storm: 4
 missile storm greater: 8
 moment of prescience: 3
+mucus cloud: 5
 nondetection: 4
 orders wrath: 2
 phantasmal killer: 2
@@ -262,6 +264,7 @@ silence mass: 5
 skysmite: 6
 sleep: 1
 sleep mass: 4
+slime: 6
 slow: 3
 slow mass: 7
 solid fog: 5

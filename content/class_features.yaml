@@ -1,0 +1,590 @@
+TEMPLATES:
+  RAGE:
+    duration: short
+    casting time: swift
+    range: personal
+  FEATURE:
+    duration: class feature
+    range: personal
+  STRIKE:
+    casting time: strike feat
+    range: close
+fast movement:
+  $ref: FEATURE
+  buffs:
+    - ten foot speed
+larger than life:
+  $ref: FEATURE
+  buffs:
+    - increase effective size
+
+# DOMAIN ASPECTS
+domain aspect - air:
+  $ref: FEATURE
+  buffs:
+    - glide
+  misc: 1  # devotion point to go higher
+domain aspect - chaos:
+  $ref: FEATURE
+  buffs:
+    - retributive damage: close
+  limit affected: alignment
+  misc: 1  # price limit affected for conditions, not buffs
+domain aspect - death:
+  range: personal
+  buffs:
+    - temporary hp
+  duration: short fixed
+  trigger:
+    condition: kill foe
+    duration: class feature
+domain aspect - destruction:
+  area: medium radius emanation
+  battlefield effects:
+    - reduce damage reduction
+    - reduce hardness
+  misc: -4  # 1 for half reduction, 2 for usually irrelevant, 1 for area weirdness
+  duration: class feature
+  targets: enemies
+domain aspect - earth:
+  $ref: FEATURE
+  buffs:
+    - damage reduction: physical
+  misc: 1  # narrative power
+domain aspect - evil:
+  $ref: domain aspect - chaos
+domain aspect - fire:
+  $ref: FEATURE
+  buffs:
+    - deal no damage to allies
+  misc: -1  # only affects fire abilities
+domain aspect - good:
+  $ref: domain aspect - chaos
+domain aspect - knowledge:
+  $ref: FEATURE
+  buffs:
+    - skill: mastery
+    - skill: extra mastery
+    - skill: extra mastery
+    - skill: skill point
+    - skill: skill point
+domain aspect - law:
+  $ref: domain aspect - chaos
+domain aspect - magic:
+  $ref: FEATURE
+  buffs:
+    - feat: level5  # or so
+  choose effect: true
+domain aspect - travel:
+  $ref: FEATURE
+  buffs:
+    - double speed
+    - skill: mastery
+  misc: 1  # having it at long duration is narrative power
+domain aspect - trickery:
+  $ref: FEATURE
+  buffs:
+    - feat: level10  # or so
+domain aspect - vitality:
+  $ref: FEATURE
+  buffs:
+    - heal critical
+domain aspect - war:
+  $ref: FEATURE
+  buffs:
+    - feat: level5  # or so
+  choose effect: true
+domain aspect - water:
+  $ref: FEATURE
+  buffs:
+    - swim speed
+    - water breathing
+    - water speaking
+
+
+# DOMAIN GIFTS
+domain gift - air:
+  $ref: FEATURE
+  buffs:
+    - skill: plus5
+    - skill: class skills
+  misc: -1  # only for Jump
+domain gift - chaos:
+  $ref: FEATURE
+  buffs:
+    - reroll random effects
+domain gift - death:
+  $ref: FEATURE
+  buffs:
+    - half critical damage
+    - immune: death
+domain gift - destruction:
+  $ref: FEATURE
+  buffs:
+    - ignore damage reduction
+    - ignore hardness
+  misc: -1  # half normal value
+domain gift - earth:
+  $ref: FEATURE
+  buffs:
+    - maneuver defense
+domain gift - evil:
+  $ref: FEATURE
+  buffs:
+    - damage reduction: alignment
+  misc: -1  # half the normal DR value
+domain gift - fire:
+  $ref: FEATURE
+  buffs:
+    - damage reduction: energy single
+    - damage reduction: energy single
+domain gift - good:
+  $ref: FEATURE
+  buffs:
+    - damage reduction: alignment
+  misc: -1  # half the normal DR value
+domain gift - knowledge:
+  $ref: FEATURE
+  buffs:
+    - skill: skill point
+    - skill: skill point
+    - skill: class skills  # actually all Knowledge skills...
+domain gift - law:
+  $ref: FEATURE
+  buffs:
+    - immune: delusion
+domain gift - protection:
+  area: small radius emanation
+  buffs:
+    - share pain
+  duration: class feature
+  targets: allies
+  # -1 for adjacent rather than small radius
+  # -1 for immediate action required
+  misc: -2
+domain gift - strength:
+  $ref: FEATURE
+  buffs:
+    - skill: class skills
+    - skill: class skills
+    - skill: skill point
+    - skill: skill point
+  misc: -1 # skill points have small list
+domain gift - travel:
+  $ref: FEATURE
+  buffs:
+    - skill: class skills
+    - ten foot speed
+domain gift - trickery:
+  $ref: FEATURE
+  buffs:
+    - skill: class skills
+    - skill: class skills
+    - skill: skill point
+    - skill: skill point
+  misc: -1  # skill points have small list
+domain gift - vitality:
+  $ref: FEATURE
+  buffs:
+    - defense: plus2
+    - skill: mastery
+domain gift - war:
+  $ref: FEATURE
+  buffs:
+    - feat: level1
+domain gift - water:
+  $ref: FEATURE
+  buffs:
+    - skill: class skills
+    - skill: plus5
+    - immune: underwater
+  misc: -1  # swim is not the best skill
+domain gift - wild:
+  $ref: FEATURE
+  buffs:
+    - skill: class skills
+    - skill: class skills
+    - skill: skill point
+    - skill: skill point
+  misc: -1  # skill points have small list
+
+# DOMAIN INVOCATIONS
+domain invocation - normal:
+  range: medium
+  damage: normal
+
+# GREATER DOMAIN INVOCATIONS
+domain invocation greater - air:
+  casting time: swift
+  buffs:
+    - half miss physical
+  duration: short fixed
+  range: personal
+domain invocation greater - chaos:
+  damage: normal
+  area: large radius burst
+  targets: enemies  # sort of
+domain invocation greater - death:
+  damage: kill at zero
+  range: medium
+domain invocation greater - earth:
+  $ref: FEATURE
+  buffs:
+    - damage reduction: all
+    - immune: critical hits
+domain invocation greater - evil:
+  limit affected: nonalignment
+  conditions:
+    - staggered
+  duration: brief
+  area: large radius burst
+  targets: all
+domain invocation greater - fire:
+  damage: normal
+  area: large radius burst
+  targets: enemies
+domain invocation greater - good:
+  limit affected: nonalignment
+  conditions:
+    - dazed
+  duration: brief
+  area: large radius burst
+  targets: all
+domain invocation greater - knowledge:
+  casting time: swift
+  duration: end of round
+  buffs:
+    - true seeing
+  range: personal
+domain invocation greater - law:
+  limit affected: nonalignment
+  conditions:
+    - immobilized
+  duration: brief
+  area: large radius burst
+  targets: all
+domain invocation greater - magic:
+  damage: normal
+  area: large radius burst
+  targets: enemies
+domain invocation greater - protection:
+  buffs:
+    - damage reduction: all
+  area: large radius burst
+  targets: allies
+  duration: short fixed
+domain invocation greater - strength:
+  buffs:
+    - increase size
+    - increase size
+  duration: short
+  range: personal
+domain invocation greater - travel:
+  buffs:
+    - quadruple speed
+    - move through foes
+    - ignore threatened terrain
+  duration: end of round
+  casting time: swift
+domain invocation greater - trickery:
+  buffs:
+    - invisible
+  casting time: swift
+  duration: end of round
+  misc: -2 # break if attack
+domain invocation greater - vitality:
+  subeffects:
+    - damage: healing
+    - buffs:
+        - fast healing
+      duration: short fixed
+  misc: 1  # stacking similar effects
+domain invocation greater - water:
+  battlefield effects:
+    - underwater
+  area: huge radius zone
+  duration: short fixed
+  targets: all
+domain invocation greater - wild:
+  area: large radius burst
+  targets: enemies
+  subeffects:
+    - damage: normal
+    - battlefield effects:
+        - half speed
+      duration: short fixed
+  limit affected: near ground
+
+
+# NATURAL ASPECTS
+natural aspect 12 - fire shield:
+  $ref: FEATURE
+  buffs:
+    - retributive damage: close
+    - damage reduction: energy single
+    - radiate light
+natural aspect 12 - fluid motion:
+  $ref: FEATURE
+  buffs:
+    - immune: grapple
+    - immune: movement effects
+    - immune: underwater
+    - move through foes
+  misc: 1  # narrative power
+natural aspect 12 - stoneskin:
+  $ref: FEATURE
+  buffs:
+    - damage reduction: physical
+    - immune: critical hits
+  misc: 1  # narrative power
+natural aspect 14 - earth glide:
+  $ref: FEATURE
+  buffs:
+    - earth glide
+  misc: 1  # narrative power, despite 5 round limit
+natural aspect 14 - flight:
+  $ref: FEATURE
+  buffs:
+    - flight
+  misc: 1  # narrative power, despite 5 round limit
+natural aspect 16 - solar radiance:
+  attack subeffects:
+    success:
+      conditions:
+        - partially blinded
+      duration: short fixed
+    critical success:
+      conditions:
+        - blinded
+      duration: short fixed
+  trigger:
+    condition: when attacked
+    duration: class feature
+  misc: 1  # radiate super light
+  range: long
+
+# RAGES
+rage - athletic rage:
+  $ref: RAGE
+  buffs:
+    - skill: plus5
+    - skill: extra plus5
+    - skill: extra plus5
+    - skill: extra plus5
+  misc: -1  # not actually plus5
+rage - critical rage:
+  $ref: RAGE
+  buffs:
+    - critical range
+  misc: 2 # increase rage duration, no anti-stacking with critical effects
+rage - destructive rage:
+  $ref: RAGE
+  buffs:
+    - ignore hardness
+rage - invulnerable rage:
+  $ref: RAGE
+  buffs:
+    - damage reduction: all
+  misc: 2 # stacks with existing DR, changes it to apply to all
+rage - mindless rage:
+  $ref: RAGE
+  buffs:
+    - immune: mind
+rage - overpowering rage:
+  $ref: RAGE
+  buffs:
+    - temporary hp
+    - maneuver accuracy: all
+  misc: -1  # temp HP is lower than normal and has requirements
+rage - overwhelming rage:
+  $ref: RAGE
+  buffs:
+    - increase overwhelm
+rage - rapid rage:
+  $ref: RAGE
+  buffs:
+    - ten foot speed
+rage - savage rage:
+  $ref: RAGE
+  buffs:
+    - unarmed warrior
+rage - taunting rage:
+  casting time: swift
+  attack subeffects:
+    success:
+      conditions:
+        - taunted
+      duration: short fixed
+    critical success:
+      conditions:
+        - taunted
+        - severely impaired
+      duration: short fixed
+      misc: -2  # impaired only affects attacks not at you
+  trigger:
+    condition: on attack
+    duration: short
+  misc: -1 # no repeat
+rage - terrifying rage:
+  casting time: swift
+  attack subeffects:
+    success:
+      conditions:
+        - shaken
+      duration: short fixed
+    critical success:
+      conditions:
+        - frightened
+      duration: short fixed
+  trigger:
+    condition: on attack
+    duration: short
+  misc: -1 # no repeat
+rage - wary rage:
+  $ref: RAGE
+  buffs:
+    - wary rage
+
+
+# STRIKE FEATS
+strike feat - basic:
+  casting time: strike feat
+  damage: physical attack
+  range: close
+strike feat - bonus damage:  # the misc feats like chargebreaker, countering strike, etc.
+  $ref: STRIKE
+  damage: normal
+strike feat - driving assault:
+  $ref: STRIKE
+  instant effect: shove
+  misc: 1  # damage bonus to shove attempt
+
+# WILD ASPECTS
+wild aspect 2 - animal affinity:
+  $ref: FEATURE
+  buffs:
+    - skill: plus5
+    - skill: extra plus5
+wild aspect 2 - armaments of the bear:
+  $ref: FEATURE
+  buffs:
+    - natural weapon
+    - natural weapon
+wild aspect 2 - climb:
+  $ref: FEATURE
+  buffs:
+   - climb speed
+wild aspect 2 - gore:
+  $ref: FEATURE
+  buffs:
+   - natural weapon
+   - natural shove
+wild aspect 2 - lope:
+  $ref: FEATURE
+  buffs:
+   - double speed
+wild aspect 2 - senses:
+  $ref: FEATURE
+  buffs:
+   - low light vision
+   - darkvision
+wild aspect 2 - talons:
+  $ref: FEATURE
+  buffs:
+   - natural weapon
+wild aspect 2 - woodland stride:
+  $ref: FEATURE
+  buffs:
+   - woodland stride
+
+wild aspect 4 - hawk:
+  $ref: FEATURE
+  buffs:
+   - glide
+   - natural weapon
+wild aspect 4 - scent:
+  $ref: FEATURE
+  buffs:
+    - scent
+  misc: 1  # build around me (tracking)
+wild aspect 4 - shrink:
+  $ref: FEATURE
+  buffs:
+    - reduce size
+wild aspect 4 - slither:
+  $ref: FEATURE
+  buffs:
+    - climb speed
+    - natural weapon
+  misc: 1  # no hand climbing
+wild aspect 4 - totemic power:
+  $ref: FEATURE
+  buffs:
+    - attribute: plus2
+  choose effect: 1
+wild aspect 4 - totemic mind:
+  $ref: FEATURE
+  buffs:
+    - attribute: plus2
+  choose effect: 1
+
+wild aspect 6 - constrict:
+  $ref: FEATURE
+  buffs:
+    - natural weapon
+    - maneuver accuracy: one
+  misc: 1  # "build around me" ability
+wild aspect 6 - enhanced natural weapons:
+  $ref: FEATURE
+  buffs:
+    - weapon enhancement
+  misc: 1  # extra high bonus, build around me
+wild aspect 6 - venom:
+  $ref: FEATURE
+  buffs:
+    - natural weapon
+    - natural poison
+wild aspect 6 - thousand faces:
+  $ref: FEATURE
+  buffs:
+    - disguise
+  misc: 1  # narrative power
+
+wild aspect 8 - grow:
+  $ref: FEATURE
+  buffs:
+    - increase size
+  misc: 1  # build around me
+wild aspect 8 - natural grab:
+  $ref: FEATURE
+  buffs:
+    - natural grab
+    - natural weapon
+  misc: 1  # build around me
+wild aspect 8 - natural trip:
+  $ref: FEATURE
+  buffs:
+    - natural trip
+    - natural weapon
+  misc: 1  # build around me
+wild aspect 8 - wolfpack:
+  $ref: FEATURE
+  buffs:
+    - increase overwhelm
+    - increase overwhelm
+
+wild aspect 10 - swiftstrike:
+  $ref: FEATURE
+  buffs:
+    - extra attack
+  misc: -1  # natural weapon only
+wild aspect 10 - wings:
+  $ref: FEATURE
+  buffs:
+    - flight
+  # '5 round' limit offsets build around me
+wild aspect 10 - natural renewal:
+  $ref: FEATURE
+  buffs:
+    - fast healing
+  misc: 1  # narrative power of passive healing

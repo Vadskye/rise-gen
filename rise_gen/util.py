@@ -45,4 +45,8 @@ def import_yaml_file(file_name):
                         del new_thing['$ref']
                     data[key] = new_thing
 
+        # strip TEMPLATES
+        # TODO: use a config file for this
+        data.pop('TEMPLATES', None)
+
         return data

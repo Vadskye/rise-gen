@@ -14,6 +14,10 @@ aboleth:
   speeds:
     land: 10
     swim: 60
+  traits:
+    - enslave
+    - mucus cloud
+    - slime
 dummy:
   race: monster
   rise class: monster

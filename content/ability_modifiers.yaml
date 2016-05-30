@@ -224,6 +224,7 @@ casting time:
   # the casting time is somewhat offset by the double roll
   swift on attack: 2
   strike feat: 4
+  on hit: 4
 choose effect:
   true: 1
   false: 0
@@ -314,6 +315,11 @@ damage:
   # do not confuse DOT effects with battlefield effect: damage
   over time: 3
   cantrip: 1
+delay effect:  # for offensive spells only
+  round: -1
+  short: -3
+  medium: -3.5
+  long: -4
 duration:
   condition:
     round: -1
@@ -322,6 +328,7 @@ duration:
     until standard action: 1
     short fixed: 2
     medium: 3 # x10
+    disease: 3
     long: 3.5 # x6
     extreme: 4 # x12
     week: 5 # x14
@@ -344,6 +351,7 @@ duration:
     created: 4
     permanent: 6
     class feature: 5
+    passive ability: 5
   personal buff:
     end of round: -2  # for immediate/swift
     round: -2
@@ -359,6 +367,7 @@ duration:
     year: 8
     permanent: 9
     class feature: 5
+    passive ability: 5
     # activated class feature: 3
   nonpersonal buff:
     end of round: -2  # for immediate/swift
@@ -379,6 +388,7 @@ duration:
     permanent: 12
     # match cost of long duration personal-only buff
     class feature: 5
+    passive ability: 5
   noncombat buff:
     end of round: -2  # for immediate/swift
     round: -2
@@ -394,6 +404,7 @@ duration:
     year: 10
     permanent: 12
     class feature: 4
+    passive ability: 4
 expended:
   single use: -3
   five: -2 # or other values between single use and caster level

@@ -2303,3 +2303,24 @@ go away:
     - damage: normal
     - instant effect: shove
   targets: enemies
+
+
+## MONSTER ABILITIES
+
+enslave:
+  $ref: dominate person
+mucus cloud:
+  battlefield effects:
+    - fog
+  area: medium radius emanation
+  duration: passive ability
+  misc: -1  # only while underwater
+  targets: all
+slime:
+  casting time: on hit
+  attack subeffects:
+    success:
+      conditions:
+        - take double physical damage
+      duration: disease
+  delay effect: short

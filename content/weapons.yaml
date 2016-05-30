@@ -39,3 +39,7 @@ staff:
   die: d6
   encumbrance: medium
   group: blunt
+tentacle:
+  die: d8
+  encumbrance: medium
+  group: natural

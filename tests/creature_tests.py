@@ -1,6 +1,7 @@
 from nose.tools import assert_equals
 from rise_gen.creature import Creature
 from rise_gen.dice import Die, DieCollection
+import yaml
 
 def setup():
     pass
@@ -68,11 +69,19 @@ human fighter 1
     """.strip())
 
 def test_all_samples():
-    # first check PCs
+    test_strings = dict()
+    with open('tests/creature_test_strings.yaml', 'r') as test_strings_file:
+        test_strings = yaml.load(test_strings_file)
+
+    # first check pcs
     # currently missing: paladin, spellwarped
     for sample_name in 'barbarian cleric druid fighter ranger rogue sorcerer wizard'.split():
-        assert_equals(type(Creature.from_sample_creature(sample_name)), Creature)
+        pc = Creature.from_sample_creature(sample_name)
+        assert_equals(type(pc), Creature)
+        assert_equals(str(pc), test_strings[sample_name].strip())
 
     # now check monsters
     for sample_name in 'aboleth angel arkite_caster arkite_grappler arkite_monk black_bear brown_bear demogorgon dummy planetar super_bear torvid troll_mech wee_bear'.split():
-        assert_equals(type(Creature.from_sample_creature(sample_name)), Creature)
+        monster = Creature.from_sample_creature(sample_name)
+        assert_equals(type(monster), Creature)
+        assert_equals(str(monster), test_strings[sample_name].strip())

@@ -2,7 +2,7 @@
 
 from rise_gen.dice import Die
 
-KNOWN_EFFECT_TAGS = [
+POSSIBLE_EFFECT_TAGS = [
     'accuracy',
     'armor',
     'armor check penalty',
@@ -81,7 +81,7 @@ class AbilityEffect:
         effect,
     ):
         for tag in effect_tags:
-            if tag not in KNOWN_EFFECT_TAGS:
+            if tag not in POSSIBLE_EFFECT_TAGS:
                 raise Exception(
                     "Error: Unable to recognize effect tag '{}'".format(tag)
                 )
@@ -130,59 +130,45 @@ def get_ability_definitions():
         # BARBARIAN
         'damage reduction': {
             'effects': [
-                Modifier(
-                    ['damage reduction'],
-                    lambda creature, value: creature.level + value
-                ),
+                Modifier(['damage reduction'],
+                         lambda creature, value: creature.level + value),
             ],
             'prerequisite': lambda creature: creature.level >= 1
         },
         'fast movement': {
             'effects': [
-                Modifier(
-                    ['speed'],
-                    lambda creature, value: value + 10
-                ),
+                Modifier(['speed'],
+                         lambda creature, value: value + 10),
             ],
             'prerequisite': lambda creature: creature.level >= 2
         },
         'larger than life': {
             'effects': [
-                ModifierInPlace(
-                    ['weapon'],
-                    lambda creature, weapon: [weapon.dice.increase_size() for i in range(2)]
-                ),
+                ModifierInPlace(['weapon'],
+                                lambda creature, weapon: [weapon.dice.increase_size()
+                                                          for i in range(2)]),
             ],
             'prerequisite': lambda creature: creature.level >= 7
         },
         'larger than belief': {
             'effects': [
-                ModifierInPlace(
-                    ['weapon'],
-                    lambda creature, weapon: [weapon.dice.increase_size() for i in range(2)]
-                ),
+                ModifierInPlace(['weapon'],
+                                lambda creature, weapon: [weapon.dice.increase_size()
+                                                          for i in range(2)]),
             ],
             'prerequisite': lambda creature: creature.level >= 16
         },
         'rage': {
             'effects': [
-                Modifier(
-                    ['temporary hit points'],
-                    lambda creature, value: max(value, creature.willpower * 2)
-                ),
-                Modifier(
-                    ['physical damage bonus', 'fortitude', 'mental'],
-                    lambda creature, value: value + (creature.level // 5) + 2
-                ),
+                Modifier(['temporary hit points'],
+                         lambda creature, value: max(value, creature.willpower * 2)),
+                Modifier(['physical damage bonus', 'fortitude', 'mental'],
+                         lambda creature, value: value + (creature.level // 5) + 2),
                 # undo the effect of the fortitude/mental bonus on HP
-                Modifier(
-                    ['hit points'],
-                    lambda creature, value: value - (((creature.level // 5) + 2) // 2) * creature.level
-                ),
-                Modifier(
-                    ['armor defense', 'maneuver defense'],
-                    lambda creature, value: value - 2
-                ),
+                Modifier(['hit points'],
+                         lambda creature, value: value - (((creature.level // 5) + 2) // 2) * creature.level),
+                Modifier(['armor defense', 'maneuver defense'],
+                         lambda creature, value: value - 2),
             ],
             'prerequisite': lambda creature: creature.level >= 1
         },
@@ -190,28 +176,22 @@ def get_ability_definitions():
         # FIGHTER
         'greater weapon discipline': {
             'effects': [
-                Modifier(
-                    ['critical threshold'],
-                    lambda creature, value: value - 1
-                ),
+                Modifier(['critical threshold'],
+                         lambda creature, value: value - 1),
             ],
             'prerequisite': lambda creature: creature.level >= 15
         },
         'improved weapon discipline': {
             'effects': [
-                Modifier(
-                    ['critical multiplier'],
-                    lambda creature, value: value + 1
-                ),
+                Modifier(['critical multiplier'],
+                         lambda creature, value: value + 1),
             ],
             'prerequisite': lambda creature: creature.level >= 9
         },
         'weapon discipline': {
             'effects': [
-                Modifier(
-                    ['accuracy'],
-                    lambda creature, value: value + 1
-                ),
+                Modifier(['accuracy'],
+                         lambda creature, value: value + 1),
             ],
             'prerequisite': lambda creature: creature.level >= 3
         },
@@ -219,34 +199,26 @@ def get_ability_definitions():
         # RANGER
         'quarry': {
             'effects': [
-                Modifier(
-                    ['physical damage bonus'],
-                    lambda creature, value: value + (creature.level // 5) + 2
-                ),
-                Modifier(
-                    ['armor defense', 'maneuver defense', 'fortitude', 'reflex', 'mental'],
-                    lambda creature, value: value + (creature.level // 5) + 2
-                ),
+                Modifier(['physical damage bonus'],
+                         lambda creature, value: value + (creature.level // 5) + 2),
+                Modifier(['armor defense', 'maneuver defense', 'fortitude', 'reflex', 'mental'],
+                         lambda creature, value: value + (creature.level // 5) + 2),
                 # undo the hp bonus from the quarry
-                Modifier(
-                    ['hit points'],
-                    lambda creature, value: value - (((creature.level // 5) + 2) // 2) * creature.level
-                ),
+                Modifier(['hit points'],
+                         lambda creature, value: value - (((creature.level // 5) + 2) // 2) * creature.level),
             ],
         },
 
         # ROGUE
         'sneak attack': {
             'effects': [
-                ModifierInPlace(
-                    ['physical damage dice'],
-                    lambda creature, damage_dice: damage_dice.add_die(
-                        # we don't have a concept of "the first hit"
-                        # so it should be a mix of level/2 and level/4
-                        # for now use level/2 since it might be too low anyway
-                        Die(size=6, count=(creature.level + 1) // 2)
-                    )
-                ),
+                ModifierInPlace(['physical damage dice'],
+                                lambda creature, damage_dice: damage_dice.add_die(
+                                    # we don't have a concept of "the first hit"
+                                    # so it should be a mix of level/2 and level/4
+                                    # for now use level/2 since it might be too low anyway
+                                    Die(size=6, count=(creature.level + 1) // 2)
+                                )),
             ],
         },
     }
@@ -254,10 +226,8 @@ def get_ability_definitions():
     feats = {
         'deadly aim': {
             'effects': [
-                Modifier(
-                    ['physical damage bonus'],
-                    lambda creature, value: value + 2,
-                ),
+                Modifier(['physical damage bonus'],
+                         lambda creature, value: value + 2),
             ],
             'prerequisite': lambda creature: (
                 creature.perception >= 5
@@ -269,19 +239,15 @@ def get_ability_definitions():
         },
         'heartseeker': {
             'effects': [
-                Modifier(
-                    ['critical threshold'],
-                    lambda creature, value: value - 1
-                ),
+                Modifier(['critical threshold'],
+                         lambda creature, value: value - 1),
             ],
             'prerequisite': lambda creature: creature.combat_prowess >= 8
         },
         'mighty blows': {
             'effects': [
-                Modifier(
-                    ['physical damage bonus'],
-                    lambda creature, value: value + 1
-                ),
+                Modifier(['physical damage bonus'],
+                         lambda creature, value: value + 1),
             ],
             'prerequisite': lambda creature: (
                 creature.strength >= 5
@@ -290,14 +256,10 @@ def get_ability_definitions():
         },
         'power attack': {
             'effects': [
-                Modifier(
-                    ['accuracy'],
-                    lambda creature, value: value - 2
-                ),
-                Modifier(
-                    ['physical damage bonus'],
-                    lambda creature, value: value + 2
-                ),
+                Modifier(['accuracy'],
+                         lambda creature, value: value - 2),
+                Modifier(['physical damage bonus'],
+                         lambda creature, value: value + 2),
             ],
             'prerequisite': lambda creature: (
                 creature.strength >= 3
@@ -306,10 +268,8 @@ def get_ability_definitions():
         },
         'weapon finesse': {
             'effects': [
-                Modifier(
-                    ['physical damage bonus'],
-                    lambda creature, value: value + 1
-                ),
+                Modifier(['physical damage bonus'],
+                         lambda creature, value: value + 1),
             ],
             'prerequisite': lambda creature: (
                 creature.dexterity >= 3
@@ -322,86 +282,72 @@ def get_ability_definitions():
     misc = {
         'size modifiers': {
             'effects': [
-                Modifier(
-                    ['accuracy', 'armor defense', 'reflex'],
-                    lambda creature, value: (
-                        value + {
-                            'fine': 8,
-                            'diminuitive': 4,
-                            'tiny': 2,
-                            'small': 1,
-                            'medium': 0,
-                            'large': -1,
-                            'huge': -2,
-                            'gargantuan': -4,
-                            'colossal': -8,
-                        }[creature.size]
-                    ),
-                ),
-                Modifier(
-                    ['maneuver defense', 'maneuver accuracy'],
-                    lambda creature, value: (
-                        value + {
-                            'fine': -16,
-                            'diminuitive': -12,
-                            'tiny': -8,
-                            'small': -4,
-                            'medium': 0,
-                            'large': 4,
-                            'huge': 8,
-                            'gargantuan': 12,
-                            'colossal': 16,
-                        }[creature.size]
-                    ),
-                ),
-                ModifierInPlace(
-                    ['physical damage dice'],
-                    lambda creature, damage_dice: damage_dice.resize_dice(
-                        {
-                            'fine': -4,
-                            'diminuitive': -3,
-                            'tiny': -2,
-                            'small': -1,
-                            'medium': 0,
-                            'large': 2,
-                            'huge': 4,
-                            'gargantuan': 6,
-                            'colossal': 8,
-                        }[creature.size]
-                    )
-                ),
+                Modifier(['accuracy', 'armor defense', 'reflex'],
+                         lambda creature, value: (
+                             value + {
+                                 'fine': 8,
+                                 'diminuitive': 4,
+                                 'tiny': 2,
+                                 'small': 1,
+                                 'medium': 0,
+                                 'large': -1,
+                                 'huge': -2,
+                                 'gargantuan': -4,
+                                 'colossal': -8,
+                             }[creature.size]
+                         )),
+                Modifier(['maneuver defense', 'maneuver accuracy'],
+                         lambda creature, value: (
+                             value + {
+                                 'fine': -16,
+                                 'diminuitive': -12,
+                                 'tiny': -8,
+                                 'small': -4,
+                                 'medium': 0,
+                                 'large': 4,
+                                 'huge': 8,
+                                 'gargantuan': 12,
+                                 'colossal': 16,
+                             }[creature.size]
+                         )),
+                ModifierInPlace(['physical damage dice'],
+                                lambda creature, damage_dice: damage_dice.resize_dice(
+                                    {
+                                        'fine': -4,
+                                        'diminuitive': -3,
+                                        'tiny': -2,
+                                        'small': -1,
+                                        'medium': 0,
+                                        'large': 2,
+                                        'huge': 4,
+                                        'gargantuan': 6,
+                                        'colossal': 8,
+                                    }[creature.size]
+                                )),
             ],
         },
         'extra attack': {
             'effects': [
-                Modifier(
-                    ['attack count'],
-                    lambda creature, value: value + 1
-                ),
+                Modifier(['attack count'],
+                         lambda creature, value: value + 1),
             ],
         },
         'accuracy': {
             'effects': [
-                Modifier(
-                    ['accuracy'],
-                    lambda creature, value: value + 1
-                ),
+                Modifier(['accuracy'],
+                         lambda creature, value: value + 1),
             ],
         },
         'damage bonus': {
             'effects': [
-                Modifier(
-                    ['physical damage bonus'],
-                    lambda creature, value: value + 1
-                ),
+                Modifier(['physical damage bonus'],
+                         lambda creature, value: value + 1),
             ],
         },
         'critical multiplier': {
             'effects': [
-                Modifier(
-                    ['critical multiplier'],
-                    lambda creature, value: value + 1
-                ),
+                Modifier(['critical multiplier'],
+                         lambda creature, value: value + 1),
             ],
         },
     }
@@ -409,43 +355,29 @@ def get_ability_definitions():
     templates = {
         'martial': {
             'effects': [
-                Modifier(
-                    ['combat prowess'],
-                    lambda creature, value: creature.level + 2
-                ),
+                Modifier(['combat prowess'],
+                         lambda creature, value: creature.level + 2),
             ],
         },
         'summoned monster': {
             'effects': [
-                Modifier(
-                    ['combat prowess'],
-                    lambda creature, value: creature.level
-                ),
-                Modifier(
-                    ['armor defense', 'fortitude',
-                     'reflex', 'mental', 'maneuver defense'],
-                    lambda creature, value: creature.level + 10
-                ),
+                Modifier(['combat prowess'],
+                         lambda creature, value: creature.level),
+                Modifier(['armor defense', 'fortitude',
+                          'reflex', 'mental', 'maneuver defense'],
+                         lambda creature, value: creature.level + 10),
             ],
         },
         'training dummy': {
             'effects': [
-                Modifier(
-                    ['hit points'],
-                    lambda creature, value: 1000
-                ),
-                Modifier(
-                    ['armor defense'],
-                    lambda creature, value: creature.level + 16
-                ),
-                Modifier(
-                    ['fortitude', 'mental', 'maneuver defense'],
-                    lambda creature, value: creature.level + 14
-                ),
-                Modifier(
-                    ['reflex'],
-                    lambda creature, value: creature.level + 10
-                ),
+                Modifier(['hit points'],
+                         lambda creature, value: 1000),
+                Modifier(['armor defense'],
+                         lambda creature, value: creature.level + 16),
+                Modifier(['fortitude', 'mental', 'maneuver defense'],
+                         lambda creature, value: creature.level + 14),
+                Modifier(['reflex'],
+                         lambda creature, value: creature.level + 10),
             ],
         },
     }
@@ -453,81 +385,61 @@ def get_ability_definitions():
     traits = {
         'arcanite mech': {
             'effects': [
-                Modifier(
-                    ['fortitude', 'mental'],
-                    lambda creature, value: value + 4
-                ),
-                Modifier(
-                    ['strength', 'constitution'],
-                    lambda creature, value: value + 2
-                ),
-                Modifier(
-                    ['damage reduction'],
-                    lambda creature, value: value + creature.level
-                ),
+                Modifier(['fortitude', 'mental'],
+                         lambda creature, value: value + 4),
+                Modifier(['strength', 'constitution'],
+                         lambda creature, value: value + 2),
+                Modifier(['damage reduction'],
+                         lambda creature, value: value + creature.level),
                 # should drain HP
                 # for now, only trolls wear it, so ignore that
             ],
         },
         'arcanite sigil - armor': {
             'effects': [
-                Modifier(
-                    ['armor defense'],
-                    lambda creature, value: value + 3
-                ),
+                Modifier(['armor defense'],
+                         lambda creature, value: value + 3),
             ],
         },
         'arcanite sigil - flaming fists': {
             'effects': [
-                ModifierInPlace(
-                    ['physical damage dice'],
-                    lambda creature, damage_dice: damage_dice.add_die(
-                        Die(size=6, count=creature.level // 2)
-                    )
-                ),
+                ModifierInPlace(['physical damage dice'],
+                                lambda creature, damage_dice: damage_dice.add_die(
+                                    Die(size=6, count=creature.level // 2)
+                                )),
             ],
         },
         'arcanite sigil - mind control': {
             'effects': [
-                Modifier(
-                    ['mental'],
-                    lambda creature, value: value + 5
-                ),
+                Modifier(['mental'],
+                         lambda creature, value: value + 5),
             ],
         },
         'armor discipline (agility)': {
             'effects': [
-                Modifier(
-                    ['armor check penalty'],
-                    lambda creature, value: max(0, value - 2)
-                ),
-                Modifier(
-                    # technically, this should be implemented by decreasing the
-                    # armor encumbrance
-                    # but that also should go with increasing the category of
-                    # armor used, since you would upgrade armor categories
-                    # this can be approximated by simply increasing armor
-                    # defense
-                    ['armor defense'],
-                    lambda creature, value: value + (
-                        4 if creature.level >= 13 else
-                        (2 if creature.level >= 7 else value)
-                    )
-                ),
+                Modifier(['armor check penalty'],
+                         lambda creature, value: max(0, value - 2)),
+                Modifier(['armor defense'],
+                         # technically, this should be implemented by decreasing the
+                         # armor encumbrance
+                         # but that also should go with increasing the category of
+                         # armor used, since you would upgrade armor categories
+                         # this can be approximated by simply increasing armor
+                         # defense
+                         lambda creature, value: value + (
+                             4 if creature.level >= 13 else
+                             (2 if creature.level >= 7 else value)
+                         )),
             ],
         },
         'armor discipline (resilience)': {
             'effects': [
-                Modifier(
-                    ['armor defense'],
-                    lambda creature, value: value + 1
-                ),
-                Modifier(
-                    ['damage reduction'],
-                    lambda creature, value: value + (
-                        creature.level if creature.level >= 7 else 0
-                    )
-                ),
+                Modifier(['armor defense'],
+                         lambda creature, value: value + 1),
+                Modifier(['damage reduction'],
+                         lambda creature, value: value + (
+                             creature.level if creature.level >= 7 else 0
+                         )),
             ],
         },
         'fast healing': {
@@ -543,27 +455,26 @@ def get_ability_definitions():
         },
         'magic items': {
             'effects': [
-                Modifier(
-                    ['physical damage bonus'],
-                    lambda creature, value: value + creature.level // 3
-                ),
-                Modifier(
-                    ['temporary hit points'],
-                    lambda creature, value: max(
-                        value,
-                        (creature.level // 3) * creature.level
-                    )
-                ),
+                Modifier(['physical damage bonus'],
+                         lambda creature, value: value + creature.level // 3),
+                Modifier(['temporary hit points'],
+                         lambda creature, value: max(
+                             value,
+                             (creature.level // 3) * creature.level
+                         )),
             ],
         },
         'tough hide': {
             'effects': [
-                Modifier(
-                    ['armor defense'],
-                    lambda creature, value: value + 2
-                ),
+                Modifier(['armor defense'],
+                         lambda creature, value: value + 2),
             ],
         },
+
+        # these traits have no effects that can be calculated for now
+        'enslave': {'effects': []},
+        'mucus cloud': {'effects': []},
+        'slime': {'effects': []},
     }
 
     all_abilities = dict()

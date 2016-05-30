@@ -38,6 +38,7 @@ class CreatureStatistics(object):
             attack_type=None,
             special_attack_name=None,
             speeds=None,
+            abilities=None,  # todo: handle these
     ):
         """Create a creature with all necessary statistics, attributes, etc.
 
@@ -620,7 +621,7 @@ class Creature(CreatureStatistics):
             name,
             **kwargs
     ):
-        super(Creature, self).__init__(name, **kwargs)
+        super().__init__(name, **kwargs)
 
         self.refresh_combat()
 
