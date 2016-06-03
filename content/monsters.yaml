@@ -39,14 +39,17 @@ allip:
   weapons:
     - touch
   attributes:
-    strength: ~
+    strength: 0
     dexterity: secondary
-    constitution: ~
+    constitution: 0
     willpower: primary
   traits:
+    # TODO: add traits for "no strength" and "no con"
     - babble
     - incorporeal
-angel:
+    - no strength
+    - no constitution
+angel - astral deva:
   race: monster
   rise class: outsider
   level: 8

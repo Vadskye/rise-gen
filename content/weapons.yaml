@@ -43,3 +43,7 @@ tentacle:
   die: d8
   encumbrance: medium
   group: natural
+touch: # TODO: make this hit Reflex defense
+  die: d3
+  encumbrance: light
+  group: natural

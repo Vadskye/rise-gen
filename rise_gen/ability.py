@@ -480,6 +480,8 @@ def get_ability_definitions():
         'enslave': {},
         'incorporeal': {'power': 'extreme'},
         'mucus cloud': {},
+        'no strength': {'power': 'none'},
+        'no constitution': {'power': 'none'},
         'slime': {},
     }
 

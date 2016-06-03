@@ -21,6 +21,7 @@ size:
 spells: 1  # for now, each spell costs 1 level
 swim speed: 0.5
 traits:
+  none: 0
   weak: 0.5
   average: 1
   strong: 2

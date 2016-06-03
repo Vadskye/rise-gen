@@ -100,6 +100,8 @@ class CreatureStatistics(object):
 
         if isinstance(ability, str):
             ability = Ability.by_name(ability)
+        elif not isinstance(ability, Ability):
+            raise Exception("Unable to recognize type of ability '{}'".format(ability))
         self.abilities.append(ability)
         self.clear_cache()
 
