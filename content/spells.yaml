@@ -277,6 +277,20 @@ charm person:
         - charmed
       duration: permanent
   breakable: combat
+charm person persistent:
+  components: noverbal
+  limit affected: creature type
+  range: close
+  attack subeffects:
+    success:
+      conditions:
+        - charmed
+      duration: month
+    critical success:
+      conditions:
+        - charmed
+      duration: permanent
+  breakable: combat
 charm person mass:
   $ref: charm person
   targets: five
@@ -335,8 +349,19 @@ cone of cold:
       duration: brief
   targets: all
 cone of cold greater:
-  $ref: cone of cold
-  area: large cone burst
+  area: medium cone burst
+  attack subeffects:
+    effect:
+      subeffects:
+        - damage: normal
+        - conditions:
+            - half speed
+          duration: brief
+    success:
+      conditions:
+        - immobilized
+      duration: brief
+  targets: all
 confusion:
   limit affected: mind affecting
   attack subeffects:
@@ -347,6 +372,19 @@ confusion:
     success:
       conditions:
         - disoriented
+      duration: brief
+  range: close
+  targets: five
+confusion - certain:
+  limit affected: mind affecting
+  attack subeffects:
+    effect:
+      conditions:
+        - disoriented
+      duration: brief
+    critical success:
+      conditions:
+        - confused
       duration: brief
   range: close
   targets: five
@@ -597,21 +635,22 @@ divine favor:
   duration: long
   range: personal
 dominate person:
-  range: close
+  range: medium
   attack subeffects:
     critical success:
       conditions:
         - dominated
-      duration: short fixed
+      duration: brief
     success:
       conditions:
         - confused
-      duration: short fixed
+      duration: brief
     failure:
       conditions:
         - staggered
-      duration: short fixed
+      duration: brief
   limit affected: creature type
+  components: noverbal
 dominate monster:
   $ref: dominate person
   range: long
@@ -657,6 +696,17 @@ earthspike:
   range: medium
   spell resistance: false
   damage: normal
+  limit affected: near ground
+earthspike - impaling:
+  range: medium
+  spell resistance: false
+  attack subeffects:
+    effect:
+      damage: normal
+    success:
+      conditions:
+        - immobilized
+      duration: brief
   limit affected: near ground
 earthspike mass:
   $ref: earthspike
@@ -737,9 +787,32 @@ eyebite:
       conditions:
         - blinded
       duration: brief
+eyebite - earbite:
+  range: medium
+  attack subeffects:
+    effect:
+      damage: normal
+    success:
+      conditions:
+        - partially blinded
+        - deafened
+      duration: brief
+    critical success:
+      conditions:
+        - blinded
+        - deafened
+      duration: brief
 faerie fire:
   conditions:
     - faerie fire
+  duration: brief
+  area: small radius burst
+  range: medium
+  targets: all
+faerie fire - blinding:
+  conditions:
+    - faerie fire
+    - partially blinded
   duration: brief
   area: small radius burst
   range: medium
@@ -838,6 +911,17 @@ fireball:
   area: small radius burst
   damage: normal
   targets: all
+fireball - immolating:
+  range: medium
+  area: small radius burst
+  targets: all
+  attack subeffects:
+    effect:
+      damage: normal
+    success:
+      conditions:
+        - ignited
+      duration: short fixed
 flame blade:
   buffs:
     - flame blade
@@ -1236,6 +1320,16 @@ lightning bolt:
   damage: normal
   area: large line burst
   targets: all
+lightning bolt - staggering:
+  area: large line burst
+  targets: all
+  attack subeffects:
+    effect:
+      damage: normal
+    success:
+      conditions:
+        - staggered
+      duration: brief
 locate creature:
   knowledge: creature location
   range: extreme
