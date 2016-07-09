@@ -42,8 +42,9 @@ charm monster: 5
 charm monster mass: 8
 charm person: 3
 charm person mass: 6
-cloak of chaos: 8
-cloak of single chaos: 5
+charm person persistent: 5.5
+cloak of chaos: 9
+cloak of single chaos: 6
 cloud of bats: 2
 color spray: 1
 command: 2
@@ -52,6 +53,7 @@ cone of cold: 2
 cone of cold greater: 5
 cone of nauseated: 13
 confusion: 2
+confusion - certain: 5
 create ballista: 3
 cripple: 4
 cure light wounds: 1
@@ -83,13 +85,14 @@ dispel magic greater: 7
 displacement: 5
 divine favor: 3
 divine might: 5
-dominate monster: 9
+dominate monster: 8
 dominate person: 6
 drain life: 3
 earth glide: 4
 earthquake: 9
 earths pull: 4
 earthspike: 1
+earthspike - impaling: 4
 earthspike mass: 4
 energy conversion: 6
 enervation: 4
@@ -104,7 +107,9 @@ ethereal jaunt: 5
 etherealness: 9
 excrete slime: 1
 eyebite: 2
+eyebite - earbite: 5
 faerie fire: 1
+faerie fire - blinding: 5
 fear: 2
 fear mass: 6
 feather fall: 0.5
@@ -115,6 +120,7 @@ fire shield: 4
 fire shield long: 5
 fire storm: 8
 fireball: 3
+fireball - immolating: 5
 flame blade: 1
 flame strike: 5
 fly: 4
@@ -153,7 +159,7 @@ hold monster: 3
 hold monster mass: 7
 hold person: 1
 hold person mass: 5
-holy aura: 8
+holy aura: 9
 holy smite: 2
 holy word: 5
 horrid wilting: 9
@@ -173,11 +179,12 @@ invisibility greater: 6
 invisibility mass: 6.5
 invulnerability: 10
 invulnerability lesser: 4
-iron body: 8
+iron body: 7
 irresistible dance: 9
 levitate: 3.5
 lifeseeking missile: 3.0
 lightning bolt: 3
+lightning bolt - staggering: 6
 living missile: 5
 locate creature: 3
 locate entity: 4
@@ -196,7 +203,7 @@ missile storm: 4
 missile storm greater: 8
 moment of prescience: 3
 mucus cloud: 5
-nondetection: 4
+nondetection: 5
 orders wrath: 2
 phantasmal killer: 2
 phantasmal killer mass: 6
