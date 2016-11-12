@@ -10,7 +10,7 @@ def teardown():
     pass
 
 def test_fighter_properties():
-    c = Creature.from_sample_creature('fighter')
+    c = Creature.from_sample_creature('fighter', level=1)
     correct_properties = {
         'accuracy': 8,
         'armor_check_penalty': 3,
@@ -58,7 +58,7 @@ def test_fighter_properties_at_higher_level():
         assert_equals(getattr(c, key), correct_properties[key])
 
 def test_fighter_string():
-    c = Creature.from_sample_creature('fighter')
+    c = Creature.from_sample_creature('fighter', level=1)
     assert_equals(str(c), """
 human fighter 1
 [HP] 10; [Defs] AD 21, MD 14; Fort 20, Ref 10, Ment 13
