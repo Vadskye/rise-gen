@@ -198,17 +198,12 @@ def calculate_attribute_progression(progression, level):
         <number>: the number
     """
 
-    try:
-        return {
-            level + 3,
-            'primary': level + 6,
-            'secondary': level + 2,
-            'tertiary': level // 2 + 2,
-            'none': 0,
-            None: level // 5,
-        }[progression]
-    except KeyError:
-        return int(progression)
-        # raise Exception(
-        #     "Unrecognized attribute progression '{0}'".format(progression)
-        # )
+    # key is by starting value
+    return {
+        None: 0,
+        1: level // 4 + 1,
+        2: level // 2 + 2,
+        3: (level * 3) // 4 + 3,
+        4: level + 3,
+        5: level + 4
+    }.get(progression, progression) # if not in here, just use the given value

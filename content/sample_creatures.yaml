@@ -17,8 +17,8 @@ barbarian: &BARBARIAN
   race: human
   rise_class: barbarian
   attributes:
-    strength: full
-    constitution: full
+    strength: 4
+    constitution: 4
   feats:
     - mighty blows
   traits:
@@ -34,8 +34,8 @@ barbarian_full_plate:
 barbarian_ranged:
   <<: *BARBARIAN
   attributes:
-    constitution: full
-    perception: full
+    constitution: 4
+    perception: 4
   weapons:
     - longbow
   feats:
@@ -49,8 +49,8 @@ cleric: &CLERIC
   race: human
   rise_class: cleric
   attributes:
-    strength: full
-    constitution: full
+    strength: 4
+    constitution: 4
   feats:
     - mighty blows
   traits:
@@ -64,8 +64,8 @@ druid: &DRUID
   race: human
   rise_class: druid
   attributes:
-    strength: full
-    constitution: full
+    strength: 4
+    constitution: 4
   feats:
     - mighty blows
   traits:
@@ -90,8 +90,8 @@ fighter: &FIGHTER
   race: human
   rise_class: fighter
   attributes:
-    strength: full
-    constitution: full
+    strength: 4
+    constitution: 4
   feats:
     - mighty blows
   traits:
@@ -109,8 +109,8 @@ fighter_halfling:
 fighter_dex: &FIGHTER_DEX
   <<: *FIGHTER
   attributes:
-    strength: full
-    dexterity: full
+    strength: 4
+    dexterity: 4
   armor: studded leather
   feats:
     - dodge
@@ -129,8 +129,8 @@ ranger: &RANGER
   race: human
   rise_class: ranger
   attributes:
-    strength: full
-    constitution: full
+    strength: 4
+    constitution: 4
   feats:
     - mighty blows
   traits:
@@ -138,8 +138,8 @@ ranger: &RANGER
 ranger_dex: &RANGER_DEX
   <<: *RANGER
   attributes:
-    strength: full
-    dexterity: full
+    strength: 4
+    dexterity: 4
   armor: studded leather
   feats:
     - dodge
@@ -152,15 +152,15 @@ rogue: &ROGUE
   race: human
   rise_class: rogue
   attributes:
-    dexterity: full
-    intelligence: full
+    dexterity: 4
+    intelligence: 4
   traits:
     - magic items
 rogue_str:
   <<: *ROGUE
   attributes:
-    strength: full
-    dexterity: full
+    strength: 4
+    dexterity: 4
 sorcerer: &SORCERER
   <<: *MAGE_EQUIPMENT
   race: human
@@ -168,8 +168,8 @@ sorcerer: &SORCERER
   attack_type: spell
   special_attack_name: inflict wounds
   attributes:
-    constitution: full
-    willpower: full
+    constitution: 4
+    willpower: 4
   traits:
     - magic items
 warrior: &WARRIOR
@@ -177,8 +177,8 @@ warrior: &WARRIOR
   race: human
   rise_class: warrior
   attributes:
-    strength: full
-    constitution: full
+    strength: 4
+    constitution: 4
   feats:
     - mighty blows
   traits:
@@ -186,9 +186,9 @@ warrior: &WARRIOR
 warrior_dual:
   <<: *WARRIOR
   attributes:
-    strength: full
-    dexterity: 6  # to get 2wf
-    constitution: full
+    strength: 4
+    dexterity: 2 # to get 2wf
+    constitution: 4
   feats:
     - two weapon fighting
   weapons:
@@ -205,13 +205,13 @@ warrior_heavy:
 wenley:
   <<: *WARRIOR
   attributes:
-    strength: full
-    willpower: full
+    strength: 4
+    willpower: 4
 warrior_dex:
   <<: *WARRIOR
   attributes:
-    dexterity: full
-    constitution: full
+    dexterity: 4
+    constitution: 4
   armor: studded leather
   weapons:
     - short sword
@@ -223,8 +223,8 @@ warrior_dex:
 warrior_str_dex:
   <<: *WARRIOR
   attributes:
-    strength: full
-    dexterity: full
+    strength: 4
+    dexterity: 4
   armor: studded leather
   feats:
     - dodge
@@ -235,8 +235,8 @@ warrior_str_dex:
 warrior_int:
   <<: *WARRIOR
   attributes:
-    strength: full
-    intelligence: full
+    strength: 4
+    intelligence: 4
   feats:
     - mighty blows
   traits:
@@ -248,8 +248,8 @@ wizard:
   attack_type: spell
   special_attack_name: inflict wounds
   attributes:
-    constitution: full
-    intelligence: full
+    constitution: 4
+    intelligence: 4
   traits:
     - magic items
 # special stuff!
@@ -277,8 +277,8 @@ assassin:
     - dual short swords
   armor: studded leather
   attributes:
-    dexterity: full
-    intelligence: full
+    dexterity: 4
+    intelligence: 4
   feats:
     - dodge
     - weapon finesse
