@@ -1,4 +1,4 @@
-ablative shield: 1
+ablative shield: 2
 acid arrow: 3
 acid arrow greater: 6
 acid fog: 6
@@ -26,7 +26,7 @@ avatar of wind: 7
 aversion: 3
 bane: 1
 bane mass: 4
-barkskin: 1
+barkskin: 2
 black tentacles: 5
 blade barrier: 4
 bladestorm: 8
@@ -189,7 +189,7 @@ immolation: 7
 implosion: 9
 imprisonment: 9
 inertial shield: 2
-inertial shield mass: 5
+inertial shield mass: 6
 inflict critical wounds: 3
 inflict critical wounds mass: 6
 inflict light wounds: 1
@@ -197,8 +197,8 @@ inflict light wounds mass: 4
 invisibility: 3
 invisibility greater: 6
 invisibility mass: 6.5
-invulnerability: 3
-invulnerability - spellshield: 8
+invulnerability: 4
+invulnerability - spellshield: 9
 irresistible dance: 9
 levitate: 3.5
 lifebound: 8
@@ -263,7 +263,7 @@ regeneration alt: 1
 regeneration mass: 5
 repulsion: 5
 resilient sphere: 5
-resist energy: 0
+resist energy: 1
 resist magic: 3
 restoration: 1
 revelation of destruction: 6
@@ -352,3 +352,4 @@ web: 5
 windstrike: 2
 windstrike greater: 5
 zephyr blade: 2
+

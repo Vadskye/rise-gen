@@ -2,6 +2,7 @@ area: # has special handling with 'knowledge' abilities
   cone:
     medium: 2
     large: 5
+    detection: 1  # standard 50' detection cone is cheap (SR offset)
   cylinder:
     small: 2
     medium: 4
@@ -19,6 +20,7 @@ area: # has special handling with 'knowledge' abilities
     huge: 7 # 100' radius
     gargantuan: 8 # 200' radius
     colossal: 9 # 500' radius
+    mile: 10
   wall:
     medium: 2
     large: 3
@@ -26,7 +28,7 @@ area: # has special handling with 'knowledge' abilities
 # different area types have special modifiers
 area type:
   burst: 0
-  emanation: 0
+  emanation: -1
   limit: 0
   zone: -2
 battlefield effects:
@@ -36,6 +38,7 @@ battlefield effects:
   difficult terrain: 1
   fog: 1
   impassable: 6 # for walls
+  light: 1
   prismatic: 5
   underwater penalties: 3
   underwater: 5
@@ -73,22 +76,38 @@ buffs:
     plus2: 5
     plus4: 8
   alter weapon: 1
-  aqueous blade: 4
-  # make sure these doesn't stack well with other crit range bonuses
+  amorphous: 5
+  attack special defense - half: 5
+  attack special defense: 8
+  blindsense: 3
+  blindsight: 6
   climb speed: 2
   cover miss physical: 4
+  # make sure these don't stack well with other crit range bonuses
   critical multiplier: 4
   critical range: 4
   critical immunity: 1
   darkvision: 1
+  damage immunity:
+    single fixed: 2
+    single choice: 5
   damage reduction:
     energy all: 3
     energy single: 1
-    physical half: 2
+    physical half: 1
     physical: 4
-    spell: 3
-    alignment: 4
+    single: 1
+    spell: 2
+    alignment: 3
     all: 5
+  double dr:
+    energy all: 5
+    energy single: 3
+    physical: 7
+    single: 5
+    spell: 6
+    alignment: 7
+    all: 8
   deal half damage to allies: 3  # affects all of target's abilities
   deal no damage to allies: 6  # affects all of target's abilities
   defense:  # for class features, not spells!
@@ -97,12 +116,14 @@ buffs:
   delay damage: 5
   disguise: 3
   double speed: 3
+  finesse weapon: 1
   quadruple speed: 6
   earth glide: 7
+  earthen blade: 1
   ethereal: 9
   extra attack: 8
   extra attack with penalty: 4 # at -5 attack bonus
-  fast healing: 6
+  fast healing: 5
   feat:  # the cost depends on the minimum level the feat could be gained
     level1: 2
     level5: 4
@@ -125,20 +146,20 @@ buffs:
   invisible: 10
   ignore concealment: 2 # but not total concealment
   ignore damage reduction: 3  # equal to spellpower
-  ignore hardness: 1  # equal to spellpower
+  ignore hardness: 2  # equal to half spellpower
   ignore threatened terrain: 1
   immune:
-    compulsion: 2
-    construct: 9
+    compulsion: 1
+    construct: 8
+    critical damage: 12  # it's immortality...
     critical hits: 2
     death: 1
-    delusion: 2
+    delusion: 1
     falling damage: 1
     fear: 1
     grapple: 2
-    mind: 10
+    mind: 6
     movement effects: 1
-    negative energy: 2
     poison: 2
     regeneration: 5
     unaware: 3
@@ -147,7 +168,9 @@ buffs:
     all: 3
     defensive: 2
     physical: 2
+    offensive: 2
   legend point regeneration:
+    round: 5
     short: 2
     medium: 1
     # any longer delay is pointless
@@ -156,8 +179,8 @@ buffs:
   low light vision: 1
   mage armor: 2 # a bit low, but mage armor is special
   maneuver accuracy: # plus5
-    all: 5  # plus5, all maneuvers
-    one: 3
+    all: 4  # plus5, all maneuvers
+    one: 2
   maneuver defense: 3  # plus5
   move through foes: 2
   natural grab: 4
@@ -165,6 +188,7 @@ buffs:
   natural shove: 2
   natural trip: 4
   natural weapon: 1
+  nondetection: 2
   radiate light: 0
   rage bonus plus2: 8
   ranged melee weapon:
@@ -173,6 +197,10 @@ buffs:
     long: 4
   reduce overwhelm:
     by five: 5
+  reduce encumbrance:
+    2: 2
+    4: 3
+    6: 4
   reduce size: 4
   reroll random effects: 3
   retributive damage:
@@ -185,6 +213,7 @@ buffs:
   see invisibility: 3
   shadow duplicate: 8
   share pain: 3
+  share pain selective: 7
   shield of faith: 3
   skill:
     class skills: 1  # up to two class skills
@@ -193,13 +222,15 @@ buffs:
     extra plus10: 1
     mastery: 1  # roll twice
     skill point: 1  # only for class features, obviously
+    plus2 attribute: 2  # all skills from an attribute
     plus5: 2
     plus10: 5
+  spellsight: 6  # worse than blindsight, but spell info balances
   swim speed: 1
-  spell resistance limited: 2
+  spell resistance limited: 3
   spell resistance: 5
   telepathy: 6
-  temporary hp: 3
+  temporary hp: 3  # lower than dr, but no stacking and smaller total "healing"
   ten foot speed: 2
   time stop: 14
   tremorsense: 3  # 50' range
@@ -213,18 +244,20 @@ buffs:
   water speaking: 1
   water walk: 2
   weapon enhancement: 3  # to be level-appropriate
+  weapon proficiency: 0
   weapon reach: 2
+  weapon reach - ten: 4
   win initiative: 6
   woodland stride: 1
 casting time:
   immediate: 4
   personal move: 2 # only very few spells should be move - stuff like teleportation
+  move: 2
   standard: 0
   swift: 4
   # the casting time is somewhat offset by the double roll
-  swift on attack: 2
   strike feat: 4
-  on hit: 4
+  on hit: 3
 choose effect:
   true: 1
   false: 0
@@ -245,6 +278,7 @@ conditions:
   sickened: 1
   # lose ability to take less important actions
   # or low probability of losing important actions
+  taunted: 2  # like impaired, but weaker
   crouching: 3
   deafened: 3
   die from critical: 3 # die from taking critical damage at 0 HP
@@ -253,11 +287,11 @@ conditions:
   quarter speed: 3
   ignited: 3 # implied removal mechanics
   impaired: 3
-  no zero threshold: 3
   reduce damage reduction: 3  # by spellpower
-  shaken: 3
   silenced: 3
+  target reflex: 4  # attacks target lower of armor and reflex
   partially blinded: 4 # +1 for removing special vision
+  no zero threshold: 4
   # lose ability to take a subset of "real" actions
   dazed: 6
   die at zero: 6
@@ -268,7 +302,6 @@ conditions:
   immobilized: 6
   slowed: 6
   staggered: 6
-  taunted: 6
   # significant reduction in ability to act
   # but can still try to do things normally, mostly
   aversion: 8 # conditional severe impairment, but often better
@@ -300,18 +333,13 @@ conditions:
   asleep: 18 # if can be woken, use "breakable"
   dominated: 18
 damage:
-  critical overbleed:
-    10: 4
-    5: 5
-    2: 6
-    full: 7
+  critical overbleed: 5
   double: 5 # only for use with critical effects
   # "double" damage should STACK with "normal" damage; the total cost is 8
   physical attack: 1
-  fast healing: 5
   healing: 3
   normal: 3
-  kill at zero: 8
+  kill at zero: 7
   # do not confuse DOT effects with battlefield effect: damage
   over time: 3
   cantrip: 1
@@ -335,7 +363,7 @@ duration:
     month: 5.5 # x4
     year: 6 # x12
     created: 6
-    permanent: 8 # x???
+    permanent: 7 # x???
   battlefield effect:
     round: -3
     concentration: -2
@@ -349,8 +377,8 @@ duration:
     month: 3.5
     year: 4
     created: 4
-    permanent: 6
-    class feature: 5
+    permanent: 5
+    class feature: 4
     passive ability: 5
   personal buff:
     end of round: -2  # for immediate/swift
@@ -362,11 +390,12 @@ duration:
     medium: 3
     long: 4
     extreme: 5
-    week: 7
-    month: 7.5
-    year: 8
-    permanent: 9
-    class feature: 5
+    # rituals only
+    week: 6
+    month: 6.5
+    year: 7
+    permanent: 8
+    class feature: 4
     passive ability: 5
     # activated class feature: 3
   nonpersonal buff:
@@ -385,10 +414,12 @@ duration:
     week: 9
     month: 9.5
     year: 10
-    permanent: 12
+    permanent: 11
     # match cost of long duration personal-only buff
-    class feature: 5
+    class feature: 4
     passive ability: 5
+    # class features where you can only have one of multiple choices
+    class feature choice: 3
   noncombat buff:
     end of round: -2  # for immediate/swift
     round: -2
@@ -398,17 +429,26 @@ duration:
     personal long: 1
     medium: 3
     long: 4
-    extreme: 6
-    week: 9
-    month: 9.5
-    year: 10
-    permanent: 12
-    class feature: 4
-    passive ability: 4
+    extreme: 5
+    # rituals only
+    week: 6
+    month: 6.5
+    year: 7
+    permanent: 8
+    class feature: 3
+    passive ability: 3
 expended:
   single use: -3
   five: -2 # or other values between single use and caster level
   caster level: -1
+healing:
+  normal: 3
+  fast healing: 5
+  critical overbleed:
+    10: 4
+    5: 5
+    2: 6
+    full: 8
 instant effect:
   banishment: 14
   critical damage: 8 # one critical damage
@@ -417,17 +457,19 @@ instant effect:
   negative levels: 7 # one negative level per two spell levels
   full negative levels: 14 # one negative level per spell level
   maneuver: 3 # +spellpower
+  resurrect: 9  # recently deceased only, for world continuity
   nothing: 0
   shove: 1 # +spellpower; one of the weaker maneuvers
   prismatic: 5
   prone: 2
-  remove heal conditions: 3
+  remove heal conditions: 4
+  remove physical conditions: 3
 knowledge:
   alignment: 3
   creature or object location: 4
   creature location: 3
   object location: 2
-  lies: 5
+  lies: 4
   thoughts: 8
   vulnerabilities: 1
 limit affected:
@@ -435,6 +477,7 @@ limit affected:
     alignment: -2
     creature type: -2
     language: -2
+    willing: -2
     max size: -1
     mind affecting: -1
     nonalignment: -1
@@ -467,6 +510,24 @@ range:
     medium: 1.5
     long: 2
     extreme: 2.5
+repeatable:
+  frequency:
+    at will: 1
+    short: 0
+  duration:
+    short fixed: 0
+    short: 0
+    medium: 1
+    long: 2
+    extreme: 3
+    class feature: 3
+  immediate: # takes effect immediately, in addition to later repeats
+    true: 0  # not prebuffing makes this not significantly more powerful
+      # because you're using a combat action for a lower-level effect
+    false: 0
+retry failure:
+  true: 1
+  false: 0
 shadow: # subtle for spells that would normally have visual cues
   true: 1
   false: 0
@@ -499,9 +560,12 @@ teleport:
   type:
     line of effect: 2
     unrestricted: 5
+  willing:  # forced movement is significantly better on foes
+    true: 0
+    false: 2
 trigger:
   condition:
-    battlefield effect: 2 # the effect triggers every round in the area, like a battlefield effect
+    battlefield effect: 4 # the effect triggers every round in the area, like a battlefield effect
     every round: 4 # requires duration, assumes effects don't stack
     every round stacking: 6 # requires duration
     damage every round: 2 # cost shouldn't stack with damage, since damage is reduced

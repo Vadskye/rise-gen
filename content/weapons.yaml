@@ -47,3 +47,5 @@ touch: # TODO: make this hit Reflex defense
   die: d3
   encumbrance: light
   group: natural
+no weapon: # default if a creature has no other weapon specified
+  encumbrance: light

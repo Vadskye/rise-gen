@@ -183,6 +183,25 @@ warrior: &WARRIOR
     - mighty blows
   traits:
     - magic items
+warrior_dual:
+  <<: *WARRIOR
+  attributes:
+    strength: full
+    dexterity: 6  # to get 2wf
+    constitution: full
+  feats:
+    - two weapon fighting
+  weapons:
+    - dual short swords
+  shield: ~
+warrior_heavy:
+  <<: *WARRIOR
+  weapons:
+    - greatsword
+  shield: ~
+  feats:
+    - mighty blows
+    - two weapon fighting
 wenley:
   <<: *WARRIOR
   attributes:

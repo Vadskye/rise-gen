@@ -1,6 +1,6 @@
 aboleth:
   race: monster
-  rise class: monster
+  rise class: aberration
   size: huge
   weapons:
     - tentacle
@@ -35,16 +35,15 @@ dummy:
     - training dummy
 allip:
   race: monster
-  rise class: monster
+  rise class: undead
   weapons:
     - touch
   attributes:
-    strength: 0
+    strength: none
     dexterity: secondary
-    constitution: 0
+    constitution: none
     willpower: primary
   traits:
-    # TODO: add traits for "no strength" and "no con"
     - babble
     - incorporeal
     - no strength
@@ -52,7 +51,6 @@ allip:
 angel - astral deva:
   race: monster
   rise class: outsider
-  level: 8
   weapons:
     - greatsword
   armor: full plate
@@ -63,10 +61,10 @@ angel - astral deva:
     intelligence: tertiary
     perception: secondary
     willpower: primary
-  feats:
-    - mighty blows
-  templates:
-    - martial
+  traits:
+    - divine influence
+    - spell resistance
+    - tongues
 arkite_caster:
   race: monster
   rise class: monster
@@ -180,8 +178,6 @@ planetar:
     intelligence: tertiary
     perception: secondary
     willpower: primary
-  feats:
-    - mighty blows
   templates:
     - martial
 torvid:
@@ -226,3 +222,7 @@ troll_mech:
   traits:
     - tough hide
     - arcanite mech
+demon, bebelith:
+  race: outsider
+  rise class: monster
+  size: huge

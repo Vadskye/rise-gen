@@ -150,7 +150,7 @@ assimilate:
       noncombat: true
 aversion:
   limit affected: mind affecting
-  range: close
+  range: medium
   attack subeffects:
     critical success:
       conditions:
@@ -159,7 +159,7 @@ aversion:
     success:
       conditions:
         - aversion
-      duration: short fixed
+      duration: brief
 bane:
   conditions:
     - impaired
@@ -382,7 +382,7 @@ command:
       conditions:
         - impaired
       duration: brief
-  range: close
+  range: medium
 #command greater:
 command mass:
   $ref: command
@@ -711,6 +711,8 @@ earthquake:
       breakable: grapple
       duration: short fixed
       dispellable: false
+  misc: -1  # prone doesn't stack well with other effects
+  targets: enemies
 earthspike:
   range: medium
   spell resistance: false
@@ -1270,11 +1272,6 @@ inertial shield:
   duration: short
   buffs:
     - damage reduction: all
-  range: close
-inertial shield mass:
-  $ref: inertial shield
-  range: close
-  targets: five
 invulnerability:
   duration: long
   buffs:
@@ -1760,7 +1757,7 @@ reverse gravity:
 divine might:
   buffs:
     - increase size
-    - damage reduction: all
+    - damage reduction: physical
   duration: short
   range: personal
 rotting grasp:
@@ -2466,7 +2463,6 @@ avatar of shielding:
   buffs:
     - damage reduction: all
   duration: short fixed
-  range: close
   misc: 3 # +1 complicated duration, +1 can't be overcome, +1 swift to grant
 aura of immunity:
   buffs:
@@ -2626,7 +2622,7 @@ lifegiving roots:
   misc: -2  # immobilized for duration
 divine shield:
   buffs:
-    - damage reduction: all
+    - damage reduction: physical
     - fast healing
   duration: short fixed
   range: close
@@ -2638,3 +2634,38 @@ execution:
       duration: round
 execution - alt:
   damage: kill at zero
+golem heart:
+  buffs:
+    - damage reduction: physical
+    - spell resistance
+    - immune: death
+    - immune: poison
+  duration: short
+  range: personal
+  misc: -1  # many effects, not all of which will be relevant
+firebolt:
+  damage: normal
+  range: long
+flare:
+  attack subeffects:
+    conditions: [impaired]
+    duration: short fixed
+  range: medium
+conjure projectile:
+  damage: cantrip
+  range: medium
+overland flight:
+  buffs: [flight]
+  duration: extreme
+  noncombat: true
+babble:
+  area: medium radius burst
+  attack subeffects:
+    success:
+      conditions: [disoriented]
+      duration: brief
+    critical success:
+      conditions: [confused]
+      duration: brief
+  limit affected: mind affecting
+  targets: all

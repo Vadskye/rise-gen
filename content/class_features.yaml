@@ -1,14 +1,35 @@
 TEMPLATES:
+  AMBUSH:
+    casting time: strike feat
+    range: personal
+      # personal range is a hack; ambush feats are hard to use, so -2 levels
   RAGE:
-    duration: short
+    duration: short fixed
     casting time: swift
     range: personal
   FEATURE:
     duration: class feature
     range: personal
+  SMITE:
+    casting time: strike feat
+    range: close
+    # we don't add a misc modifier here though we probably should
   STRIKE:
     casting time: strike feat
     range: close
+  SURGE:
+    casting time: swift
+    duration: short fixed
+    range: personal
+  KI:
+    casting time: swift
+    duration: end of round
+    # don't apply personal modifier
+    # to add misc + 1 for ease of recovery
+  AURA:
+    duration: class feature
+    area: medium radius emanation
+    range: personal
 fast movement:
   $ref: FEATURE
   buffs:
@@ -17,6 +38,152 @@ larger than life:
   $ref: FEATURE
   buffs:
     - increase effective size
+
+# PALADIN AURAS
+aura - freedom:
+  $ref: AURA
+  buffs:
+    - immune: grapple
+    - immune: movement effects
+    - immune: underwater
+  targets: allies
+aura - healing aura:
+  $ref: AURA
+  buffs:
+    - fast healing
+  targets: allies
+aura - baleful:
+  $ref: AURA
+  battlefield effects: [impaired]
+  targets: enemies
+aura - courage:
+  $ref: AURA
+  buffs:
+    - immune: fear
+  targets: allies
+aura - disorienting:
+  $ref: AURA
+  battlefield effects: [disoriented]
+  targets: enemies
+aura - inhibition:
+  $ref: AURA
+  battlefield effects: [half speed]
+  targets: enemies
+aura - immobilizing:
+  $ref: AURA
+  battlefield effects: [immobilized]
+  targets: enemies
+aura - worthy foe:
+  $ref: AURA
+  battlefield effects: [taunted]
+  targets: enemies
+aura - accelerating:
+  $ref: AURA
+  buffs: [double speed]
+  targets: allies
+aura - lifebound:
+  $ref: AURA
+  buffs: [immune: critical damage]
+  targets: allies
+aura - martyrs:
+  $ref: AURA
+  buffs:
+    - share pain selective
+  targets: allies
+aura - mindshielding:
+  $ref: AURA
+  buffs: [immune: mind]
+  targets: allies
+
+discernment - thoughts:
+  knowledge: thoughts
+  duration: class feature
+  area: large cone emanation
+  targets: all
+
+# PALADIN DIVINE INVOCATIONS
+divine invocation, bless:
+  buffs:
+    - legend point: all
+  duration: short
+  range: close
+divine invocation, lay on hands:
+  damage: healing
+divine invocation, taunting smite:
+  $ref: SMITE
+  conditions: [taunted]
+  duration: brief
+divine invocation, exhausting smite:
+  $ref: SMITE
+  attack subeffects:
+    success:
+      conditions: [exhausted]
+      duration: brief
+divine invocation, resounding smite:
+  $ref: SMITE
+  instant effect: prone
+divine invocation, dispelling smite:
+  $ref: SMITE
+  attack subeffects:
+    success:
+      instant effect: dispel
+divine invocation, seeking smite:
+  $ref: SMITE
+  misc: 2  # ignore miss chances
+  instant effect: nothing
+divine invocation, penetrating smite:
+  $ref: SMITE
+  conditions: [target reflex]
+  duration: brief
+divine invocation, dazing smite:
+  $ref: SMITE
+  conditions: [dazed]
+  duration: brief
+divine invocation, spellreaving smite:
+  $ref: SMITE
+  instant effect: dispel
+  misc: -1  # require other invocation
+divine invocation, divine might:
+  buffs:
+    - increase size
+    - damage reduction: physical
+  duration: short
+  range: personal
+divine invocation, immobilizing smite:
+  $ref: SMITE
+  conditions: [immobilized]
+  duration: short fixed
+divine invocation, converting smite:
+  $ref: SMITE
+  attack subeffects:
+    success:
+      conditions: [confused]
+      duration: brief
+    critical success:
+      conditions: [stunned]  # idk what this should be
+      duration: week
+    failure:
+      conditions: [dazed]
+      duration: brief
+divine invocation, terrifying smite:
+  $ref: SMITE
+  attack subeffects:
+    success:
+      conditions: [frightened]
+      duration: brief
+divine invocation, executing smite:
+  $ref: SMITE
+  conditions: [die at zero]
+  duration: round
+
+
+divine invocation, freedom:
+  buffs:
+    - immune: grapple
+    - immune: movement effects
+    - immune: underwater
+  range: close
+  duration: short
 
 # DOMAIN ASPECTS
 domain aspect - air:
@@ -100,7 +267,6 @@ domain aspect - water:
     - swim speed
     - water breathing
     - water speaking
-
 
 # DOMAIN GIFTS
 domain gift - air:
@@ -257,12 +423,9 @@ domain invocation greater - knowledge:
     - true seeing
   range: personal
 domain invocation greater - law:
-  limit affected: nonalignment
-  conditions:
-    - immobilized
-  duration: brief
-  area: large radius burst
-  targets: all
+  conditions: [immobilized]
+  duration: short fixed
+  range: medium
 domain invocation greater - magic:
   damage: normal
   area: large radius burst
@@ -315,6 +478,107 @@ domain invocation greater - wild:
       duration: short fixed
   limit affected: near ground
 
+# MONK FEATURES
+ki flow:
+  $ref: FEATURE
+  buffs:
+    - fast healing
+perfect mind:
+  $ref: FEATURE
+  buffs:
+    - immune: mind
+perfect motion:
+  $ref: FEATURE
+  buffs:
+    - immune: grapple
+    - immune: movement effects
+    - immune: underwater
+perfect soul:
+  $ref: FEATURE
+  buffs:
+    - spell resistance
+ki - burst of blinding speed:
+  $ref: KI
+  buffs: [double speed]
+ki - fists of distant force:
+  $ref: KI
+  buffs:
+    - weapon reach - ten
+ki - burst of blinding speed:
+  $ref: KI
+  buffs:
+    - double speed
+  misc: 1  # no follow
+ki - all energy becomes one:
+  $ref: KI
+  buffs: [damage reduction: energy all]
+ki - heal the broken body:
+  healing: normal
+  range: personal
+ki - stunning fist:
+  $ref: STRIKE
+  attack subeffects:
+    success:
+      conditions:
+        - severely impaired
+      duration: brief
+    critical success:
+      conditions:
+        - stunned
+      duration: brief
+  misc: -1  # no repeat
+ki - leap of the heavens:
+  $ref: KI
+  buffs:
+    - skill: plus10
+  misc: -2  # jump is a relatively weak skill
+ki - flash step:
+  casting time: swift
+  teleport:
+    range: close
+    type: line of effect
+    willing: true
+  misc: 2 # swift movement is useful
+ki - empty step:
+  $ref: KI
+  buffs:
+    - ethereal
+ki - empty body:
+  casting time: swift
+  buffs:
+    - ethereal
+  duration: short fixed
+ki - focus the wayward mind:
+  casting time: swift
+  instant effect: dispel
+  misc: -3  # mind only, but no roll
+ki - ki-disrupting strike:
+  $ref: STRIKE
+  conditions:
+    - impaired
+  duration: brief
+ki - ki-shattering strike:
+  $ref: STRIKE
+  conditions:
+    - severely impaired
+  duration: brief
+ki - see the flow of life:
+  $ref: KI
+  buffs:
+    - lifesight
+ki - flash burst:
+  casting time: swift
+  teleport:
+    range: extreme
+    type: unrestricted
+    willing: true
+ki - awaken the pacifist heart:
+  $ref: STRIKE
+  attack subeffects:
+    success:
+      conditions:
+        - no violence
+      duration: brief
 
 # NATURAL ASPECTS
 natural aspect 12 - fire shield:
@@ -348,19 +612,11 @@ natural aspect 14 - flight:
     - flight
   misc: 1  # narrative power, despite 5 round limit
 natural aspect 16 - solar radiance:
-  attack subeffects:
-    success:
-      conditions:
-        - partially blinded
-      duration: short fixed
-    critical success:
-      conditions:
-        - blinded
-      duration: short fixed
+  conditions: [partially blinded]
+  duration: brief
   trigger:
     condition: when attacked
     duration: class feature
-  misc: 1  # radiate super light
   range: long
 
 # RAGES
@@ -385,7 +641,7 @@ rage - invulnerable rage:
   $ref: RAGE
   buffs:
     - damage reduction: all
-  misc: 2 # stacks with existing DR, changes it to apply to all
+  misc: 1 # stacks with existing DR, changes it to apply to all
 rage - mindless rage:
   $ref: RAGE
   buffs:
@@ -393,53 +649,45 @@ rage - mindless rage:
 rage - overpowering rage:
   $ref: RAGE
   buffs:
-    - temporary hp
     - maneuver accuracy: all
   misc: -1  # temp HP is lower than normal and has requirements
 rage - overwhelming rage:
   $ref: RAGE
   buffs:
     - increase overwhelm
-rage - rapid rage:
+rage - accelerated rage:
   $ref: RAGE
   buffs:
-    - ten foot speed
+    - double speed
+rage - mindless rage:
+  $ref: RAGE
+  buffs:
+    - immune: mind
 rage - savage rage:
   $ref: RAGE
   buffs:
     - unarmed warrior
 rage - taunting rage:
   casting time: swift
-  attack subeffects:
-    success:
-      conditions:
-        - taunted
-      duration: short fixed
-    critical success:
-      conditions:
-        - taunted
-        - severely impaired
-      duration: short fixed
-      misc: -2  # impaired only affects attacks not at you
+  conditions:
+    - taunted
+  duration: brief
+  misc: 1  # everyone you hit
   trigger:
     condition: on attack
     duration: short
-  misc: -1 # no repeat
 rage - terrifying rage:
   casting time: swift
-  attack subeffects:
-    success:
-      conditions:
-        - shaken
-      duration: short fixed
-    critical success:
-      conditions:
-        - frightened
-      duration: short fixed
+  conditions:
+    - shaken
+  duration: brief
   trigger:
     condition: on attack
     duration: short
-  misc: -1 # no repeat
+rage - spellbreaker rage:
+  $ref: RAGE
+  buffs:
+    - spell resistance
 rage - wary rage:
   $ref: RAGE
   buffs:
@@ -458,13 +706,15 @@ strike feat - driving assault:
   $ref: STRIKE
   instant effect: shove
   misc: 1  # damage bonus to shove attempt
+strike feat - intimidating strike:
+  $ref: STRIKE
+  conditions: [shaken]
+  duration: short fixed
 
 # WILD ASPECTS
-wild aspect 2 - animal affinity:
-  $ref: FEATURE
-  buffs:
-    - skill: plus5
-    - skill: extra plus5
+# many wild aspects give natural weapons in addition to other abilities
+# but they shoudn't pay for it
+# because they don't stack, and it adds flavor
 wild aspect 2 - armaments of the bear:
   $ref: FEATURE
   buffs:
@@ -474,105 +724,97 @@ wild aspect 2 - climb:
   $ref: FEATURE
   buffs:
    - climb speed
-wild aspect 2 - gore:
+wild aspect 4 - gore:
   $ref: FEATURE
   buffs:
    - natural weapon
    - natural shove
-wild aspect 2 - lope:
-  $ref: FEATURE
-  buffs:
-   - double speed
 wild aspect 2 - senses:
   $ref: FEATURE
   buffs:
    - low light vision
    - darkvision
-wild aspect 2 - talons:
-  $ref: FEATURE
-  buffs:
-   - natural weapon
 wild aspect 2 - woodland stride:
   $ref: FEATURE
   buffs:
    - woodland stride
 
+wild aspect 4 - animal affinity:
+  $ref: FEATURE
+  buffs:
+    - skill: plus5
+    - skill: extra plus5
+wild aspect 4 - constrict:
+  $ref: FEATURE
+  buffs:
+    - maneuver accuracy: one
+  misc: 1  # "build around me" ability
 wild aspect 4 - hawk:
   $ref: FEATURE
   buffs:
    - glide
-   - natural weapon
-wild aspect 4 - scent:
+wild aspect 4 - lope:
   $ref: FEATURE
   buffs:
-    - scent
-  misc: 1  # build around me (tracking)
-wild aspect 4 - shrink:
-  $ref: FEATURE
-  buffs:
-    - reduce size
+   - double speed
 wild aspect 4 - slither:
   $ref: FEATURE
   buffs:
     - climb speed
-    - natural weapon
   misc: 1  # no hand climbing
-wild aspect 4 - totemic power:
-  $ref: FEATURE
-  buffs:
-    - attribute: plus2
-  choose effect: 1
-wild aspect 4 - totemic mind:
-  $ref: FEATURE
-  buffs:
-    - attribute: plus2
-  choose effect: 1
 
-wild aspect 6 - constrict:
-  $ref: FEATURE
-  buffs:
-    - natural weapon
-    - maneuver accuracy: one
-  misc: 1  # "build around me" ability
 wild aspect 6 - enhanced natural weapons:
   $ref: FEATURE
   buffs:
     - weapon enhancement
   misc: 1  # extra high bonus, build around me
+wild aspect 6 - shrink:
+  $ref: FEATURE
+  buffs:
+    - reduce size
+  # misc - 1: reduce size was priced for also being a debuff
+  # misc + 1: build around me
+wild aspect 6 - scent:
+  $ref: FEATURE
+  buffs:
+    - scent
+  misc: 1  # build around me (tracking)
 wild aspect 6 - venom:
   $ref: FEATURE
   buffs:
-    - natural weapon
     - natural poison
 wild aspect 6 - thousand faces:
   $ref: FEATURE
   buffs:
     - disguise
   misc: 1  # narrative power
-
-wild aspect 8 - grow:
+wild aspect 6 - totemic power:
   $ref: FEATURE
   buffs:
-    - increase size
-  misc: 1  # build around me
+    - attribute: plus2
+  choose effect: 1
+wild aspect 6 - totemic mind:
+  $ref: FEATURE
+  buffs:
+    - attribute: plus2
+  choose effect: 1
+
 wild aspect 8 - natural grab:
   $ref: FEATURE
   buffs:
     - natural grab
-    - natural weapon
   misc: 1  # build around me
 wild aspect 8 - natural trip:
   $ref: FEATURE
   buffs:
     - natural trip
-    - natural weapon
   misc: 1  # build around me
-wild aspect 8 - wolfpack:
+
+wild aspect 10 - grow:
   $ref: FEATURE
   buffs:
-    - increase overwhelm
-    - increase overwhelm
-
+    - increase size
+  misc: 1  # build around me
 wild aspect 10 - swiftstrike:
   $ref: FEATURE
   buffs:
@@ -588,3 +830,329 @@ wild aspect 10 - natural renewal:
   buffs:
     - fast healing
   misc: 1  # narrative power of passive healing
+wild aspect 10 - wolfpack:
+  $ref: FEATURE
+  buffs:
+    - increase overwhelm
+    - increase overwhelm
+
+# RANGER STUFF
+
+ranger, scent:
+  $ref: FEATURE
+  buffs: [scent]
+ranger, energy adaptation:
+  $ref: FEATURE
+  buffs: [damage reduction: energy all]
+ranger, keen senses:
+  $ref: FEATURE
+  buffs:
+    - low light vision
+    - darkvision
+ranger, blindsense:
+  $ref: FEATURE
+  buffs: [blindsense]
+ranger, blindsight:
+  $ref: FEATURE
+  buffs: [blindsight]
+ranger, perfect stride:
+  $ref: FEATURE
+  buffs:
+    - immune: grapple
+    - immune: movement effects
+    - immune: underwater
+
+# SPELLWARPED STUFF
+sw, alteration, surge of power:
+  casting time: swift
+  healing: fast healing
+  range: personal
+sw, pyromancy, surge of power:
+  casting time: swift
+  damage: over time
+  area: small radius emanation
+  targets: enemies
+  misc: -1 # only adjacent
+
+sw, alteration, sturdy body:
+  $ref: FEATURE
+  buffs: [defense: plus2]
+sw, pyromancy, energy resistance:
+  $ref: FEATURE
+  buffs: [double dr: energy single]
+sw, telekinesis, tactile telekinesis:
+  $ref: FEATURE
+  buffs: [skill: plus2 attribute]
+  misc: 1  # another attribute
+sw, temporal, accelerate mind:
+  $ref: FEATURE
+  buffs: [skill: plus2 attribute]
+  misc: 1  # another attribute
+
+sw, damage reduction:
+  $ref: FEATURE
+  buffs: [damage reduction: physical]
+sw, alter size:
+  $ref: SURGE
+  buffs: [increase size]
+sw, alter size alt:
+  $ref: FEATURE
+  buffs: [increase size]
+sw, retributive flames:
+  $ref: FEATURE
+  buffs:
+    - retributive damage: melee
+sw, fast movement:
+  $ref: FEATURE
+  buffs: [double speed]
+  misc: 1  # narrative power
+
+sw, alteration, shrink:
+  buffs:
+    - reduce size
+  duration: short
+  limit affected: max size
+  misc:
+    -1 # in the specific case of shrink, min size actually matters
+  range: close
+sw, alteration, healing transformation:
+  subeffects:
+    - healing: normal
+    - instant effect: remove physical conditions
+  range: close
+sw, alteration, flight:
+  duration: short
+  buffs:
+    - flight
+  range: personal
+sw, body bludgeon:
+  damage: normal
+  misc: 2  # str to damage
+sw, bludgeon the horde:
+  damage: normal
+  area: small radius burst
+  targets: enemies
+  misc: 2  # str to damage
+sw, amorphous body:
+  buffs: [amorphous]
+  range: personal
+  duration: round
+sw, pyromancy, ignite:
+  damage: normal
+  range: close
+  conditions: [ignited]
+  duration: brief
+sw, pyromancy, fiery protection:
+  buffs:
+    - double dr: energy single
+  duration: short
+  range: close
+  misc: 1  # two types
+sw, pyromancy, conflagration:
+  damage: normal
+  area: medium radius burst
+  targets: all
+sw, pyromancy, flame shield:
+  buffs:
+    - retributive damage: close
+    - radiate light
+  duration: short
+  range: close
+sw, pyromancy, flight of the phoenix:
+  buffs: [flight]
+  range: personal
+  duration: short
+  misc: 1  # fly while encumbered
+
+sw, telekinesis, sickening crush:
+  subeffects:
+    - damage: normal
+    - conditions: [sickened]
+      duration: brief
+  range: close
+sw, telekinesis, immobilize:
+  conditions: [immobilized]
+  range: medium
+  duration: brief
+
+sw, temporal, timetheft:
+  attack subeffects:
+    success:
+      conditions: [out of battle]
+      duration: round
+    critical success:
+      conditions: [stunned]
+      duration: round
+sw, temporal, slow:
+  conditions:
+    - slowed
+  duration: brief
+sw, temporal, flash step:
+  teleport:
+    range: close
+    type: line of effect
+    willing: true
+  range: close
+  casting time: personal move
+sw, temporal, disjointed time:
+  conditions: [impaired]
+  duration: short fixed
+  range: close
+sw, temporal, timestream:
+  battlefield effects: [slowed]
+  duration: short
+  area: large line zone
+  targets: enemies
+sw, temporal, inhuman speed:
+  teleport:
+    range: extreme
+    type: line of effect
+    willing: true
+  casting time: personal move
+
+rogue, dispelling ambush:
+  $ref: AMBUSH
+  attack subeffects:
+    success:
+      instant effect: dispel
+rogue, spellreaving ambush:
+  $ref: AMBUSH
+  instant effect: dispel
+rogue, staggering ambush:
+  $ref: AMBUSH
+  attack subeffects:
+    success:
+      conditions: [staggered]
+      duration: brief
+rogue, agonizing ambush:
+  $ref: AMBUSH
+  attack subeffects:
+    success:
+      conditions: [take double physical damage]
+      duration: brief
+rogue, confusing ambush:
+  $ref: AMBUSH
+  attack subeffects:
+    success:
+      conditions: [dazed]
+      duration: brief
+    critical success:
+      conditions: [confused]
+      duration: brief
+rogue, deadly ambush:
+  $ref: AMBUSH
+  attack subeffects:
+    success:
+      conditions:
+        - staggered
+        - die at zero
+      duration: brief
+    critical success:
+      instant effect: death
+    failure:
+      conditions:
+        - staggered
+      duration: brief
+rogue, hamstring:
+  $ref: AMBUSH
+  conditions: [half speed]
+  duration: short fixed
+rogue, immobilizing ambush:
+  $ref: AMBUSH
+  conditions: [immobilized]
+  duration: brief
+
+# FEATS
+infuriating strike:
+  $ref: STRIKE
+  conditions:
+    - taunted
+  duration: short fixed
+vital flow:
+  $ref: FEATURE
+  buffs: [fast healing]
+  # misc +1 narrative power, -1 small fast healing
+
+# PERFORMANCE FEATS
+# treat all as single-target because targets automatically scale up with level
+# use short duration for 'as long as you perform' effects
+# ignore the Mind component
+perform, fascinating performance:
+  attack subeffects:
+   success:
+     conditions: [fascinated]
+     duration: concentration
+  limit affected: mind affecting
+  range: medium
+
+perform, mind clearing performance:
+  buffs: [immune: mind]
+  duration: short
+  range: medium
+
+perform, suggestive performance:
+  attack subeffects:
+    success:
+      conditions: [suggestion]
+      duration: short fixed
+    critical success:
+      conditions: [suggestion]
+      duration: permanent
+  range: medium
+  misc: -2  # only works on already fascinated targets
+
+perform, inspire competence:
+  buffs:
+    - legend point: offensive
+  duration: short
+  range: medium
+
+perform, inspire courage:
+  buffs:
+    - temporary hp
+    - immune: fear
+  duration: short
+  range: medium
+
+perform, inspire resilience:
+  buffs:
+    - damage reduction: all
+    - legend point: defensive
+  duration: short
+  range: medium
+
+perform, inspire legends:
+  buffs:
+    - legend point: all
+    - legend point regeneration: round
+  duration: short
+  range: medium
+
+perform, mocking performance:
+  attack subeffects:
+    success:
+      conditions: [impaired]
+      duration: short fixed
+  limit affected: mind affecting
+  range: medium
+
+perform, terrifying performance:
+  attack subeffects:
+    critical success:
+      conditions:
+        - panicked
+      duration: short fixed
+    success:
+      conditions:
+        - frightened
+      duration: short fixed
+    failure:
+      conditions:
+        - shaken
+      duration: short fixed
+  limit affected: mind affecting
+  range: medium
+
+feat, blindsense:
+  $ref: FEATURE
+  buffs: [blindsense]

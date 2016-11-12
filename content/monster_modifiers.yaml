@@ -2,6 +2,7 @@ attributes:
   primary: 0.5
   secondary: 0.25
   tertiary: 0
+  none: 0
 land speed:  # special handling to calculate the multipliers
   none: -1
   slower: -0.5

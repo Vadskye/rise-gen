@@ -14,6 +14,7 @@ primary properties:
   - conditions
   - damage
   - knowledge
+  - healing
   - instant effect
   - subeffects
   - teleport
@@ -32,16 +33,20 @@ possible properties:
   - dispellable
   - duration
   - expended
+  - healing
   - instant effect
   - knowledge
   - limit affected
   - misc
   - noncombat
   - range
+  - repeatable
   - shadow
   - shapeable
+  - skip validation
   - spell resistance
   - subeffects
+  - retry failure
   - targets
   - teleport
   - trigger
