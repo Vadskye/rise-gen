@@ -23,7 +23,8 @@ avatar of shielding: 7
 avatar of suffering: 8
 avatar of translocation: 7
 avatar of wind: 7
-aversion: 3
+aversion: 2
+babble: 2
 bane: 1
 bane mass: 4
 barkskin: 2
@@ -64,11 +65,12 @@ cloak of chaos: 9
 cloak of single chaos: 6
 cloud of bats: 2
 color spray: 1
-command: 2
-command mass: 5
+command: 3
+command mass: 6
 cone of cold: 2
 cone of nauseated: 13
 confusion: 4
+conjure projectile: -1
 create ballista: 3
 cripple: 4
 cure light wounds: 1
@@ -139,9 +141,11 @@ fire shield long: 5
 fire storm: 8
 fireball: 3
 fireball - immolating: 5
+firebolt: 2
 fissure: 6
 flame blade: 2
 flame strike: 5
+flare: -2
 fly: 4
 fog cloud: 2
 fog cloud - shielding: 4
@@ -162,6 +166,7 @@ gentle descent mass: 4.5
 ghoul touch: 4
 glitterdust: 2
 glitterdust greater: 6
+golem heart: 7
 grease: 1
 gust of wind: 1
 harm: 6
@@ -189,7 +194,6 @@ immolation: 7
 implosion: 9
 imprisonment: 9
 inertial shield: 2
-inertial shield mass: 6
 inflict critical wounds: 3
 inflict critical wounds mass: 6
 inflict light wounds: 1
@@ -229,6 +233,7 @@ moment of prescience: 3
 neutral ground: 13
 nondetection: 4
 orders wrath: 3
+overland flight: 8
 phantasmal killer: 2
 phantasmal killer mass: 6
 planar disruption: 1
@@ -352,4 +357,3 @@ web: 5
 windstrike: 2
 windstrike greater: 5
 zephyr blade: 2
-
