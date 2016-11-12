@@ -1,4 +1,4 @@
-from nose.tools import assert_equals
+from nose.tools import assert_equal
 from rise_gen.creature import Creature
 from rise_gen.dice import Die, DieCollection
 import yaml
@@ -31,7 +31,7 @@ def test_fighter_properties():
         'weapon_encumbrance': 'medium',
     }
     for key in sorted(correct_properties.keys()):
-        assert_equals(getattr(c, key), correct_properties[key])
+        assert_equal(getattr(c, key), correct_properties[key], 'Property {} is wrong'.format(key))
 
 def test_fighter_properties_at_higher_level():
     c = Creature.from_sample_creature('fighter', level=10)
@@ -55,11 +55,11 @@ def test_fighter_properties_at_higher_level():
         'weapon_encumbrance': 'medium',
     }
     for key in sorted(correct_properties.keys()):
-        assert_equals(getattr(c, key), correct_properties[key])
+        assert_equal(getattr(c, key), correct_properties[key], 'Property {} is wrong'.format(key))
 
 def test_fighter_string():
     c = Creature.from_sample_creature('fighter', level=1)
-    assert_equals(str(c), """
+    assert_equal(str(c), """
 human fighter 1
 [HP] 10; [Defs] AD 21, MD 14; Fort 20, Ref 10, Ment 13
 [Atk] 8: 1d8+2; [Prowess] 3
@@ -78,11 +78,11 @@ def test_all_samples():
     # currently missing: paladin, spellwarped
     for sample_name in 'barbarian cleric druid fighter ranger rogue sorcerer wizard'.split():
         pc = Creature.from_sample_creature(sample_name)
-        assert_equals(type(pc), Creature)
-        assert_equals(str(pc), test_strings[sample_name].strip())
+        assert_equal(type(pc), Creature)
+        assert_equal(str(pc), test_strings[sample_name].strip())
 
     # now check monsters
     for sample_name in 'aboleth angel arkite_caster arkite_grappler arkite_monk black_bear brown_bear demogorgon dummy planetar super_bear torvid troll_mech wee_bear'.split():
         monster = Creature.from_sample_creature(sample_name)
-        assert_equals(type(monster), Creature)
-        assert_equals(str(monster), test_strings[sample_name].strip())
+        assert_equal(type(monster), Creature)
+        assert_equal(str(monster), test_strings[sample_name].strip())
