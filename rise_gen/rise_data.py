@@ -30,6 +30,10 @@ class RiseData(object):
             cls.data = cls.init_data()
         relevant_data = cls.data.get(thing_name)
 
+        for key in relevant_data:
+            python_friendly_key = key.replace(' ', '_')
+            relevant_data[python_friendly_key] = relevant_data.pop(key)
+
         if relevant_data is None:
             raise Exception(
                 "Error: No data for Rise thing '{}' found".format(
@@ -88,47 +92,20 @@ class Race(RiseData):
 
 class RiseClass(RiseData):
 
-    def __init__(self, **kwargs):
-        super(RiseClass, self).__init__(**kwargs)
+    def __init__(self, name, combat_prowess, fortitude=None, reflex=None, mental=None, class_features=None):
+        super(RiseClass, self).__init__(
+            name=name,
+            combat_prowess=combat_prowess,
+            fortitude=fortitude,
+            reflex=reflex,
+            mental=mental,
+            class_features=class_features
+        )
 
     @classmethod
     def init_data(cls):
         with open('content/classes.yaml', 'r') as classes_file:
             return yaml.load(classes_file)
-
-    def calculate_base_defense(self, defense_name, level):
-        base_defense = getattr(self, defense_name)
-        if base_defense == 'good':
-            return (level * 5) // 4
-        elif base_defense == 'average':
-            return level
-        elif base_defense == 'poor':
-            return (level * 3) // 4
-        else:
-            raise Exception("Unsupported {} '{}'".format(
-                defense_name,
-                base_defense
-            ))
-
-    def base_class_defense_bonus(self, defense_name):
-        base_defense = getattr(self, defense_name)
-        return {
-            'good': 4,
-            'average': 2,
-            'poor': 0,
-        }[base_defense]
-
-    def calculate_combat_prowess(self, level):
-        if self.combat_prowess == 'good':
-            return level + 2
-        elif self.combat_prowess == 'average':
-            return (level * 4) // 5 + 1
-        elif self.combat_prowess == 'poor':
-            return (level * 2) // 3 + 1
-        else:
-            raise Exception("Unsupported combat prowess '{}'".format(
-                self.combat_prowess
-            ))
 
     def __str__(self):
         return "RiseClass({}, {}, {}, {}, {})".format(
@@ -138,7 +115,6 @@ class RiseClass(RiseData):
             self.reflex,
             self.mental,
         )
-
 
 class Armor(RiseData):
 

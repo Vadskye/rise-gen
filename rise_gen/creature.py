@@ -73,12 +73,9 @@ class CreatureStatistics(object):
 
         # add special abilities (feats, class features, etc.)
         self.abilities = list()
-        try:
+        if self.rise_class.class_features:
             for class_feature in self.rise_class.class_features:
                 self.add_ability(class_feature)
-        except AttributeError:
-            # not all classes has class features (yet)
-            pass
         if self.feats is not None:
             for feat in self.feats:
                 self.add_ability(feat)
@@ -332,7 +329,7 @@ class CreatureStatistics(object):
         return armor_defense
 
     def _calculate_combat_prowess(self):
-        prowess = self.rise_class.calculate_combat_prowess(self.level)
+        prowess = calculate_combat_prowess(self.rise_class.combat_prowess, self.level)
         for effect in self.active_effects_with_tag('combat prowess'):
             prowess = effect(self, prowess)
         return prowess
@@ -353,12 +350,12 @@ class CreatureStatistics(object):
         fortitude = 10 + max(
             self.constitution,
             self.strength,
-            self.rise_class.calculate_base_defense(
-                'fortitude',
-                self.level
+            calculate_base_defense(
+                self.rise_class.fortitude,
+                self.level,
             )
         )
-        fortitude += self.rise_class.base_class_defense_bonus('fortitude')
+        fortitude += base_class_defense_bonus(self.rise_class.fortitude)
         # add the automatic modifier from Con
         if self.constitution >= 0:
             fortitude += self.constitution // 2
@@ -395,12 +392,12 @@ class CreatureStatistics(object):
         mental = 10 + max(
             self.willpower,
             self.intelligence,
-            self.rise_class.calculate_base_defense(
-                'mental',
+            calculate_base_defense(
+                self.rise_class.mental,
                 self.level
             )
         )
-        mental += self.rise_class.base_class_defense_bonus('mental')
+        mental += base_class_defense_bonus(self.rise_class.mental)
         # add the automatic modifier from Willpower
         if self.willpower >= 0:
             mental += self.willpower // 2
@@ -414,12 +411,12 @@ class CreatureStatistics(object):
         reflex = 10 + max(
             self.dexterity,
             self.perception,
-            self.rise_class.calculate_base_defense(
-                'reflex',
+            calculate_base_defense(
+                self.rise_class.reflex,
                 self.level
             )
         )
-        reflex += self.rise_class.base_class_defense_bonus('reflex')
+        reflex += base_class_defense_bonus(self.rise_class.reflex)
         # add the automatic modifier from Dexterity
         if self.dexterity >= 0:
             reflex += self.dexterity // 5
@@ -797,6 +794,26 @@ class Creature(CreatureStatistics):
             properties=sample_properties
         )
 
+def calculate_combat_prowess(progression, level):
+    return {
+        'good': level + 2,
+        'average': (level * 4) // 5 + 1,
+        'poor': (level * 2) // 3 + 1,
+    }[progression]
+
+def calculate_base_defense(progression, level):
+    return {
+        'good': (level * 5) // 4,
+        'average': level,
+        'poor': (level * 3) // 4,
+    }[progression]
+
+def base_class_defense_bonus(progression):
+    return {
+        'good': 4,
+        'average': 2,
+        'poor': 0,
+    }[progression]
 
 def initialize_argument_parser():
     parser = argparse.ArgumentParser(
