@@ -8,6 +8,7 @@ doc = """
 Usage:
     ability_leveler class [options]
     ability_leveler items [options]
+    ability_leveler rituals [options]
     ability_leveler spells [options]
     ability_leveler (-h | --help)
 
@@ -116,10 +117,10 @@ class AbilityLeveler(Leveler):
 
         # make sure that values which are not calculated for the root level
         # of abilities with subeffects are not present there
-        if self.has_subeffects:
+        if self.has_nested():
             for property_name in ['duration', 'dispellable']:
                 if (property_name in self.properties
-                        and self.properties[property_name] != type(self).default_properties[property_name]):
+                        and self.properties[property_name] != type(self).default_properties.get(property_name)):
                     self.warn("has property '{0}' that should only be in its subeffects".format(property_name))
 
         # make sure that modifiers which should be positive are
@@ -223,14 +224,29 @@ class AbilityLeveler(Leveler):
                     level_modifier + 9,
                 ))
 
+        # "success" conditions and battlefield effects should only have one item
+        # other item should be general effects, not success-only
+        # unless they have a failure effect, which mimics 'effect' except for
+        # the interaction with critical success
+        if (self.attack_subeffects is not None
+                and 'success' in self.attack_subeffects):
+            success_effects = self.attack_subeffects['success']
+            for t in ['conditions', 'battlefield effects']:
+                if t in success_effects and len(success_effects[t]) > 1 and 'failure' not in sublevels:
+                    self.warn("Has too many '{}': '{}'".format(t, success_effects[t]))
+            if 'subeffects' in success_effects:
+                self.warn("Should not have subeffects under success")
+
         # make sure that dispellable abilities have a reasonable duration
         if not self.dispellable and (self.duration is None
                                      or self.duration in ('round', 'concentration')):
             self.die("is not dispellable, but has trivial duration {0}".format(self.duration))
 
         # check for missing critical effects
+        # but damaging spells don't need critical effects
         if (self.attack_subeffects is not None
-                and 'critical success' not in self.attack_subeffects):
+                and 'critical success' not in self.attack_subeffects
+                and 'damage' not in self.attack_subeffects.get('effect', {})):
             self.warn("is missing critical success")
 
         # immediate and swift effects should last until the end of
@@ -251,8 +267,8 @@ class AbilityLeveler(Leveler):
         If ability_type is not None, modify the level to its in-game value for the given type"""
         try:
             level_modifier = {
-                'class feature': -5,
-                'magic item': -3,
+                'class feature': -4,
+                'magic item': -4,
                 'spell': -4,
                 None: 0,
             }[ability_type]
@@ -271,10 +287,10 @@ class AbilityLeveler(Leveler):
             return modifier / 2.0
         elif self.buffs is not None and self.targets == 'allies':
             # buff spells pay less for exceptionally large areas that target allies
-            if modifier <= 4:
+            if modifier <= 2:
                 return modifier
             else:
-                return 4 + (modifier - 4) / 2.0
+                return 2 + (modifier - 2) / 2.0
         else:
             return modifier
 
@@ -410,6 +426,15 @@ class AbilityLeveler(Leveler):
     def _knowledge_modifier(self):
         return RAW_MODIFIERS['knowledge'][self.knowledge]
 
+    def _healing_modifier(self):
+        try:
+            return RAW_MODIFIERS['healing'][self.healing]
+        except TypeError:
+            # the healing is a nested modifier
+            top_level_name = list(self.healing)[0]
+            value = self.healing[top_level_name]
+            return RAW_MODIFIERS['healing'][top_level_name][value]
+
     def _limit_affected_modifier(self):
         modifiers = RAW_MODIFIERS['limit affected']
         return modifiers[self.limit_affected_type][self.limit_affected]
@@ -427,6 +452,22 @@ class AbilityLeveler(Leveler):
             return RAW_MODIFIERS['range']['buff'][self.range]
         else:
             return RAW_MODIFIERS['range']['normal'][self.range]
+
+    def _repeatable_modifier(self):
+        modifier = 0
+        modifier += RAW_MODIFIERS['repeatable']['frequency'][
+            self.repeatable['frequency']
+        ]
+        modifier += RAW_MODIFIERS['repeatable']['duration'][
+            self.repeatable['duration']
+        ]
+        modifier += RAW_MODIFIERS['repeatable']['immediate'][
+            self.repeatable.get('immediate', False)
+        ]
+        return modifier
+
+    def _retry_failure_modifier(self):
+        return RAW_MODIFIERS['retry failure'][self.retry_failure]
 
     def _shadow_modifier(self):
         return RAW_MODIFIERS['shadow'][self.shadow]
@@ -453,7 +494,10 @@ class AbilityLeveler(Leveler):
                 # double the range modifier
                 return self._range_modifier()
         else:
-            return RAW_MODIFIERS['targets'][self.targets_type][self.targets]
+            try:
+                return RAW_MODIFIERS['targets'][self.targets_type][self.targets]
+            except KeyError:
+                self.die("has invalid targets '{}'".format(self.targets))
 
     def _teleport_modifier(self):
         modifier = 0
@@ -462,6 +506,9 @@ class AbilityLeveler(Leveler):
         ]
         modifier += RAW_MODIFIERS['teleport']['type'][
             self.teleport['type']
+        ]
+        modifier += RAW_MODIFIERS['teleport']['willing'][
+            self.teleport['willing']
         ]
         return modifier
 
@@ -480,6 +527,7 @@ def calculate_ability_levels(abilities, ability_type):
     levels = dict()
     for name in abilities:
         ability = AbilityLeveler(name, abilities[name])
+        ability.validate()
         levels[name] = ability.level(ability_type)
     return levels
 
@@ -487,6 +535,9 @@ def main(args):
     if args['items']:
         abilities = util.import_yaml_file('content/magic_items.yaml')
         ability_type = 'magic item'
+    elif args['rituals']:
+        abilities = util.import_yaml_file('content/rituals.yaml')
+        ability_type = 'spell'
     elif args['spells']:
         abilities = util.import_yaml_file('content/spells.yaml')
         ability_type = 'spell'

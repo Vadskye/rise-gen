@@ -109,6 +109,14 @@ class ModifierInPlace(AbilityEffect):
         return value
 
 
+def plus(modifier):
+    return lambda creature, value: value + modifier
+
+
+def min_level(level):
+    return lambda creature: creature.level >= level
+
+
 def get_ability_definitions():
     """This defines the set of all possible abilities. The Ability class uses
     this to create abilities on the fly as needed.
@@ -136,14 +144,12 @@ def get_ability_definitions():
                 Modifier(['damage reduction'],
                          lambda creature, value: creature.level + value),
             ],
-            'prerequisite': lambda creature: creature.level >= 1
         },
         'fast movement': {
             'effects': [
-                Modifier(['speed'],
-                         lambda creature, value: value + 10),
+                Modifier(['speed'], plus(10)),
             ],
-            'prerequisite': lambda creature: creature.level >= 2
+            'prerequisite': min_level(2)
         },
         'larger than life': {
             'effects': [
@@ -253,7 +259,7 @@ def get_ability_definitions():
                          lambda creature, value: value + 1),
             ],
             'prerequisite': lambda creature: (
-                creature.strength >= 5
+                creature.strength >= 3
                 and creature.attack_range is None
             )
         },
@@ -267,6 +273,16 @@ def get_ability_definitions():
             'prerequisite': lambda creature: (
                 creature.strength >= 3
                 and creature.attack_range is None
+            )
+        },
+        'two weapon fighting': {
+            'effects': [
+                Modifier(['accuracy'],
+                         lambda creature, value: value + 2),
+            ],
+            'prerequisite': lambda creature: (
+                creature.dexterity >= 3
+                and creature.weapon.dual_wielding
             )
         },
         'weapon finesse': {
@@ -465,6 +481,8 @@ def get_ability_definitions():
                              value,
                              (creature.level // 3) * creature.level
                          )),
+                ModifierInPlace(['spell damage dice'],
+                         lambda creature, dice: setattr(dice.dice[0], 'count', dice.dice[0].count + creature.level // 3))
             ],
         },
         'tough hide': {
@@ -477,12 +495,15 @@ def get_ability_definitions():
         # these traits have no effects that can be calculated for now
         'amphibious': {'power': 'weak'},
         'babble': {},
+        'divine influence': {},
         'enslave': {},
         'incorporeal': {'power': 'extreme'},
         'mucus cloud': {},
         'no strength': {'power': 'none'},
         'no constitution': {'power': 'none'},
         'slime': {},
+        'spell resistance': {},
+        'tongues': {},
     }
 
     all_abilities = dict()

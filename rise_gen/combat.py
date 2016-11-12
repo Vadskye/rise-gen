@@ -1,9 +1,66 @@
 #!/usr/bin/env python
 
 import argparse
-from rise_gen.creature import get_sample_creature
+from rise_gen.creature import Creature
 import cProfile
 from pprint import pprint
+
+class CreatureGroup(object):
+    """A CreatureGroup is a group of creatures that acts like a single creature """
+    # TODO: move dead creatures to the end of the array when they die
+
+    def __init__(self, creatures):
+        self.creatures = creatures
+
+    def standard_attack(self, group):
+        """Attack the given group of creatures
+
+        Args:
+            group (CreatureGroup): Creatures to attack
+        """
+        for c in self.creatures:
+            target = group.get_living_creature()
+            # if all targets are dead, stop attacking
+            if target is None:
+                return
+            else:
+                c.standard_attack(target)
+
+    def get_living_creature(self):
+        """Return a single living creature
+
+        Yields:
+            Creature: living creature
+        """
+        for c in self.creatures:
+            if c.is_alive():
+                return c
+        return None
+
+    def refresh_round(self):
+        """Refresh the round for all creatures in the group"""
+        for c in self.creatures:
+            c.refresh_round()
+
+    def refresh_combat(self):
+        """Refresh the combat for all creatures in the group"""
+        for c in self.creatures:
+            c.refresh_combat()
+
+    def is_alive(self):
+        """Check whether any creatures in the group are alive
+
+        Yields:
+            bool: True if any creatures are alive, false otherwise
+        """
+        for c in self.creatures:
+            if c.is_alive():
+                return True
+        return None
+
+    def __str__(self):
+        return 'CreatureGroup({})'.format([str(c) for c in self.creatures])
+
 
 def run_combat(red, blue):
     """Simulate a round of combat between the given creatures
@@ -49,6 +106,7 @@ def initialize_argument_parser():
         dest='blue',
         help='creatures on the blue side',
         type=str,
+        nargs='+',
     )
     parser.add_argument(
         '-t', '--test',
@@ -59,7 +117,8 @@ def initialize_argument_parser():
     parser.add_argument(
         '-l', '--level',
         dest='level',
-        help='the level of the character',
+        help='the level of the characters',
+        default=1,
         type=int,
     )
     parser.add_argument(
@@ -86,6 +145,7 @@ def initialize_argument_parser():
         dest='red',
         help='creatures on the red side',
         type=str,
+        nargs='+',
     )
     parser.add_argument(
         '--trials',
@@ -94,18 +154,35 @@ def initialize_argument_parser():
         help='The number of trials to run',
         type=int,
     )
+    parser.add_argument(
+        '--bl',
+        dest='blue level',
+        help='level of creatures on the blue side',
+        type=int,
+    )
+    parser.add_argument(
+        '--rl',
+        dest='red level',
+        help='level of creatures on the red side',
+        type=int,
+    )
     return vars(parser.parse_args())
 
 def custom_red_modifications(red):
-    red.level = 14
-    red.clear_cache()
+    """Modify the CreatureGroup for random testing
+
+    Args:
+        red (CreatureGroup): Group of red creatures
+    """
     pass
-    # red.add_ability('heartseeker')
-    # red.add_ability('critical multiplier')
 
 def custom_blue_modifications(blue):
+    """Modify the CreatureGroup for random testing
+
+    Args:
+        blue (CreatureGroup): Group of blue creatures
+    """
     pass
-    # blue.add_ability('extra attack')
 
 def generate_combat_results(red, blue, trials):
     raw_results = list()
@@ -129,8 +206,8 @@ def generate_combat_results(red, blue, trials):
 
 def test_training_dummy(level, trials):
     sample_creature_names = 'barbarian barbarian_greatsword cleric cleric_spells druid druid_spells fighter fighter_dex ranger rogue rogue_str sorcerer warrior warrior_dex warrior_str_dex wizard'.split()
-    sample_creatures = [get_sample_creature(name, level=level) for name in sample_creature_names]
-    training_dummy = get_sample_creature('dummy', level=level)
+    sample_creatures = [Creature.from_sample_creature(name, level=level) for name in sample_creature_names]
+    training_dummy = Creature.from_sample_creature('dummy', level=level)
 
     results = dict()
 
@@ -146,20 +223,29 @@ def test_training_dummy(level, trials):
     for key in results.keys():
         results[key] = round(results[key], 1)
 
-
     pprint(results)
 
 
 def main(args):
-    red = get_sample_creature(args['red'], level=args.get('level'))
-    custom_red_modifications(red)
-    blue = get_sample_creature(args['blue'], level=args.get('level'))
+    blue_creatures = [Creature.from_sample_creature(
+        name,
+        level=args['blue level'] or args['level']
+    ) for name in args['blue']]
+    blue = CreatureGroup(blue_creatures)
+
+    red_creatures = [Creature.from_sample_creature(
+        name,
+        level=args['red level'] or args['level']
+    ) for name in args['red']]
+    red = CreatureGroup(red_creatures)
+
     custom_blue_modifications(blue)
+    custom_red_modifications(red)
 
     if args.get('verbose'):
         print("RED:\n{}\nBLUE:\n{}".format(red, blue))
 
-    print(generate_combat_results(red, blue, args['trials']))
+    pprint(generate_combat_results(red, blue, args['trials']))
 
 if __name__ == "__main__":
     cmd_args = initialize_argument_parser()
@@ -167,14 +253,21 @@ if __name__ == "__main__":
         cProfile.run('main(cmd_args)', sort=cmd_args.get('profile'))
     elif cmd_args.get('test') == 'dummy':
         test_training_dummy(
-            level=cmd_args.get('level', 1),
+            level=cmd_args['level'],
             trials=100
         )
     elif cmd_args.get('test') == 'levels':
-        cmd_args['trials'] /= 10
+        cmd_args['trials'] //= 10
         for i in range(1, 21):
             cmd_args['level'] = i
-            print(str(i) + ":",)
+            print(str(i) + ": ", end="")
+            main(cmd_args)
+    elif cmd_args.get('test') == 'level_diff':
+        cmd_args['trials'] //= 10
+        for i in range(3, 21):
+            cmd_args['blue level'] = i
+            cmd_args['red level'] = i-2
+            print(str(i) + ": ", end="")
             main(cmd_args)
     else:
         main(cmd_args)

@@ -200,11 +200,11 @@ def calculate_attribute_progression(progression, level):
 
     try:
         return {
-            'full': level + 3,
-            'primary': level + 4,
-            'secondary': (level * 3) // 4 + 2,
-            'tertiary': level // 2,
-            'bad': -2 + level // 5,
+            level + 3,
+            'primary': level + 6,
+            'secondary': level + 2,
+            'tertiary': level // 2 + 2,
+            'none': 0,
             None: level // 5,
         }[progression]
     except KeyError:

@@ -3,6 +3,7 @@
 import argparse
 from rise_gen.ability import Ability
 from rise_gen.dice import Die, DieCollection, d20
+from rise_gen.monster_leveler import MonsterLeveler
 from rise_gen.rise_data import (
     Armor, Race, RiseClass, Shield, Weapon, calculate_attribute_progression
 )
@@ -196,9 +197,17 @@ class CreatureStatistics(object):
             return accuracy
         elif self.attack_type == 'spell':
             # class_scaling = (self.level // 5) + 2
-            class_scaling = 0
+            class_scaling = 2
             # this feat scaling is weird and approximate, but whatever
-            feat_scaling = min(4, 1 + self.level // 4)
+            # feat_scaling = min(4, (self.level - 1) // 4)
+            if self.level < 8:
+                feat_scaling = 0
+            elif self.level < 12:
+                feat_scaling = 2
+            elif self.level < 16:
+                feat_scaling = 3
+            else:
+                feat_scaling = 4
             return self.level + class_scaling + feat_scaling
         else:
             raise Exception("Error: invalid attack type '{0}'".format(self.attack_type))
@@ -230,7 +239,7 @@ class CreatureStatistics(object):
                 damage_bonus += self.strength // 2
 
             # add the +1 bonus for two-handed weapons
-            if self.weapon and self.weapon_encumbrance == 'heavy':
+            if self.weapon and self.weapon_encumbrance == 'heavy' and not self.attack_range:
                 damage_bonus += 1
             for effect in self.active_effects_with_tag('physical damage bonus'):
                 damage_bonus = effect(self, damage_bonus)
@@ -248,16 +257,19 @@ class CreatureStatistics(object):
 
         damage_dice = None
         if self.attack_type == 'physical':
-            try:
-                damage_dice = self.weapon.dice
-            except AttributeError:
-                damage_dice = DieCollection()
+            # this used to have a try/catch; why?
+            damage_dice = self.weapon.dice
             for effect in self.active_effects_with_tag('physical damage dice'):
                 damage_dice = effect(self, damage_dice)
 
         elif self.attack_type == 'spell':
-            #TODO: make framework for named spells
-            if self.special_attack_name == 'scorching ray' or self.special_attack_name == 'inflict wounds':
+            # TODO: make framework for named spells
+            # we use cantrips instead of full spells until 4th level
+            if self.level <= 3:
+                damage_dice = DieCollection(
+                    Die(size=6, count=self.accuracy // 2)
+                )
+            elif self.special_attack_name == 'scorching ray' or self.special_attack_name == 'inflict wounds':
                 damage_dice = DieCollection(
                     Die(size=6, count=self.accuracy)
                 )
@@ -425,7 +437,7 @@ class CreatureStatistics(object):
         return land_speed
 
     def _calculate_armor(self):
-        """The creature's weapon (Weapon)"""
+        """The creature's armor (Armor)"""
         if self.armor_name is None:
             return None
         armor = Armor.from_name(self.armor_name)
@@ -436,7 +448,7 @@ class CreatureStatistics(object):
     def _calculate_weapon(self):
         """The creature's weapon (Weapon)"""
         if self.weapon_names is None:
-            return None
+            return Weapon.from_name('no weapon')
         weapon = Weapon.from_name(self.weapon_names[0])
         for effect in self.active_effects_with_tag('weapon'):
             weapon = effect(self, weapon)
@@ -691,12 +703,18 @@ class Creature(CreatureStatistics):
             attack_result -= 10
 
         if attack_result >= creature.armor_defense:
+            if (self.weapon.dual_wielding):
+                # damage = max(self.roll_damage(), self.roll_damage())
+                damage = self.roll_damage() + self.weapon.roll_damage()
+            else:
+                damage = self.roll_damage()
             creature.take_damage(self.roll_damage())
             # check for critical hits
             if roll >= self.critical_threshold:
                 # start from 1 because the first hit was already counted
                 for i in range(1, self.critical_multiplier):
-                    creature.take_damage(self.roll_damage())
+                    damage += self.roll_damage()
+            creature.take_damage(damage)
 
     def attack_with_spell(self, creature):
         """Attack the given creature with a spell"""
@@ -705,7 +723,10 @@ class Creature(CreatureStatistics):
         #TODO: implement generic framework for spells
         spell_damage = self.roll_damage()
         defense = min(creature.fortitude, creature.mental, creature.reflex)
-        if attack_result >= defense:
+        # critical success double damage
+        if attack_result >= defense + 10:
+            creature.take_damage(spell_damage * 2)
+        elif attack_result >= defense:
             creature.take_damage(spell_damage)
         else:
             creature.take_damage(spell_damage // 2)
@@ -748,7 +769,7 @@ class Creature(CreatureStatistics):
             cls.sample_creatures.update(util.import_yaml_file('content/monsters.yaml'))
 
         try:
-            sample_data = cls.sample_creatures[sample_name].copy()
+            sample_properties = cls.sample_creatures[sample_name].copy()
         except KeyError:
             raise Exception(
                 "Error: Unable to recognize sample creature '{0}'".format(
@@ -757,18 +778,23 @@ class Creature(CreatureStatistics):
             )
 
         # enforce underscores instead of spaces
-        for key in sample_data:
+        for key in sample_properties:
             python_key = key.replace(' ', '_')
             if key != python_key:
-                sample_data[python_key] = sample_data.pop(key)
+                sample_properties[python_key] = sample_properties.pop(key)
 
         for key, value in kwargs.items():
             if value is not None:
-                sample_data[key] = value
+                sample_properties[key] = value
+
+        # use a monster leveler to automatically determine level
+        if sample_properties.get('level') is None:
+            leveler = MonsterLeveler.from_monster_name(sample_name)
+            sample_properties['level'] = int(round(leveler.level()))
 
         return cls(
             name=sample_name,
-            properties=sample_data
+            properties=sample_properties
         )
 
 
@@ -847,8 +873,8 @@ def main():
         else:
             weapon = None
 
-        if args['attributes']:
-            starting_attributes = args['attributes']
+        if args['starting_attributes']:
+            starting_attributes = args['starting_attributes']
         else:
             raise Exception("Error: no attributes provided")
 

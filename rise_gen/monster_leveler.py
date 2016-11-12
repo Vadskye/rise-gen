@@ -18,6 +18,8 @@ RAW_MODIFIERS = util.import_yaml_file('content/monster_modifiers.yaml')
 
 class MonsterLeveler(Leveler):
 
+    monsters = None
+
     def _attributes_modifier(self):
         """We don't care about the names - just the values"""
         modifier = 0
@@ -84,6 +86,13 @@ class MonsterLeveler(Leveler):
 
     def effective_level(self):
         return self.level()
+
+    @classmethod
+    def from_monster_name(cls, name):
+        """Generate a leveler from only the name of a monster"""
+        if cls.monsters is None:
+            cls.monsters = util.import_yaml_file('content/monsters.yaml')
+        return cls(name, cls.monsters[name])
 MonsterLeveler.import_config('content/monster_leveler_config.yaml')
 
 
