@@ -3,7 +3,6 @@
 import argparse
 from rise_gen.ability import Ability
 from rise_gen.dice import Die, DieCollection, d20
-from rise_gen.monster_leveler import MonsterLeveler
 from rise_gen.rise_data import (
     Armor, MonsterClass, MonsterType, Race, RiseClass, Shield, Weapon, calculate_attribute_progression
 )
