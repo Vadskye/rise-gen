@@ -17,7 +17,7 @@ def test_fighter_properties():
         'armor_defense': 21,
         'attack_count': 1,
         'combat_prowess': 3,
-        'damage_bonus': 2,
+        'damage_bonus': 3,
         'damage_dice': DieCollection(Die(8)),
         'fortitude': 20,
         'hit_points': 10,
@@ -46,7 +46,7 @@ def test_fighter_properties_at_higher_level():
         'fortitude': 33,
         'hit_points': 160,
         'maneuver_defense': 23,
-        'mental': 23,
+        'mental': 22,
         'name': 'fighter',
         'reach': 5,
         'reflex': 17,
@@ -62,10 +62,10 @@ def test_fighter_string():
     assert_equal(str(c), """
 human fighter 1
 [HP] 10; [Defs] AD 21, MD 14; Fort 20, Ref 10, Ment 13
-[Atk] 8: 1d8+2; [Prowess] 3
+[Atk] 8: 1d8+3; [Prowess] 3
 [Attr] 4 0 4 0 0 0
 [Space] 5, [Reach] 5, [Speed] 30
-[Abil] Armor Discipline (Resilience), Magic Items, Size Modifiers
+[Abil] Armor Discipline (Resilience), Magic Items, Mighty Blows, Size Modifiers
     """.strip())
 
 def test_all_samples():
