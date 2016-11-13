@@ -45,15 +45,18 @@ class Ability:
         name,
         effects,
         prerequisite=None,
-        power=None,
+        effect_strength=None,
     ):
         self.name = name
         self.effects = effects
         self.prerequisite = prerequisite or (lambda creature: True)
-        self.power = power or 'average'
+
+        if effect_strength is not None:
+            for effect in self.effects:
+                effect.effect_strength = effect_strength
 
     @classmethod
-    def by_name(cls, ability_name):
+    def by_name(cls, ability_name, effect_strength=None):
         if Ability.ability_definitions is None:
             Ability.ability_definitions = get_ability_definitions()
         try:
@@ -62,7 +65,7 @@ class Ability:
                 name=ability_name,
                 effects=ability_definition.get('effects', list()),
                 prerequisite=ability_definition.get('prerequisite'),
-                power=ability_definition.get('power', None),
+                effect_strength=effect_strength,
             )
         except KeyError:
             raise Exception(
@@ -95,10 +98,21 @@ class AbilityEffect:
     def __call__(self, creature):
         return self.effect(creature)
 
-
 class Modifier(AbilityEffect):
     def __call__(self, creature, value):
         return self.effect(creature, value)
+
+    def __repr__(self):
+        return "{}({})".format(self.__class__.__name__, self.effect_tags)
+
+class VariableModifier(AbilityEffect):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.effect_strength = 0
+
+    def __call__(self, creature, value):
+        return self.effect(creature, value, self.effect_strength)
 
     def __repr__(self):
         return "{}({})".format(self.__class__.__name__, self.effect_tags)
@@ -108,7 +122,6 @@ class ModifierInPlace(AbilityEffect):
     def __call__(self, creature, value):
         self.effect(creature, value)
         return value
-
 
 def plus(modifier):
     return lambda creature, value: value + modifier
@@ -505,6 +518,12 @@ def get_ability_definitions():
                     ['end of round'],
                     lambda creature: creature.heal(creature.level)
                 ),
+            ],
+        },
+        'natural armor': {
+            'effects': [
+                VariableModifier(['armor defense'],
+                               lambda creature, value, effect_strength: value + effect_strength),
             ],
         },
         'natural grab': {

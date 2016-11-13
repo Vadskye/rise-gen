@@ -7,6 +7,7 @@ from rise_gen.monster_leveler import MonsterLeveler
 from rise_gen.rise_data import (
     Armor, MonsterClass, MonsterType, Race, RiseClass, Shield, Weapon, calculate_attribute_progression
 )
+import rise_gen.latex as latex
 import rise_gen.util as util
 
 ATTRIBUTES = """
@@ -109,6 +110,12 @@ class CreatureStatistics(object):
 
         if isinstance(ability, str):
             ability = Ability.by_name(ability)
+        elif isinstance(ability, dict):
+            # some abilities also include values for the ability
+            if len(ability.keys()) != 1:
+                raise Exception("Invalid dictionary ability '{}'".format(ability))
+            ability_name = next(iter(ability))
+            ability = Ability.by_name(ability_name, ability[ability_name])
         elif not isinstance(ability, Ability):
             raise Exception("Unable to recognize type of ability '{}'".format(ability))
         self.abilities.append(ability)
@@ -925,6 +932,12 @@ def initialize_argument_parser():
         type=str,
         help="the character's weapon",
     )
+    parser.add_argument(
+        '-x', '--latex',
+        dest='latex',
+        action='store_true',
+        help="print the LaTeX for the creature",
+    )
     return vars(parser.parse_args())
 
 
@@ -938,7 +951,10 @@ def main():
                 level=args.get('level'),
                 starting_attributes=args.get('starting_attributes'),
             )
-            print(sample_creature)
+            if (args['latex']):
+                print(latex.monster_latex(sample_creature))
+            else:
+                print(sample_creature)
     else:
         if args['rise_class']:
             rise_class = RiseClass.from_name(args['rise_class'])

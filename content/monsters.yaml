@@ -18,6 +18,7 @@ aboleth:
   traits:
     - amphibious
     - enslave
+    - natural armor: 4
     - psionics
     - slime
 dummy:
@@ -138,6 +139,7 @@ brown_bear: &BROWN_BEAR
     willpower: 0
   traits:
     - durable
+    - natural armor: 2
     - natural grab
     - great fortitude
 black_bear:
