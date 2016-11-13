@@ -1,25 +1,24 @@
 aboleth:
-  race: monster
-  rise class: aberration
+  monster type: aberration
+  monster class: adept
+  level: 12
   size: huge
   weapons:
     - tentacle
   attributes:
-    strength: tertiary
-    dexterity: -2
-    constitution: primary
-    intelligence: primary
-    perception: tertiary
-    willpower: primary
+    strength: 3
+    dexterity: 0
+    constitution: 4
+    intelligence: 3
+    perception: 1
+    willpower: 4
   speeds:
     land: 10
     swim: 60
-  spells:
-    - persistent image
   traits:
     - amphibious
     - enslave
-    - mucus cloud
+    - psionics
     - slime
 dummy:
   race: monster
@@ -122,21 +121,25 @@ arkite_monk:
     - arcanite sigil - flaming fists
     - arcanite sigil - mind control
 brown_bear: &BROWN_BEAR
-  race: monster
   size: large
-  rise class: animal
+  monster type: animal
+  monster class: behemoth
   level: 6
   weapons:
     - bite
     - claw
     - claw
   attributes:
-    strength: primary
-    dexterity: tertiary
-    constitution: primary
+    strength: 4
+    dexterity: 1
+    constitution: 4
     intelligence: -7
-    perception: secondary
-    willpower: tertiary
+    perception: 1
+    willpower: 0
+  traits:
+    - durable
+    - natural grab
+    - great fortitude
 black_bear:
   <<: *BROWN_BEAR
   size: medium
