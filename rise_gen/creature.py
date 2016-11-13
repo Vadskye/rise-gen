@@ -860,7 +860,7 @@ def base_class_defense_bonus(progression):
 def calculate_combat_prowess(progression, level):
     return {
         'good': level + 2,
-        'average': (level * 4) // 5 + 1,
+        'average': (level * 4) // 5 + 2,
         'poor': (level * 2) // 3 + 1,
     }[progression]
 
