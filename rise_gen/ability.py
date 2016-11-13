@@ -46,14 +46,17 @@ class Ability:
         effects,
         prerequisite=None,
         effect_strength=None,
+        hidden=None,
     ):
         self.name = name
         self.effects = effects
         self.prerequisite = prerequisite or (lambda creature: True)
+        self.effect_strength = effect_strength
+        self.hidden = hidden
 
-        if effect_strength is not None:
+        if self.effect_strength is not None:
             for effect in self.effects:
-                effect.effect_strength = effect_strength
+                effect.effect_strength = self.effect_strength
 
     @classmethod
     def by_name(cls, ability_name, effect_strength=None):
@@ -66,6 +69,7 @@ class Ability:
                 effects=ability_definition.get('effects', list()),
                 prerequisite=ability_definition.get('prerequisite'),
                 effect_strength=effect_strength,
+                hidden=ability_definition.get('hidden')
             )
         except KeyError:
             raise Exception(
@@ -79,6 +83,12 @@ class Ability:
             self.effects,
             "pre" if self.prerequisite is not None else None,
         )
+
+    def __str__(self):
+        if self.effect_strength is None:
+            return self.name
+        else:
+            return "{} {}{}".format(self.name, "+" if self.effect_strength >= 0 else "-", self.effect_strength)
 
 
 class AbilityEffect:
@@ -275,6 +285,7 @@ def get_ability_definitions():
         # MONSTER TYPE
         'limited intelligence': {
             'effects': [],
+            'hidden': True,
         },
     }
 
@@ -408,6 +419,7 @@ def get_ability_definitions():
                                     }[creature.size]
                                 )),
             ],
+            'hidden': True,
         },
         'extra attack': {
             'effects': [

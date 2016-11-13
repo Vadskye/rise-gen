@@ -29,7 +29,7 @@ def monster_latex(creature):
 def abilities(creature):
     return "\\pari \\mb<Abilities> " + ", ".join(
         [name.title() for name in sorted(
-            [ability.name for ability in creature.active_abilities])
+            [str(ability) for ability in creature.visible_abilities])
         ]
     )
 

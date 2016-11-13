@@ -173,6 +173,13 @@ class CreatureStatistics(object):
         )
 
     @property
+    def visible_abilities(self):
+        return filter(
+            lambda ability: ability.prerequisite(self) and not ability.hidden,
+            self.abilities
+        )
+
+    @property
     def attack_range(self):
         return self.weapon.range
 
