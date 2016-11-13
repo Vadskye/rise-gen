@@ -49,33 +49,12 @@ class RiseData(object):
 
 class Race(RiseData):
 
-    @property
-    def space(self):
-        """Return the physical space occupied by this race
-
-        Yields:
-            int: space in feet
-        """
-
-        return {
-            'small': 5,
-            'medium': 5,
-            'large': 10,
-        }[self.size]
-
-    @property
-    def reach(self):
-        """Return the distance this race threatens
-
-        Yields:
-            int: reach in feet
-        """
-
-        return {
-            'small': 5,
-            'medium': 5,
-            'large': 10,
-        }[self.size]
+    def __init__(self, name, size, land_speed):
+        super(Race, self).__init__(
+            name=name,
+            size=size,
+            land_speed=land_speed,
+        )
 
     @classmethod
     def init_data(cls):
@@ -90,9 +69,53 @@ class Race(RiseData):
         )
 
 
+class MonsterClass(RiseData):
+
+    def __init__(self, name, combat_prowess):
+        super(MonsterClass, self).__init__(
+            name=name,
+            combat_prowess=combat_prowess,
+        )
+
+    @classmethod
+    def init_data(cls):
+        with open('content/monster_classes.yaml', 'r') as classes_file:
+            return yaml.load(classes_file)
+
+    def __str__(self):
+        return "MonsterClass({}, {}, {}, {})".format(
+            self.name,
+            self.combat_prowess,
+        )
+
+
+class MonsterType(RiseData):
+
+    def __init__(self, name, fortitude, reflex, mental, abilities=None):
+        super(MonsterType, self).__init__(
+            name=name,
+            fortitude=fortitude,
+            reflex=reflex,
+            mental=mental,
+            abilities=abilities
+        )
+
+    @classmethod
+    def init_data(cls):
+        with open('content/monster_types.yaml', 'r') as types_file:
+            return yaml.load(types_file)
+
+    def __str__(self):
+        return "MonsterType({}, {}, {}, {})".format(
+            self.name,
+            self.fortitude,
+            self.reflex,
+            self.mental,
+        )
+
 class RiseClass(RiseData):
 
-    def __init__(self, name, combat_prowess, fortitude=None, reflex=None, mental=None, class_features=None):
+    def __init__(self, name, combat_prowess, fortitude, reflex, mental, class_features=None):
         super(RiseClass, self).__init__(
             name=name,
             combat_prowess=combat_prowess,

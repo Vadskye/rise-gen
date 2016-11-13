@@ -26,6 +26,7 @@ POSSIBLE_EFFECT_TAGS = [
     'maneuver defense',
     'mental',
     'perception',
+    'power',
     'reflex',
     'temporary hit points',
     'speed',
@@ -204,6 +205,33 @@ def get_ability_definitions():
             ],
             'prerequisite': lambda creature: creature.level >= 3
         },
+        'armor discipline (agility)': {
+            'effects': [
+                Modifier(['armor check penalty'],
+                         lambda creature, value: max(0, value - 2)),
+                Modifier(['armor defense'],
+                         # technically, this should be implemented by decreasing the
+                         # armor encumbrance
+                         # but that also should go with increasing the category of
+                         # armor used, since you would upgrade armor categories
+                         # this can be approximated by simply increasing armor
+                         # defense
+                         lambda creature, value: value + (
+                             4 if creature.level >= 13 else
+                             (2 if creature.level >= 7 else value)
+                         )),
+            ],
+        },
+        'armor discipline (resilience)': {
+            'effects': [
+                Modifier(['armor defense'],
+                         lambda creature, value: value + 1),
+                Modifier(['damage reduction'],
+                         lambda creature, value: value + (
+                             creature.level if creature.level >= 7 else 0
+                         )),
+            ],
+        },
 
         # RANGER
         'quarry': {
@@ -230,8 +258,14 @@ def get_ability_definitions():
                                 )),
             ],
         },
+
+        # MONSTER TYPE
+        'limited intelligence': {
+            'effects': [],
+        },
     }
 
+    # FEATS
     feats = {
         'deadly aim': {
             'effects': [
@@ -298,7 +332,24 @@ def get_ability_definitions():
         },
     }
 
+    # MISC
     misc = {
+        'darkvision': {
+            'effects': [],
+        },
+        'magic items': {
+            'effects': [
+                Modifier(['physical damage bonus'],
+                         lambda creature, value: value + creature.level // 3),
+                Modifier(['temporary hit points'],
+                         lambda creature, value: max(
+                             value,
+                             (creature.level // 3) * creature.level
+                         )),
+                ModifierInPlace(['spell damage dice'],
+                         lambda creature, dice: setattr(dice.dice[0], 'count', dice.dice[0].count + creature.level // 3))
+            ],
+        },
         'size modifiers': {
             'effects': [
                 Modifier(['accuracy', 'armor defense', 'reflex'],
@@ -371,6 +422,7 @@ def get_ability_definitions():
         },
     }
 
+    # TEMPLATES
     templates = {
         'martial': {
             'effects': [
@@ -401,6 +453,7 @@ def get_ability_definitions():
         },
     }
 
+    # TRAITS
     traits = {
         'arcanite mech': {
             'effects': [
@@ -434,31 +487,16 @@ def get_ability_definitions():
                          lambda creature, value: value + 5),
             ],
         },
-        'armor discipline (agility)': {
+        'durable': {
             'effects': [
-                Modifier(['armor check penalty'],
-                         lambda creature, value: max(0, value - 2)),
-                Modifier(['armor defense'],
-                         # technically, this should be implemented by decreasing the
-                         # armor encumbrance
-                         # but that also should go with increasing the category of
-                         # armor used, since you would upgrade armor categories
-                         # this can be approximated by simply increasing armor
-                         # defense
-                         lambda creature, value: value + (
-                             4 if creature.level >= 13 else
-                             (2 if creature.level >= 7 else value)
-                         )),
+                Modifier(['hit points'],
+                         lambda creature, value: value + creature.power * 2),
             ],
         },
-        'armor discipline (resilience)': {
+        'great fortitude': {
             'effects': [
-                Modifier(['armor defense'],
-                         lambda creature, value: value + 1),
-                Modifier(['damage reduction'],
-                         lambda creature, value: value + (
-                             creature.level if creature.level >= 7 else 0
-                         )),
+                Modifier(['fortitude'],
+                              lambda creature, value: value + 4),
             ],
         },
         'fast healing': {
@@ -469,21 +507,8 @@ def get_ability_definitions():
                 ),
             ],
         },
-        'improved grab': {
+        'natural grab': {
             'effects': [],
-        },
-        'magic items': {
-            'effects': [
-                Modifier(['physical damage bonus'],
-                         lambda creature, value: value + creature.level // 3),
-                Modifier(['temporary hit points'],
-                         lambda creature, value: max(
-                             value,
-                             (creature.level // 3) * creature.level
-                         )),
-                ModifierInPlace(['spell damage dice'],
-                         lambda creature, dice: setattr(dice.dice[0], 'count', dice.dice[0].count + creature.level // 3))
-            ],
         },
         'tough hide': {
             'effects': [
@@ -493,14 +518,15 @@ def get_ability_definitions():
         },
 
         # these traits have no effects that can be calculated for now
-        'amphibious': {'power': 'weak'},
+        'amphibious': {},
         'babble': {},
         'divine influence': {},
         'enslave': {},
-        'incorporeal': {'power': 'extreme'},
+        'incorporeal': {},
         'mucus cloud': {},
-        'no strength': {'power': 'none'},
-        'no constitution': {'power': 'none'},
+        'no strength': {},
+        'no constitution': {},
+        'psionics': {},
         'slime': {},
         'spell resistance': {},
         'tongues': {},

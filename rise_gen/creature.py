@@ -5,7 +5,7 @@ from rise_gen.ability import Ability
 from rise_gen.dice import Die, DieCollection, d20
 from rise_gen.monster_leveler import MonsterLeveler
 from rise_gen.rise_data import (
-    Armor, Race, RiseClass, Shield, Weapon, calculate_attribute_progression
+    Armor, MonsterClass, MonsterType, Race, RiseClass, Shield, Weapon, calculate_attribute_progression
 )
 import rise_gen.util as util
 
@@ -40,6 +40,10 @@ class CreatureStatistics(object):
         self.attributes = dict()
         self.feats = None
         self.level = 1
+        self.monster_class = None
+        self.monster_type = None
+        self.race = None
+        self.rise_class = None
         self.shield = None
         self.speeds = dict()
         self.templates = None
@@ -58,6 +62,10 @@ class CreatureStatistics(object):
                 except AttributeError:
                     raise Exception("Invalid property '{}'".format(property_name))
 
+        if isinstance(self.monster_class, str):
+            self.monster_class = MonsterClass.from_name(self.monster_class)
+        if isinstance(self.monster_type, str):
+            self.monster_type = MonsterType.from_name(self.monster_type)
         if isinstance(self.race, str):
             self.race = Race.from_name(self.race)
         if isinstance(self.rise_class, str):
@@ -73,7 +81,10 @@ class CreatureStatistics(object):
 
         # add special abilities (feats, class features, etc.)
         self.abilities = list()
-        if self.rise_class.class_features:
+        if self.monster_type and self.monster_type.abilities:
+            for ability in self.monster_type.abilities:
+                self.add_ability(ability)
+        if self.rise_class and self.rise_class.class_features:
             for class_feature in self.rise_class.class_features:
                 self.add_ability(class_feature)
         if self.feats is not None:
@@ -160,13 +171,28 @@ class CreatureStatistics(object):
 
     @property
     def reach(self):
-        """The distance this race threatens in feet (int)"""
-        return self.race.reach
+        """The distance this creature threatens in feet (int)"""
+        return {
+            'small': 5,
+            'medium': 5,
+            'large': 10,
+            'huge': 20,
+            'gargantuan': 30,
+            'colossal': 40,
+        }[self.size]
 
     @property
     def space(self):
-        """The physical space occupied by this race in feet (int)"""
-        return self.race.space
+        """The physical space occupied by this creature in feet (int)"""
+
+        return {
+            'small': 5,
+            'medium': 5,
+            'large': 10,
+            'huge': 20,
+            'gargantuan': 30,
+            'colossal': 40,
+        }[self.size]
 
     @property
     def weapon_encumbrance(self):
@@ -174,6 +200,19 @@ class CreatureStatistics(object):
             return self.weapon.encumbrance
         except AttributeError:
             return None
+
+    def base_progression(self, progression_type):
+        if self.rise_class is not None:
+            return getattr(self.rise_class, progression_type)
+        elif self.monster_type is not None and self.monster_class is not None:
+            return {
+                'combat_prowess': self.monster_class.combat_prowess,
+                'fortitude': self.monster_type.fortitude,
+                'mental': self.monster_type.mental,
+                'reflex': self.monster_type.reflex,
+            }[progression_type]
+        else:
+            raise Exception("Unable to determine progression: creature is invalid")
 
     def _calculate_accuracy(self):
         """The bonus the creature has with attacks (int)"""
@@ -329,7 +368,7 @@ class CreatureStatistics(object):
         return armor_defense
 
     def _calculate_combat_prowess(self):
-        prowess = calculate_combat_prowess(self.rise_class.combat_prowess, self.level)
+        prowess = calculate_combat_prowess(self.base_progression('combat_prowess'), self.level)
         for effect in self.active_effects_with_tag('combat prowess'):
             prowess = effect(self, prowess)
         return prowess
@@ -351,11 +390,11 @@ class CreatureStatistics(object):
             self.constitution,
             self.strength,
             calculate_base_defense(
-                self.rise_class.fortitude,
+                self.base_progression('fortitude'),
                 self.level,
             )
         )
-        fortitude += base_class_defense_bonus(self.rise_class.fortitude)
+        fortitude += base_class_defense_bonus(self.base_progression('fortitude'))
         # add the automatic modifier from Con
         if self.constitution >= 0:
             fortitude += self.constitution // 2
@@ -393,11 +432,11 @@ class CreatureStatistics(object):
             self.willpower,
             self.intelligence,
             calculate_base_defense(
-                self.rise_class.mental,
+                self.base_progression('mental'),
                 self.level
             )
         )
-        mental += base_class_defense_bonus(self.rise_class.mental)
+        mental += base_class_defense_bonus(self.base_progression('mental'))
         # add the automatic modifier from Willpower
         if self.willpower >= 0:
             mental += self.willpower // 2
@@ -412,11 +451,11 @@ class CreatureStatistics(object):
             self.dexterity,
             self.perception,
             calculate_base_defense(
-                self.rise_class.reflex,
+                self.base_progression('reflex'),
                 self.level
             )
         )
-        reflex += base_class_defense_bonus(self.rise_class.reflex)
+        reflex += base_class_defense_bonus(self.base_progression('reflex'))
         # add the automatic modifier from Dexterity
         if self.dexterity >= 0:
             reflex += self.dexterity // 5
@@ -428,7 +467,7 @@ class CreatureStatistics(object):
 
     def _calculate_land_speed(self):
         """The creature's land speed in feet (int)"""
-        land_speed = self.speeds.get('land') or self.race.land_speed
+        land_speed = self.speeds.get('land', default_land_speed(self.size))
         for effect in self.active_effects_with_tag('land speed') + self.active_effects_with_tag('speed'):
             land_speed = effect(self, land_speed)
         return land_speed
@@ -450,6 +489,15 @@ class CreatureStatistics(object):
         for effect in self.active_effects_with_tag('weapon'):
             weapon = effect(self, weapon)
         return weapon
+
+    def _calculate_power(self):
+        """A monster's power (int)"""
+        if self.monster_class is None:
+            return None
+        power = self.level + 1 + self.level // 5
+        for effect in self.active_effects_with_tag('power'):
+            power = effect(self, power)
+        return power
 
     def _calculate_numerical_statistic(self, statistic_tag_name):
         """Any generic numerical statistic which is typically 0
@@ -485,7 +533,7 @@ class CreatureStatistics(object):
 
     def __str__(self):
         return '{0} {1} {2}\n{3}\n{4}\n{5}\n{6}\n{7}'.format(
-            self.race.name,
+            self.race.name if self.race else self.monster_type.name,
             self.name,
             self.level,
             self._to_string_defenses(),
@@ -600,6 +648,7 @@ cached_properties = """
     maneuver_defense
     mental
     reflex
+    power
     weapon
 """.split()
 for property_name in cached_properties:
@@ -794,6 +843,13 @@ class Creature(CreatureStatistics):
             properties=sample_properties
         )
 
+def base_class_defense_bonus(progression):
+    return {
+        'good': 4,
+        'average': 2,
+        'poor': 0,
+    }[progression]
+
 def calculate_combat_prowess(progression, level):
     return {
         'good': level + 2,
@@ -808,12 +864,18 @@ def calculate_base_defense(progression, level):
         'poor': (level * 3) // 4,
     }[progression]
 
-def base_class_defense_bonus(progression):
+def default_land_speed(size):
     return {
-        'good': 4,
-        'average': 2,
-        'poor': 0,
-    }[progression]
+        'fine': 10,
+        'diminuitive': 15,
+        'tiny': 20,
+        'small': 25,
+        'medium': 30,
+        'large': 40,
+        'huge': 50,
+        'gargantuan': 60,
+        'colossal': 70,
+    }[size]
 
 def initialize_argument_parser():
     parser = argparse.ArgumentParser(
