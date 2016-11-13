@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from rise_gen.dice import Die
+import re
 
 POSSIBLE_EFFECT_TAGS = [
     'accuracy',
@@ -29,12 +30,14 @@ POSSIBLE_EFFECT_TAGS = [
     'power',
     'reflex',
     'temporary hit points',
+    'size',
     'speed',
     'strength',
     'weapon',
     'willpower',
 ]
 
+SIZES = ['fine', 'diminuitive', 'tiny', 'small', 'medium', 'large', 'huge', 'gargantuan', 'colossal']
 
 class Ability:
 
@@ -43,20 +46,23 @@ class Ability:
     def __init__(
         self,
         name,
-        effects,
+        effects = None,
         prerequisite=None,
         effect_strength=None,
-        hidden=None,
+        tags=None,
     ):
         self.name = name
         self.effects = effects
         self.prerequisite = prerequisite or (lambda creature: True)
         self.effect_strength = effect_strength
-        self.hidden = hidden
+        self.tags = tags
 
         if self.effect_strength is not None:
             for effect in self.effects:
                 effect.effect_strength = self.effect_strength
+
+    def has_tag(self, tag):
+        return self.tags is not None and tag in self.tags
 
     @classmethod
     def by_name(cls, ability_name, effect_strength=None):
@@ -66,10 +72,8 @@ class Ability:
             ability_definition = Ability.ability_definitions[ability_name]
             return Ability(
                 name=ability_name,
-                effects=ability_definition.get('effects', list()),
-                prerequisite=ability_definition.get('prerequisite'),
                 effect_strength=effect_strength,
-                hidden=ability_definition.get('hidden')
+                **ability_definition
             )
         except KeyError:
             raise Exception(
@@ -87,8 +91,11 @@ class Ability:
     def __str__(self):
         if self.effect_strength is None:
             return self.name
-        else:
+        elif isinstance(self.effect_strength, int) or re.match(r'\d+$', self.effect_strength):
+            # raw numbers should be treated as modifiers
             return "{} {}{}".format(self.name, "+" if self.effect_strength >= 0 else "-", self.effect_strength)
+        else:
+            return "{} {}".format(self.name, self.effect_strength)
 
 
 class AbilityEffect:
@@ -285,7 +292,7 @@ def get_ability_definitions():
         # MONSTER TYPE
         'limited intelligence': {
             'effects': [],
-            'hidden': True,
+            'tags': set(['hidden']),
         },
     }
 
@@ -360,6 +367,7 @@ def get_ability_definitions():
     misc = {
         'darkvision': {
             'effects': [],
+            'tags': set(['sense']),
         },
         'magic items': {
             'effects': [
@@ -373,6 +381,7 @@ def get_ability_definitions():
                 ModifierInPlace(['spell damage dice'],
                          lambda creature, dice: setattr(dice.dice[0], 'count', dice.dice[0].count + creature.level // 3))
             ],
+            'tags': set(['hidden']),
         },
         'size modifiers': {
             'effects': [
@@ -419,7 +428,7 @@ def get_ability_definitions():
                                     }[creature.size]
                                 )),
             ],
-            'hidden': True,
+            'tags': set(['hidden']),
         },
         'extra attack': {
             'effects': [
@@ -443,6 +452,12 @@ def get_ability_definitions():
             'effects': [
                 Modifier(['critical multiplier'],
                          lambda creature, value: value + 1),
+            ],
+        },
+        'natural armor': {
+            'effects': [
+                VariableModifier(['armor defense'],
+                               lambda creature, value, effect_strength: value + effect_strength),
             ],
         },
     }
@@ -512,6 +527,16 @@ def get_ability_definitions():
                          lambda creature, value: value + 5),
             ],
         },
+        'behemoth size': {
+            'effects': [
+                Modifier(['size'],
+                         # find the current size in the list and go to the next
+                         # larger one
+                         # this fails for colossal; for now, that is a feature
+                         lambda creature, value: SIZES[SIZES.index(value) + creature.level // 4]),
+            ],
+            'prerequisite': lambda creature: creature.level >= 4 and creature.monster_class.name == 'behemoth',
+        },
         'durable': {
             'effects': [
                 Modifier(['hit points'],
@@ -532,11 +557,21 @@ def get_ability_definitions():
                 ),
             ],
         },
-        'natural armor': {
+        'improved natural armor': {
             'effects': [
-                VariableModifier(['armor defense'],
-                               lambda creature, value, effect_strength: value + effect_strength),
+                Modifier(['armor defense'],
+                               lambda creature, value: value + 2),
             ],
+        },
+        'increased size': {
+            'effects': [
+                Modifier(['size'],
+                         # find the current size in the list and go to the next
+                         # larger one
+                         # this fails for colossal; for now, that is a feature
+                         lambda creature, value: SIZES[SIZES.index(value) + creature.level // 6]),
+            ],
+            'prerequisite': lambda creature: creature.level >= 6,
         },
         'natural grab': {
             'effects': [],
@@ -549,19 +584,18 @@ def get_ability_definitions():
         },
 
         # these traits have no effects that can be calculated for now
-        'amphibious': {},
-        'babble': {},
-        'divine influence': {},
-        'enslave': {},
+        'attribute mastery': {},
+        'magical ability': {},
+        'magical strike': {},
+        'myriad magical abilities': {},
         'incorporeal': {},
-        'mucus cloud': {},
-        'no strength': {},
-        'no constitution': {},
-        'psionics': {},
-        'slime': {},
         'spell resistance': {},
-        'tongues': {},
     }
+    for trait_name, trait in traits.items():
+        if 'tags' in trait:
+            trait['tags'].add(['monster_trait'])
+        else:
+            trait['tags'] = set(['monster_trait'])
 
     all_abilities = dict()
     all_abilities.update(class_features)

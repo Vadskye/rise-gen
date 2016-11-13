@@ -76,7 +76,6 @@ wizard:
   fortitude: poor
   reflex: poor
   mental: good
-  attack mode: damage spells
 
 # monsters!
 aberration:

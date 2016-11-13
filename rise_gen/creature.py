@@ -39,6 +39,7 @@ class CreatureStatistics(object):
         self.armor_name = None
         self.attack_type = 'physical'
         self.attributes = dict()
+        self.base_size = None
         self.feats = None
         self.level = 1
         self.monster_class = None
@@ -57,6 +58,8 @@ class CreatureStatistics(object):
                 self.armor_name = properties[property_name]
             elif property_name == 'weapons':
                 self.weapon_names = properties[property_name]
+            elif property_name == 'size':
+                self.base_size = properties[property_name]
             else:
                 try:
                     setattr(self, property_name, properties[property_name])
@@ -75,8 +78,8 @@ class CreatureStatistics(object):
             self.shield = Shield.from_name(self.shield)
 
         # use the race's size as a default if no size is specified
-        if not hasattr(self, 'size'):
-            self.size = self.race.size
+        if self.base_size is None and self.race is not None:
+            self.base_size = self.race.size
 
         self._cache = dict()
 
@@ -175,7 +178,7 @@ class CreatureStatistics(object):
     @property
     def visible_abilities(self):
         return filter(
-            lambda ability: ability.prerequisite(self) and not ability.hidden,
+            lambda ability: ability.prerequisite(self) and not ability.has_tag('hidden'),
             self.abilities
         )
 
@@ -513,6 +516,13 @@ class CreatureStatistics(object):
             power = effect(self, power)
         return power
 
+    def _calculate_size(self):
+        """A creature's size (str)"""
+        size = self.base_size or 'medium'
+        for effect in self.active_effects_with_tag('size'):
+            size = effect(self, size)
+        return size
+
     def _calculate_numerical_statistic(self, statistic_tag_name):
         """Any generic numerical statistic which is typically 0
         such as damage reduction, temporary hit points, etc.
@@ -534,15 +544,16 @@ class CreatureStatistics(object):
 
         relevant_ability_effects = list()
         for ability in self.abilities:
-            for ability_effect in ability.effects:
-                if (
-                        effect_tag in ability_effect.effect_tags
-                        and (
-                            ability.prerequisite is None
-                            or ability.prerequisite(self)
-                        )
-                ):
-                    relevant_ability_effects.append(ability_effect)
+            if ability.effects:
+                for ability_effect in ability.effects:
+                    if (
+                            effect_tag in ability_effect.effect_tags
+                            and (
+                                ability.prerequisite is None
+                                or ability.prerequisite(self)
+                            )
+                    ):
+                        relevant_ability_effects.append(ability_effect)
         return relevant_ability_effects
 
     def __str__(self):
@@ -663,6 +674,7 @@ cached_properties = """
     mental
     reflex
     power
+    size
     weapon
 """.split()
 for property_name in cached_properties:

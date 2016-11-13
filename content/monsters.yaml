@@ -2,25 +2,27 @@ aboleth:
   monster type: aberration
   monster class: adept
   level: 12
-  size: huge
   weapons:
     - tentacle
   attributes:
-    strength: 3
+    strength: 4
     dexterity: 0
     constitution: 4
     intelligence: 3
-    perception: 1
-    willpower: 4
+    perception: 2
+    willpower: 5
   speeds:
     land: 10
     swim: 60
   traits:
-    - amphibious
-    - enslave
+    - attribute mastery
+    - increased size
+    - magical ability
+    - magical ability
+    - magical strike
+    - myriad magical abilities
+    - improved natural armor
     - natural armor: 4
-    - psionics
-    - slime
 dummy:
   race: monster
   rise class: monster
@@ -122,7 +124,6 @@ arkite_monk:
     - arcanite sigil - flaming fists
     - arcanite sigil - mind control
 brown_bear: &BROWN_BEAR
-  size: large
   monster type: animal
   monster class: behemoth
   level: 6
@@ -142,10 +143,15 @@ brown_bear: &BROWN_BEAR
     - natural armor: 2
     - natural grab
     - great fortitude
+    - behemoth size
 black_bear:
   <<: *BROWN_BEAR
-  size: medium
   level: 3
+  traits:
+    - durable
+    - natural armor: 2
+    - natural grab
+    - great fortitude
 demogorgon:
   race: monster
   rise class: outsider

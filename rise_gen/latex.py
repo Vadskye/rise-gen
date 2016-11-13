@@ -24,12 +24,26 @@ def monster_latex(creature):
             ind(8) + abilities(creature),
         ind(4) + "\\end<spellfooter>",
         "\\end<monsection>",
+        traits(creature),
     ]).replace('<', '{').replace('>', '}').replace('+', '\\plus').replace('-', '\\minus')
 
 def abilities(creature):
     return "\\pari \\mb<Abilities> " + ", ".join(
+        [name.capitalize() for name in sorted(
+            [str(ability) for ability in filter(
+                lambda ability: not ability.has_tag('monster_trait') and not ability.has_tag('sense'),
+                creature.visible_abilities
+            )])
+        ]
+    )
+
+def traits(creature):
+    return "\\parhead<Traits> " + ", ".join(
         [name.title() for name in sorted(
-            [str(ability) for ability in creature.visible_abilities])
+            [str(ability) for ability in filter(
+                lambda ability: ability.has_tag('monster_trait'),
+                creature.visible_abilities
+            )])
         ]
     )
 
@@ -65,7 +79,14 @@ def movement(creature):
     return "\\pari \\mb<Movement> {}".format(", ".join(speed_strings))
 
 def senses(creature):
-    return "\\pari \\mb<Senses>"
+    return "\\pari \\mb<Senses> " + ", ".join(
+        [name.capitalize() for name in sorted(
+            [str(ability) for ability in filter(
+                lambda ability: ability.has_tag('sense') and not ability.has_tag('monster_trait'),
+                creature.visible_abilities
+            )])
+        ]
+    )
 
 def size(creature):
-    return "\\pari \\mb<Size> {size}; \\mb<Reach> {reach}".format(size=creature.size.capitalize(), reach=creature.reach)
+    return "\\pari \\mb<Size> {size}; \\mb<Reach> {reach} ft.".format(size=creature.size.capitalize(), reach=creature.reach)
