@@ -41,6 +41,7 @@ class CreatureStatistics(object):
         self.base_size = None
         self.feats = None
         self.level = 1
+        self.subtraits = None
         self.monster_class = None
         self.monster_type = None
         self.race = None
@@ -93,6 +94,9 @@ class CreatureStatistics(object):
         if self.feats is not None:
             for feat in self.feats:
                 self.add_ability(feat)
+        if self.subtraits is not None:
+            for subtrait in self.subtraits:
+                self.add_ability(subtrait)
         if self.templates is not None:
             for template in self.templates:
                 self.add_ability(template)

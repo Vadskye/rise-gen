@@ -23,107 +23,51 @@ aboleth:
     - myriad magical abilities
     - improved natural armor
     - natural armor: 4
-dummy:
-  race: monster
-  rise class: monster
-  attributes:
-    strength: 0
-    dexterity: 0
-    constitution: 0
-    intelligence: 0
-    perception: 0
-    willpower: 0
-  templates:
-    - training dummy
 allip:
-  race: monster
-  rise class: undead
+  monster class: adept
+  monster type: undead
+  level: 4
   weapons:
     - touch
+  speeds:
+    land: ~
+    fly: 30
   attributes:
-    strength: none
-    dexterity: secondary
-    constitution: none
-    willpower: primary
+    # strength: none
+    dexterity: 3
+    perception: 1
+    # constitution: none
+    willpower: 4
   traits:
-    - babble
+    - draining touch
     - incorporeal
-    - no strength
-    - no constitution
+    - magical ability
 angel - astral deva:
-  race: monster
-  rise class: outsider
+  monster class: adept
+  monster type: outsider
+  level: 14
   weapons:
     - greatsword
-  armor: full plate
   attributes:
-    strength: primary
-    dexterity: tertiary
-    constitution: tertiary
-    intelligence: tertiary
-    perception: secondary
-    willpower: primary
+    strength: 4
+    dexterity: 3
+    constitution: 3
+    intelligence: 3
+    perception: 3
+    willpower: 3
+  subtraits:
+    - natural armor: 4
+    - low-light vision
+    - truesight: 50 ft.
   traits:
-    - divine influence
-    - spell resistance
-    - tongues
-arkite_caster:
-  race: monster
-  rise class: monster
-  level: 8
-  weapons:
-    - staff
-  attack type: spell
-  special attack name: inflict wounds
-  attributes:
-    strength: 0
-    dexterity: tertiary
-    constitution: secondary
-    intelligence: 0
-    perception: tertiary
-    willpower: -2
-  traits:
-    - arcanite sigil - armor
-    - arcanite sigil - mind control
-arkite_grappler:
-  race: monster
-  rise class: monster
-  level: 8
-  weapons:
-    - grapple
-  attributes:
-    strength: primary
-    dexterity: secondary
-    constitution: secondary
-    intelligence: 0
-    perception: 0
-    willpower: -2
-  templates:
-    - martial
-  traits:
-    - arcanite sigil - armor
-    - arcanite sigil - mind control
-    - improved grab
-arkite_monk:
-  race: monster
-  rise class: monster
-  level: 8
-  weapons:
-    - unarmed monk
-  attributes:
-    strength: secondary
-    dexterity: secondary
-    constitution: secondary
-    intelligence: 0
-    perception: tertiary
-    willpower: -2
-  templates:
-    - martial
-  traits:
-    - arcanite sigil - armor
-    - arcanite sigil - flaming fists
-    - arcanite sigil - mind control
-brown_bear: &BROWN_BEAR
+    - innate magic
+    - resist damage
+    - resist magic
+    - spellcaster
+    - skilled
+    - superior senses
+    # two missing traits
+bear, brown: &BROWN_BEAR
   monster type: animal
   monster class: behemoth
   level: 6
@@ -144,7 +88,9 @@ brown_bear: &BROWN_BEAR
     - natural grab
     - great fortitude
     - behemoth size
-black_bear:
+    - scent
+    - low-light vision
+bear, black:
   <<: *BROWN_BEAR
   level: 3
   traits:
@@ -152,88 +98,28 @@ black_bear:
     - natural armor: 2
     - natural grab
     - great fortitude
-demogorgon:
-  race: monster
-  rise class: outsider
-  level: 16
-  weapons:
-    - longsword
-  armor: breastplate
-  attributes:
-    strength: primary
-    dexterity: secondary
-    constitution: secondary
-    intelligence: primary
-    perception: secondary
-    willpower: primary
-  templates:
-    - martial
-super_bear:
-  <<: *BROWN_BEAR
-  size: colossal
-wee_bear:
-  <<: *BROWN_BEAR
-  size: fine
-planetar:
-  race: monster
-  size: large
-  rise class: outsider
-  level: 12
-  weapons:
-    - greatsword
-  armor: full plate
-  attributes:
-    strength: primary
-    dexterity: tertiary
-    constitution: tertiary
-    intelligence: tertiary
-    perception: secondary
-    willpower: primary
-  templates:
-    - martial
-torvid:
-  race: monster
-  rise class: monster
-  size: huge
-  level: 14
-  weapons:
-    - greatsword
-  armor: full plate
-  attributes:
-    strength: primary
-    dexterity: secondary
-    constitution: primary
-    intelligence: 3
-    perception: tertiary
-    willpower: tertiary
-  templates:
-    - martial
-  traits:
-    - mighty blows
-    - magic items
-    - fast healing
-    - arcanite mech
-troll_mech:
-  race: monster
-  rise class: monster
-  size: large
-  level: 9
-  weapons:
-    - greatsword
-  armor: full plate
-  attributes:
-    strength: primary
-    dexterity: tertiary
-    constitution: primary
-    intelligence: -2
-    perception: 1
-    willpower: 2
-  templates:
-    - martial
-  traits:
-    - tough hide
-    - arcanite mech
+    - scent
+    - low-light vision
 demon, bebelith:
-  race: outsider
-  rise class: monster
-  size: huge
+  monster type: outsider
+  monster class: slayer
+  level: 11
+  weapons:
+    - bite
+    - claw
+  attributes:
+    strength: 4
+    dexterity: 2
+    constitution: 3
+    intelligence: 1
+    perception: 2
+    willpower: 1
+  subtraits:
+    natural armor: 4
+  traits:
+    - behemoth size
+    - natural venom
+    - rend
+    - spit web
+    - brute force
+    - durable

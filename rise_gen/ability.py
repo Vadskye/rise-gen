@@ -57,7 +57,7 @@ class Ability:
         self.effect_strength = effect_strength
         self.tags = tags
 
-        if self.effect_strength is not None:
+        if self.effect_strength is not None and self.effects is not None:
             for effect in self.effects:
                 effect.effect_strength = self.effect_strength
 
@@ -365,10 +365,6 @@ def get_ability_definitions():
 
     # MISC
     misc = {
-        'darkvision': {
-            'effects': [],
-            'tags': set(['sense']),
-        },
         'magic items': {
             'effects': [
                 Modifier(['physical damage bonus'],
@@ -460,7 +456,30 @@ def get_ability_definitions():
                                lambda creature, value, effect_strength: value + effect_strength),
             ],
         },
+        'extraplanar body': {
+            'tags': set(['hidden']),
+        },
+        'necromantic body': {
+            'tags': set(['hidden']),
+        },
+        'nonliving': {
+            'tags': set(['hidden']),
+        },
     }
+
+    # SENSES
+    # pretty much all senses have no effects
+    # but this makes it easy to add senses with effects later
+    senses = dict()
+    sense_names = ['darkvision', 'lifesense', 'lifesight', 'low-light vision',
+                   'scent', 'tremorsense', 'tremorsight', 'truesight']
+    for name in sense_names:
+        senses[name] = dict()
+    for sense in senses.values():
+        if 'tags' in sense:
+            sense['tags'].add(['sense'])
+        else:
+            sense['tags'] = set(['sense'])
 
     # TEMPLATES
     templates = {
@@ -537,6 +556,22 @@ def get_ability_definitions():
             ],
             'prerequisite': lambda creature: creature.level >= 4 and creature.monster_class.name == 'behemoth',
         },
+        'brute force': {
+            'effects': [
+                ModifierInPlace(['physical damage dice'],
+                                lambda creature, damage_dice: damage_dice.resize_dice(creature.level // 5 + 1)),
+            ],
+            'prerequisite': lambda creature: creature.monster_class.name == 'slayer',
+        },
+        'draining touch': {
+            # this should only be applied to creatures with a single touch attack
+            'effects': [
+                ModifierInPlace(['physical damage dice'],
+                                lambda creature, damage_dice: damage_dice.resize_dice(2)),
+                Modifier(['physical damage bonus'],
+                          lambda creature, value: creature.power // 2),
+            ],
+        },
         'durable': {
             'effects': [
                 Modifier(['hit points'],
@@ -573,8 +608,11 @@ def get_ability_definitions():
             ],
             'prerequisite': lambda creature: creature.level >= 6,
         },
-        'natural grab': {
-            'effects': [],
+        'resist damage': {
+            'effects': [
+                Modifier(['damage reduction'],
+                         lambda creature, value: creature.power + value),
+            ],
         },
         'tough hide': {
             'effects': [
@@ -582,16 +620,31 @@ def get_ability_definitions():
                          lambda creature, value: value + 2),
             ],
         },
+        'weapon mastery': {
+            'effects': [
+                ModifierInPlace(['physical damage dice'],
+                                lambda creature, damage_dice: damage_dice.resize_dice(creature.level // 5 + 1)),
+            ],
+            'prerequisite': lambda creature: creature.monster_class.name == 'slayer',
+        },
 
         # these traits have no effects that can be calculated for now
         'attribute mastery': {},
+        'incorporeal': {},
+        'innate magic': {},
         'magical ability': {},
         'magical strike': {},
         'myriad magical abilities': {},
-        'incorporeal': {},
-        'spell resistance': {},
+        'natural grab': {},
+        'natural venom': {},
+        'resist magic': {},
+        'rend': {},
+        'skilled': {},
+        'spellcaster': {},
+        'spit web': {},
+        'superior senses': {},
     }
-    for trait_name, trait in traits.items():
+    for trait in traits.values():
         if 'tags' in trait:
             trait['tags'].add(['monster_trait'])
         else:
@@ -601,6 +654,7 @@ def get_ability_definitions():
     all_abilities.update(class_features)
     all_abilities.update(feats)
     all_abilities.update(misc)
+    all_abilities.update(senses)
     all_abilities.update(templates)
     all_abilities.update(traits)
     return all_abilities
