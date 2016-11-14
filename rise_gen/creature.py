@@ -862,10 +862,9 @@ class Creature(CreatureStatistics):
             if value is not None:
                 sample_properties[key] = value
 
-        # use a monster leveler to automatically determine level
+        # assume level 1
         if sample_properties.get('level') is None:
-            leveler = MonsterLeveler.from_monster_name(sample_name)
-            sample_properties['level'] = int(round(leveler.level()))
+            sample_properties['level'] = 1
 
         return cls(
             name=sample_name,
