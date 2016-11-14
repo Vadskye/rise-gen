@@ -60,7 +60,7 @@ def test_fighter_properties_at_higher_level():
 def test_fighter_string():
     c = Creature.from_sample_creature('fighter', level=1)
     assert_equal(str(c), """
-human fighter 1
+human fighter Fighter 1
 [HP] 10; [Defs] AD 21, MD 14; Fort 20, Ref 10, Ment 13
 [Atk] 8: 1d8+3; [Prowess] 3
 [Attr] 4 0 4 0 0 0
