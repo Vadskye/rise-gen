@@ -44,7 +44,7 @@ def monster_latex(creature):
 
     # convert + and - to \plus and \minus
     text = re.sub(r'\+(\d)', r'\plus\1', text)
-    text = re.sub(r'-(\d)', r'\minus\1', text)
+    text = re.sub(r'([^-])-(\d)', r'\1\minus\2', text)
     return text
 
 def abilities(creature):
