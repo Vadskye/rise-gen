@@ -15,7 +15,8 @@ mage_equipment: &MAGE_EQUIPMENT
 barbarian: &BARBARIAN
   <<: *STANDARD_WARRIOR_EQUIPMENT
   race: human
-  rise_class: barbarian
+  levels:
+    barbarian: 1
   attributes:
     strength: 4
     constitution: 4
@@ -47,7 +48,8 @@ barbarian_studded:
 cleric: &CLERIC
   <<: *STANDARD_WARRIOR_EQUIPMENT
   race: human
-  rise_class: cleric
+  levels:
+    cleric: 1
   attributes:
     strength: 4
     constitution: 4
@@ -62,7 +64,8 @@ cleric_spells:
 druid: &DRUID
   <<: *STANDARD_WARRIOR_EQUIPMENT
   race: human
-  rise_class: druid
+  levels:
+    druid: 1
   attributes:
     strength: 4
     constitution: 4
@@ -88,7 +91,8 @@ druid_spells:
 fighter: &FIGHTER
   <<: *STANDARD_WARRIOR_EQUIPMENT
   race: human
-  rise_class: fighter
+  levels:
+    fighter: 1
   attributes:
     strength: 4
     constitution: 4
@@ -113,7 +117,6 @@ fighter_dex: &FIGHTER_DEX
     dexterity: 4
   armor: studded leather
   feats:
-    - dodge
     - weapon finesse
     - mighty blows
   traits:
@@ -127,7 +130,8 @@ fighter_dex_resilience:
 ranger: &RANGER
   <<: *STANDARD_WARRIOR_EQUIPMENT
   race: human
-  rise_class: ranger
+  levels:
+    ranger: 1
   attributes:
     strength: 4
     constitution: 4
@@ -150,7 +154,8 @@ ranger_dex: &RANGER_DEX
 rogue: &ROGUE
   <<: *LIGHT_WARRIOR_EQUIPMENT
   race: human
-  rise_class: rogue
+  levels:
+    rogue: 1
   attributes:
     dexterity: 4
     intelligence: 4
@@ -164,7 +169,8 @@ rogue_str:
 sorcerer: &SORCERER
   <<: *MAGE_EQUIPMENT
   race: human
-  rise_class: sorcerer
+  levels:
+    sorcerer: 1
   attack_type: spell
   special_attack_name: inflict wounds
   attributes:
@@ -175,7 +181,8 @@ sorcerer: &SORCERER
 warrior: &WARRIOR
   <<: *STANDARD_WARRIOR_EQUIPMENT
   race: human
-  rise_class: warrior
+  levels:
+    warrior: 1
   attributes:
     strength: 4
     constitution: 4
@@ -244,7 +251,8 @@ warrior_int:
 wizard:
   <<: *MAGE_EQUIPMENT
   race: human
-  rise_class: wizard
+  levels:
+    wizard: 1
   attack_type: spell
   special_attack_name: inflict wounds
   attributes:
@@ -252,27 +260,27 @@ wizard:
     intelligence: 4
   traits:
     - magic items
-# special stuff!
-summoned_monster:
-  race: monster
-  rise_class: monster
-  weapons:
-    - bite
-  templates:
-    - summoned monster
-summoned_monster_large:
-  race: monster
-  rise_class: monster
-  size: large
-  weapons:
-    - bite
-  templates:
-    - summoned monster
+
+# multiclass!
+fighter_rogue:
+  <<: *STANDARD_WARRIOR_EQUIPMENT
+  race: human
+  levels:
+    fighter: 1
+    rogue: 1
+  base_class: fighter
+  feats:
+    - mighty blows
+    - weapon finesse
+  traits:
+    - magic items
+    - armor discipline (agility)
+
 # npcs!
 assassin:
   race: human
-  rise_class: rogue
-  level: 2
+  levels:
+    rogue: 2
   weapons:
     - dual short swords
   armor: studded leather

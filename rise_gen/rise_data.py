@@ -69,26 +69,6 @@ class Race(RiseData):
         )
 
 
-class MonsterClass(RiseData):
-
-    def __init__(self, name, combat_prowess):
-        super(MonsterClass, self).__init__(
-            name=name,
-            combat_prowess=combat_prowess,
-        )
-
-    @classmethod
-    def init_data(cls):
-        with open('content/monster_classes.yaml', 'r') as classes_file:
-            return yaml.load(classes_file)
-
-    def __str__(self):
-        return "MonsterClass({}, {}, {}, {})".format(
-            self.name,
-            self.combat_prowess,
-        )
-
-
 class MonsterType(RiseData):
 
     def __init__(self, name, fortitude, reflex, mental, abilities=None):
@@ -115,7 +95,7 @@ class MonsterType(RiseData):
 
 class RiseClass(RiseData):
 
-    def __init__(self, name, combat_prowess, fortitude, reflex, mental, class_features=None):
+    def __init__(self, name, combat_prowess, fortitude=None, reflex=None, mental=None, class_features=None):
         super(RiseClass, self).__init__(
             name=name,
             combat_prowess=combat_prowess,

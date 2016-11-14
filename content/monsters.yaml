@@ -61,6 +61,7 @@ angel - astral deva:
     - truesight: 50 ft.
   traits:
     - innate magic
+    - magical retribution
     - resist damage
     - resist magic
     - spellcaster
@@ -69,8 +70,8 @@ angel - astral deva:
     # two missing traits
 bear, brown: &BROWN_BEAR
   monster type: animal
-  monster class: behemoth
-  level: 6
+  levels:
+    behemoth: 6
   weapons:
     - bite
     - claw
@@ -102,24 +103,32 @@ bear, black:
     - low-light vision
 demon, bebelith:
   monster type: outsider
-  monster class: slayer
-  level: 11
+  base_class: behemoth
+  levels:
+    behemoth: 5
+    slayer: 6
   weapons:
     - bite
     - claw
   attributes:
     strength: 4
-    dexterity: 2
+    dexterity: 3
     constitution: 3
     intelligence: 1
     perception: 2
     willpower: 1
+  encounter: The Abyss; solitary
+  languages:
+    - abyssal (hearing only)
+  speeds:
+    climb: 25
   subtraits:
-    natural armor: 4
+    - natural armor: 4
+    - telepathy: (100 ft., willing only)
   traits:
     - behemoth size
     - natural venom
     - rend
     - spit web
-    - brute force
+    - natural force
     - durable

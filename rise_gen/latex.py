@@ -30,8 +30,9 @@ def monster_latex(creature):
             "\\end<spellcontent>",
             "\\begin<spellfooter>",
             *indent_list(4, [
+                languages(creature),
                 levels(creature),
-                "\\pari \\mb<Encounter>", # not going to put that in the yaml?
+                encounter(creature),
                 abilities(creature),
             ]),
             "\\end<spellfooter>",
@@ -47,11 +48,11 @@ def monster_latex(creature):
     return text
 
 def abilities(creature):
-    relevant_abilities = filter(
+    relevant_abilities = list(filter(
         lambda ability: not ability.has_tag('monster_trait') and not ability.has_tag('sense'),
         creature.visible_abilities
-    )
-    if not list(relevant_abilities):
+    ))
+    if not relevant_abilities:
         return None
     return "\\pari \\mb<Abilities> " + ", ".join(sorted(
         [str(ability) for ability in relevant_abilities]
@@ -59,7 +60,7 @@ def abilities(creature):
 
 _vowels = set(['a', 'e', 'i', 'u'])
 def adept_points(creature):
-    if not creature.monster_class or creature.monster_class.name != 'adept':
+    if not 'adept' in creature.levels:
         return None
     count = max(creature.level, creature.intelligence, creature.perception, creature.willpower) // 2
     return "\\parhead<Adept Points> {a_an} {name} has {count} adept {point}. {it_they} one hour after being spent.".format(
@@ -86,6 +87,9 @@ def defenses(creature):
         hp=creature.hit_points, armor=creature.armor_defense, fortitude=creature.fortitude,
         reflex=creature.reflex, mental=creature.mental)
 
+def encounter(creature):
+    return "\\pari \\mb<Encounter> {}".format(creature.encounter or "")
+
 def indent(spaces):
     return " " * spaces
 
@@ -93,16 +97,32 @@ def indent_list(spaces, strings):
     return [indent(spaces) + s if s else None
             for s in strings]
 
+def languages(creature):
+    if creature.languages is None:
+        return None
+    return "\\pari \\mb<Languages> " + ", ".join([
+        language.capitalize() for language in creature.languages
+    ])
+
 def levels(creature):
-    return "\\pari \\mb<Levels> {class_name} {level} [{monster_type}]".format(
-        class_name=creature.monster_class.name.capitalize(), level=creature.level,
+    return "\\pari \\mb<Levels> {levels} [{monster_type}]".format(
+        levels=", ".join([
+            "{class_name} {level}".format(
+                class_name=rise_class.name.capitalize(), level=creature.levels[class_name])
+            for class_name, rise_class in creature.classes.items()
+        ]),
         monster_type=creature.monster_type.name.capitalize(),
     )
 
+
 def movement(creature):
-    speed_strings = list(filter(None, ["{} ft.\\ {} speed".format(value, name) if value is not None else None
-                     for name, value in creature.speeds.items()]))
-    if "land" not in creature.speeds and creature.land_speed is not None:
+    # skip land speed to ensure it is in front
+    speed_strings = list(filter(None,
+                                ["{} ft.\\ {} speed".format(value, name)
+                                       if value is not None and name != 'land' else None
+                                       for name, value in creature.speeds.items()
+                                 ]))
+    if creature.land_speed is not None:
         speed_strings.insert(0, "{} ft.\\ land speed".format(creature.land_speed))
     return "\\pari \\mb<Movement> {}".format(", ".join(speed_strings))
 

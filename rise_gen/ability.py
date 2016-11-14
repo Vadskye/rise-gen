@@ -143,9 +143,11 @@ class ModifierInPlace(AbilityEffect):
 def plus(modifier):
     return lambda creature, value: value + modifier
 
-
-def min_level(level):
-    return lambda creature: creature.level >= level
+def min_level(level, class_name=None):
+    if class_name is None:
+        return lambda creature: creature.level >= level
+    else:
+        return lambda creature: creature.levels.get(class_name, 0) >= level
 
 
 def get_ability_definitions():
@@ -175,12 +177,13 @@ def get_ability_definitions():
                 Modifier(['damage reduction'],
                          lambda creature, value: creature.level + value),
             ],
+            'prerequisite': lambda creature: creature.base_class == 'barbarian',
         },
         'fast movement': {
             'effects': [
                 Modifier(['speed'], plus(10)),
             ],
-            'prerequisite': min_level(2)
+            'prerequisite': min_level(2, 'barbarian')
         },
         'larger than life': {
             'effects': [
@@ -188,7 +191,7 @@ def get_ability_definitions():
                                 lambda creature, weapon: [weapon.dice.increase_size()
                                                           for i in range(2)]),
             ],
-            'prerequisite': lambda creature: creature.level >= 7
+            'prerequisite': min_level(2, 'barbarian')
         },
         'larger than belief': {
             'effects': [
@@ -196,21 +199,21 @@ def get_ability_definitions():
                                 lambda creature, weapon: [weapon.dice.increase_size()
                                                           for i in range(2)]),
             ],
-            'prerequisite': lambda creature: creature.level >= 16
+            'prerequisite': min_level(16, 'barbarian')
         },
         'rage': {
             'effects': [
                 Modifier(['temporary hit points'],
                          lambda creature, value: max(value, creature.willpower * 2)),
                 Modifier(['physical damage bonus', 'fortitude', 'mental'],
-                         lambda creature, value: value + (creature.level // 5) + 2),
+                         lambda creature, value: value + (creature.levels['barbarian'] // 5) + 2),
                 # undo the effect of the fortitude/mental bonus on HP
                 Modifier(['hit points'],
-                         lambda creature, value: value - (((creature.level // 5) + 2) // 2) * creature.level),
+                         lambda creature, value: value - (((creature.levels['barbarian'] // 5) + 2) // 2) * creature.willpower),
                 Modifier(['armor defense', 'maneuver defense'],
                          lambda creature, value: value - 2),
             ],
-            'prerequisite': lambda creature: creature.level >= 1
+            'prerequisite': min_level(1, 'barbarian')
         },
 
         # FIGHTER
@@ -219,21 +222,21 @@ def get_ability_definitions():
                 Modifier(['critical threshold'],
                          lambda creature, value: value - 1),
             ],
-            'prerequisite': lambda creature: creature.level >= 15
+            'prerequisite': min_level(15, 'fighter')
         },
         'improved weapon discipline': {
             'effects': [
                 Modifier(['critical multiplier'],
                          lambda creature, value: value + 1),
             ],
-            'prerequisite': lambda creature: creature.level >= 9
+            'prerequisite': min_level(9, 'fighter')
         },
         'weapon discipline': {
             'effects': [
                 Modifier(['accuracy'],
                          lambda creature, value: value + 1),
             ],
-            'prerequisite': lambda creature: creature.level >= 3
+            'prerequisite': min_level(3, 'fighter')
         },
         'armor discipline (agility)': {
             'effects': [
@@ -247,10 +250,11 @@ def get_ability_definitions():
                          # this can be approximated by simply increasing armor
                          # defense
                          lambda creature, value: value + (
-                             4 if creature.level >= 13 else
-                             (2 if creature.level >= 7 else value)
+                             4 if creature.levels['fighter'] >= 13 else
+                             (2 if creature.levels['fighter'] >= 7 else value)
                          )),
             ],
+            'prerequisite': min_level(1, 'fighter')
         },
         'armor discipline (resilience)': {
             'effects': [
@@ -258,22 +262,24 @@ def get_ability_definitions():
                          lambda creature, value: value + 1),
                 Modifier(['damage reduction'],
                          lambda creature, value: value + (
-                             creature.level if creature.level >= 7 else 0
+                             creature.levels.get('fighter') if creature.levels['fighter'] >= 7 else 0
                          )),
             ],
+            'prerequisite': min_level(1, 'fighter')
         },
 
         # RANGER
         'quarry': {
             'effects': [
                 Modifier(['physical damage bonus'],
-                         lambda creature, value: value + (creature.level // 5) + 2),
+                         lambda creature, value: value + (creature.levels['ranger'] // 5) + 2),
                 Modifier(['armor defense', 'maneuver defense', 'fortitude', 'reflex', 'mental'],
-                         lambda creature, value: value + (creature.level // 5) + 2),
+                         lambda creature, value: value + (creature.levels['ranger'] // 5) + 2),
                 # undo the hp bonus from the quarry
                 Modifier(['hit points'],
-                         lambda creature, value: value - (((creature.level // 5) + 2) // 2) * creature.level),
+                         lambda creature, value: value - (((creature.levels['ranger'] // 5) + 2) // 2) * creature.level),
             ],
+            'prerequisite': min_level(1, 'ranger')
         },
 
         # ROGUE
@@ -284,9 +290,10 @@ def get_ability_definitions():
                                     # we don't have a concept of "the first hit"
                                     # so it should be a mix of level/2 and level/4
                                     # for now use level/2 since it might be too low anyway
-                                    Die(size=6, count=(creature.level + 1) // 2)
+                                    Die(size=6, count=(creature.levels['rogue'] + 1) // 2)
                                 )),
             ],
+            'prerequisite': min_level(1, 'rogue')
         },
 
         # MONSTER TYPE
@@ -307,9 +314,6 @@ def get_ability_definitions():
                 creature.perception >= 5
                 and creature.attack_range is not None
             )
-        },
-        'dodge': {
-            'effects': [],
         },
         'heartseeker': {
             'effects': [
@@ -395,7 +399,7 @@ def get_ability_definitions():
                                  'colossal': -8,
                              }[creature.size]
                          )),
-                Modifier(['maneuver defense', 'maneuver accuracy'],
+                Modifier(['maneuver defense', 'maneuver accuracy', 'fortitude'],
                          lambda creature, value: (
                              value + {
                                  'fine': -16,
@@ -465,6 +469,7 @@ def get_ability_definitions():
         'nonliving': {
             'tags': set(['hidden']),
         },
+        'telepathy': {},
     }
 
     # SENSES
@@ -483,12 +488,6 @@ def get_ability_definitions():
 
     # TEMPLATES
     templates = {
-        'martial': {
-            'effects': [
-                Modifier(['combat prowess'],
-                         lambda creature, value: creature.level + 2),
-            ],
-        },
         'summoned monster': {
             'effects': [
                 Modifier(['combat prowess'],
@@ -552,16 +551,9 @@ def get_ability_definitions():
                          # find the current size in the list and go to the next
                          # larger one
                          # this fails for colossal; for now, that is a feature
-                         lambda creature, value: SIZES[SIZES.index(value) + creature.level // 4]),
+                         lambda creature, value: SIZES[SIZES.index(value) + creature.levels['behemoth'] // 4]),
             ],
-            'prerequisite': lambda creature: creature.level >= 4 and creature.monster_class.name == 'behemoth',
-        },
-        'brute force': {
-            'effects': [
-                ModifierInPlace(['physical damage dice'],
-                                lambda creature, damage_dice: damage_dice.resize_dice(creature.level // 5 + 1)),
-            ],
-            'prerequisite': lambda creature: creature.monster_class.name == 'slayer',
+            'prerequisite': min_level(4, 'behemoth')
         },
         'draining touch': {
             # this should only be applied to creatures with a single touch attack
@@ -608,6 +600,13 @@ def get_ability_definitions():
             ],
             'prerequisite': lambda creature: creature.level >= 6,
         },
+        'natural force': {
+            'effects': [
+                Modifier(['physical damage bonus'],
+                                lambda creature, value: value + creature.levels['slayer'] // 2),
+            ],
+            'prerequisite': min_level(1, 'slayer')
+        },
         'resist damage': {
             'effects': [
                 Modifier(['damage reduction'],
@@ -622,10 +621,10 @@ def get_ability_definitions():
         },
         'weapon mastery': {
             'effects': [
-                ModifierInPlace(['physical damage dice'],
-                                lambda creature, damage_dice: damage_dice.resize_dice(creature.level // 5 + 1)),
+                ModifierInPlace(['physical damage bonus'],
+                                lambda creature, value: value + creature.levels['slayer'] // 2),
             ],
-            'prerequisite': lambda creature: creature.monster_class.name == 'slayer',
+            'prerequisite': min_level(1, 'slayer')
         },
 
         # these traits have no effects that can be calculated for now
@@ -633,6 +632,7 @@ def get_ability_definitions():
         'incorporeal': {},
         'innate magic': {},
         'magical ability': {},
+        'magical retribution': {},
         'magical strike': {},
         'myriad magical abilities': {},
         'natural grab': {},

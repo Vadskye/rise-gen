@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 
 import argparse
+import copy
 from rise_gen.ability import Ability
 from rise_gen.dice import Die, DieCollection, d20
 from rise_gen.rise_data import (
-    Armor, MonsterClass, MonsterType, Race, RiseClass, Shield, Weapon, calculate_attribute_progression
+    Armor, MonsterType, Race, RiseClass, Shield, Weapon, calculate_attribute_progression
 )
 import rise_gen.latex as latex
 import rise_gen.util as util
@@ -23,6 +24,7 @@ class CreatureStatistics(object):
     def __init__(
             self,
             name,
+            levels,
             properties,
     ):
         """Create a creature with all necessary statistics, attributes, etc.
@@ -34,18 +36,22 @@ class CreatureStatistics(object):
         """
 
         self.name = name
+        # levels in each class
+        self.levels = levels
         # set defaults
         self.armor_name = None
         self.attack_type = 'physical'
         self.attributes = dict()
+        self.base_class = None
         self.base_size = None
+        self.encounter = None
         self.feats = None
-        self.level = 1
+        self.languages = None
+        # total level
+        self.level = None
         self.subtraits = None
-        self.monster_class = None
         self.monster_type = None
         self.race = None
-        self.rise_class = None
         self.shield = None
         self.speeds = dict()
         self.templates = None
@@ -66,16 +72,50 @@ class CreatureStatistics(object):
                 except AttributeError:
                     raise Exception("Invalid property '{}'".format(property_name))
 
-        if isinstance(self.monster_class, str):
-            self.monster_class = MonsterClass.from_name(self.monster_class)
+        if self.level is None:
+            # determine total level from the 'levels' given
+            self.level = sum(self.levels.values())
+        else:
+            # if we're given an explicit level, adjust the levels in self.levels
+            # to sum to the given level
+            total_levels = sum(self.levels.values())
+            if self.level < total_levels:
+                raise Exception("Level {} is too low for this multiclass character ({})".format(self.level, self.levels))
+            # maintain the ratio between the levels
+            for class_name, level in self.levels.items():
+                self.levels[class_name] = level * self.level // total_levels
+            if sum(self.levels.values()) != self.level:
+                raise Exception("Level {} is not possible to express exactly for this multiclass character".format(self.level))
+
+
         if isinstance(self.monster_type, str):
             self.monster_type = MonsterType.from_name(self.monster_type)
         if isinstance(self.race, str):
             self.race = Race.from_name(self.race)
-        if isinstance(self.rise_class, str):
-            self.rise_class = RiseClass.from_name(self.rise_class)
         if isinstance(self.shield, str):
             self.shield = Shield.from_name(self.shield)
+
+        # construct classes from the 'levels' given
+        self.classes = dict()
+        for class_name in self.levels:
+            rise_class = RiseClass.from_name(class_name)
+            if rise_class is None:
+                raise Exception("Unable to recognize class '{}'".format(class_name))
+            # monsters inherit fortitude, reflex, mental from their type
+            if rise_class.fortitude is None and rise_class.mental is None and rise_class.reflex is None:
+                rise_class.fortitude = self.monster_type.fortitude
+                rise_class.mental = self.monster_type.mental
+                rise_class.reflex = self.monster_type.reflex
+            self.classes[class_name] = rise_class
+
+        # use the same object that we already created above
+        # rather than creating a separate RiseClass object
+        if isinstance(self.base_class, str):
+            self.base_class = self.classes[self.base_class]
+
+        # assume the base class if only one class is given
+        if self.base_class is None and len(self.classes) == 1:
+            self.base_class = next(iter(self.classes.values()))
 
         # use the race's size as a default if no size is specified
         if self.base_size is None and self.race is not None:
@@ -88,9 +128,10 @@ class CreatureStatistics(object):
         if self.monster_type and self.monster_type.abilities:
             for ability in self.monster_type.abilities:
                 self.add_ability(ability)
-        if self.rise_class and self.rise_class.class_features:
-            for class_feature in self.rise_class.class_features:
-                self.add_ability(class_feature)
+        for rise_class in self.classes.values():
+            if rise_class.class_features:
+                for class_feature in rise_class.class_features:
+                    self.add_ability(class_feature)
         if self.feats is not None:
             for feat in self.feats:
                 self.add_ability(feat)
@@ -224,13 +265,6 @@ class CreatureStatistics(object):
     def base_progression(self, progression_type):
         if self.rise_class is not None:
             return getattr(self.rise_class, progression_type)
-        elif self.monster_type is not None and self.monster_class is not None:
-            return {
-                'combat_prowess': self.monster_class.combat_prowess,
-                'fortitude': self.monster_type.fortitude,
-                'mental': self.monster_type.mental,
-                'reflex': self.monster_type.reflex,
-            }[progression_type]
         else:
             raise Exception("Unable to determine progression: creature is invalid")
 
@@ -388,7 +422,10 @@ class CreatureStatistics(object):
         return armor_defense
 
     def _calculate_combat_prowess(self):
-        prowess = calculate_combat_prowess(self.base_progression('combat_prowess'), self.level)
+        prowess = base_class_combat_prowess_bonus(self.base_class.combat_prowess)
+        for class_name, rise_class in self.classes.items():
+            prowess += calculate_combat_prowess(
+                rise_class.combat_prowess, self.levels[class_name])
         for effect in self.active_effects_with_tag('combat prowess'):
             prowess = effect(self, prowess)
         return prowess
@@ -409,12 +446,10 @@ class CreatureStatistics(object):
         fortitude = 10 + max(
             self.constitution,
             self.strength,
-            calculate_base_defense(
-                self.base_progression('fortitude'),
-                self.level,
-            )
+            sum([calculate_base_defense(rise_class.fortitude, self.levels[class_name])
+                 for class_name, rise_class in self.classes.items()])
         )
-        fortitude += base_class_defense_bonus(self.base_progression('fortitude'))
+        fortitude += base_class_defense_bonus(self.base_class.fortitude)
         # add the automatic modifier from Con
         if self.constitution >= 0:
             fortitude += self.constitution // 2
@@ -451,12 +486,10 @@ class CreatureStatistics(object):
         mental = 10 + max(
             self.willpower,
             self.intelligence,
-            calculate_base_defense(
-                self.base_progression('mental'),
-                self.level
-            )
+            sum([calculate_base_defense(rise_class.mental, self.levels[class_name])
+                 for class_name, rise_class in self.classes.items()])
         )
-        mental += base_class_defense_bonus(self.base_progression('mental'))
+        mental += base_class_defense_bonus(self.base_class.mental)
         # add the automatic modifier from Willpower
         if self.willpower >= 0:
             mental += self.willpower // 2
@@ -470,12 +503,10 @@ class CreatureStatistics(object):
         reflex = 10 + max(
             self.dexterity,
             self.perception,
-            calculate_base_defense(
-                self.base_progression('reflex'),
-                self.level
-            )
+            sum([calculate_base_defense(rise_class.reflex, self.levels[class_name])
+                 for class_name, rise_class in self.classes.items()])
         )
-        reflex += base_class_defense_bonus(self.base_progression('reflex'))
+        reflex += base_class_defense_bonus(self.base_class.reflex)
         # add the automatic modifier from Dexterity
         if self.dexterity >= 0:
             reflex += self.dexterity // 5
@@ -512,8 +543,6 @@ class CreatureStatistics(object):
 
     def _calculate_power(self):
         """A monster's power (int)"""
-        if self.monster_class is None:
-            return None
         power = self.level + 1 + self.level // 5
         for effect in self.active_effects_with_tag('power'):
             power = effect(self, power)
@@ -563,13 +592,19 @@ class CreatureStatistics(object):
         return '{0} {1} {2}\n{3}\n{4}\n{5}\n{6}\n{7}'.format(
             self.race.name if self.race else self.monster_type.name,
             self.name,
-            self.level,
+            self._to_string_levels(),
             self._to_string_defenses(),
             self._to_string_attacks(),
             self._to_string_attributes(),
             self._to_string_core(),
             self._to_string_abilities(),
         )
+
+    def _to_string_levels(self):
+        return ", ".join(sorted([
+            "{} {}".format(name.capitalize() if name == self.base_class.name else name, level)
+            for name, level in self.levels.items()
+        ]))
 
     def _to_string_defenses(self):
         text = '; '.join([
@@ -844,7 +879,7 @@ class Creature(CreatureStatistics):
             cls.sample_creatures.update(util.import_yaml_file('content/monsters.yaml'))
 
         try:
-            sample_properties = cls.sample_creatures[sample_name].copy()
+            sample_properties = copy.deepcopy(cls.sample_creatures[sample_name])
         except KeyError:
             raise Exception(
                 "Error: Unable to recognize sample creature '{0}'".format(
@@ -862,14 +897,19 @@ class Creature(CreatureStatistics):
             if value is not None:
                 sample_properties[key] = value
 
-        # assume level 1
-        if sample_properties.get('level') is None:
-            sample_properties['level'] = 1
-
         return cls(
             name=sample_name,
+            # 'levels' is required
+            levels=sample_properties.pop('levels'),
             properties=sample_properties
         )
+
+def base_class_combat_prowess_bonus(progression):
+    return {
+        'good': 2,
+        'average': 2,
+        'poor': 1,
+    }[progression]
 
 def base_class_defense_bonus(progression):
     return {
@@ -880,9 +920,9 @@ def base_class_defense_bonus(progression):
 
 def calculate_combat_prowess(progression, level):
     return {
-        'good': level + 2,
-        'average': (level * 4) // 5 + 2,
-        'poor': (level * 2) // 3 + 1,
+        'good': level,
+        'average': (level * 4) // 5,
+        'poor': (level * 2) // 3,
     }[progression]
 
 def calculate_base_defense(progression, level):
