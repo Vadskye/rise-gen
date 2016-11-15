@@ -119,11 +119,14 @@ def levels(creature):
 
 def movement(creature):
     # skip land speed to ensure it is in front
-    speed_strings = list(filter(None,
-                                ["{} ft.\\ {} speed".format(value, name)
-                                       if value is not None and name != 'land' else None
-                                       for name, value in creature.speeds.items()
-                                 ]))
+    speed_strings = list(filter(
+        None,
+        [
+            "{} ft.\\ {} speed".format(value, name)
+            if value is not None and name != 'land' else None
+            for name, value in creature.speeds.items()
+        ]
+    )) if creature.speeds else list()
     if creature.land_speed is not None:
         speed_strings.insert(0, "{} ft.\\ land speed".format(creature.land_speed))
     return "\\pari \\mb<Movement> {}".format(", ".join(speed_strings))
@@ -142,7 +145,7 @@ def senses(creature):
     sense_skills = list(filter(
         lambda skill: skill.sense,
         creature.skills.values()
-    ))
+    )) if creature.skills else list()
     return "\\pari \\mb<Senses> " + ", ".join([
         ", ".join(sorted([
             str(ability) for ability in filter(

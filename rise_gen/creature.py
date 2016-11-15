@@ -17,7 +17,24 @@ class CreatureStatistics(object):
             self,
             name,
             levels,
-            properties,
+            armor=None,
+            attack_type='physical',
+            attributes=None,
+            base_class=None,
+            encounter=None,
+            feats=None,
+            languages=None,
+            level=None,
+            monster_type=None,
+            race=None,
+            skill_points=None,
+            shield=None,
+            size='medium',
+            speeds=None,
+            subtraits=None,
+            templates=None,
+            traits=None,
+            weapons=None,
     ):
         """Create a creature with all necessary statistics, attributes, etc.
 
@@ -30,41 +47,43 @@ class CreatureStatistics(object):
         self.name = name
         # levels in each class
         self.levels = levels
-        # set defaults
-        self.armor_name = None
-        self.attack_type = 'physical'
-        self.attributes = dict()
-        self.base_class = None
-        self.base_size = None
-        self.encounter = None
-        self.feats = None
-        self.languages = None
-        # total level
-        self.level = None
-        self.subtraits = None
-        self.monster_type = None
-        self.race = None
-        self.shield = None
-        self.skills = None
-        self.skill_points = None
-        self.speeds = dict()
-        self.templates = None
-        self.traits = None
-        self.weapon_names = None
+        # equipment is given as strings, but we we want them to be objects
+        self.armor_name = armor
+        self.shield_name = shield
+        self.weapon_names = weapons
 
-        for property_name in properties:
-            # some properties have special handling
-            if property_name == 'armor':
-                self.armor_name = properties[property_name]
-            elif property_name == 'weapons':
-                self.weapon_names = properties[property_name]
-            elif property_name == 'size':
-                self.base_size = properties[property_name]
-            else:
-                try:
-                    setattr(self, property_name, properties[property_name])
-                except AttributeError:
-                    raise Exception("Invalid property '{}'".format(property_name))
+        # it's useful to track the "original" size
+        # separately from the size property
+        self.base_size = size
+
+        # these are just stored directly
+        self.attack_type = attack_type
+        self.base_class = base_class
+        self.encounter = encounter
+        self.feats = feats
+        self.languages = languages
+        self.level = level
+        self.skill_points = skill_points
+        self.speeds = speeds
+        self.starting_attributes = attributes
+        self.subtraits = subtraits
+        self.templates = templates
+        self.traits = traits
+
+        # these are usually given as strings
+        # but we want to store them as objects
+        if isinstance(monster_type, str):
+            self.monster_type = MonsterType.from_name(monster_type)
+        else:
+            self.monster_type = monster_type
+        if isinstance(race, str):
+            self.race = Race.from_name(race)
+        else:
+            self.race = race
+        if isinstance(shield, str):
+            self.shield = Shield.from_name(shield)
+        else:
+            self.shield = shield
 
         if self.level is None:
             # determine total level from the 'levels' given
@@ -80,14 +99,6 @@ class CreatureStatistics(object):
                 self.levels[class_name] = level * self.level // total_levels
             if sum(self.levels.values()) != self.level:
                 raise Exception("Level {} is not possible to express exactly for this multiclass character".format(self.level))
-
-
-        if isinstance(self.monster_type, str):
-            self.monster_type = MonsterType.from_name(self.monster_type)
-        if isinstance(self.race, str):
-            self.race = Race.from_name(self.race)
-        if isinstance(self.shield, str):
-            self.shield = Shield.from_name(self.shield)
 
         # Skills are given as a dictionary of skill name -> skill points
         # We also want to store a dictionary of skill name -> Skill object
@@ -379,7 +390,7 @@ class CreatureStatistics(object):
         strength, dexterity, constitution, intelligence, perception, willpower
         """
         attribute_value = calculate_attribute_progression(
-            self.attributes.get(attribute_name, None),
+            self.starting_attributes.get(attribute_name, None),
             self.level
         )
         for effect in self.active_effects_with_tag(attribute_name):
@@ -519,7 +530,10 @@ class CreatureStatistics(object):
 
     def _calculate_land_speed(self):
         """The creature's land speed in feet (int)"""
-        land_speed = self.speeds.get('land', default_land_speed(self.size))
+        if self.speeds is None or self.speeds.get('land') is None:
+            land_speed = default_land_speed(self.size)
+        else:
+            land_speed = self.speeds.get('land')
         for effect in self.active_effects_with_tag('land speed') + self.active_effects_with_tag('speed'):
             land_speed = effect(self, land_speed)
         return land_speed
@@ -925,9 +939,8 @@ class Creature(CreatureStatistics):
 
         return cls(
             name=sample_name,
-            # 'levels' is required
             levels=sample_properties.pop('levels'),
-            properties=sample_properties,
+            **sample_properties,
         )
 
 def base_class_combat_prowess_bonus(progression):

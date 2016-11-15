@@ -1,7 +1,6 @@
 default properties:
   size: medium
 meta properties:
-  - attack type
   - level
   - race
   - rise class

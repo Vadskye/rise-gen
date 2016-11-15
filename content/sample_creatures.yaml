@@ -59,7 +59,7 @@ cleric: &CLERIC
     - magic items
 cleric_spells:
   <<: *CLERIC
-  attack_type: spell
+  attack type: spell
   special_attack_name: inflict wounds
 druid: &DRUID
   <<: *STANDARD_WARRIOR_EQUIPMENT
@@ -86,7 +86,7 @@ druid_dr:
     - acanite armor
 druid_spells:
   <<: *DRUID
-  attack_type: spell
+  attack type: spell
   special_attack_name: inflict wounds
 fighter: &FIGHTER
   <<: *STANDARD_WARRIOR_EQUIPMENT
@@ -191,7 +191,7 @@ sorcerer: &SORCERER
   race: human
   levels:
     sorcerer: 1
-  attack_type: spell
+  attack type: spell
   special_attack_name: inflict wounds
   attributes:
     constitution: 4
@@ -273,7 +273,7 @@ wizard:
   race: human
   levels:
     wizard: 1
-  attack_type: spell
+  attack type: spell
   special_attack_name: inflict wounds
   attributes:
     constitution: 4
