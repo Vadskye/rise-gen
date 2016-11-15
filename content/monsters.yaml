@@ -1,7 +1,7 @@
 aboleth:
   monster type: aberration
-  monster class: adept
-  level: 12
+  levels:
+    adept: 12
   weapons:
     - tentacle
   attributes:
@@ -11,7 +11,7 @@ aboleth:
     intelligence: 3
     perception: 2
     willpower: 5
-  skills:
+  skill_points:
     awareness: 2
   speeds:
     land: 10
@@ -26,9 +26,9 @@ aboleth:
     - improved natural armor
     - natural armor: 4
 allip:
-  monster class: adept
   monster type: undead
-  level: 4
+  levels:
+    adept: 4
   encounter: Any environment; solitary
   weapons:
     - touch
@@ -174,7 +174,8 @@ bear, brown: &BROWN_BEAR
     - low-light vision
 bear, black:
   <<: *BROWN_BEAR
-  level: 3
+  levels:
+    behemoth: 6
   traits:
     - durable
     - natural armor: 2

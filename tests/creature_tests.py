@@ -1,4 +1,4 @@
-from nose.tools import assert_equal
+from nose.tools import assert_equal, assert_true
 from rise_gen.creature import Creature
 from rise_gen.dice import Die, DieCollection
 import yaml
@@ -68,21 +68,26 @@ human fighter Fighter 1
 [Abil] Armor Discipline (Resilience), Magic Items, Mighty Blows, Size Modifiers
     """.strip())
 
-def test_all_samples():
-    return
-    test_strings = dict()
-    with open('tests/creature_test_strings.yaml', 'r') as test_strings_file:
-        test_strings = yaml.load(test_strings_file)
+def test_all_sample_creatures():
+    # for now, just make sure all creatures can be built without encountering
+    # errors
+    sample_creatures = None
+    with open('content/sample_creatures.yaml', 'r') as sample_creatures_file:
+        sample_creatures = yaml.load(sample_creatures_file)
+    for creature_name, properties in sample_creatures.items():
+        if properties.get('hidden'):
+            continue
+        print('creature_name', creature_name)
+        creature = Creature.from_sample_creature(creature_name)
+        assert_equal(type(creature), Creature)
 
-    # first check pcs
-    # currently missing: paladin, spellwarped
-    for sample_name in 'barbarian cleric druid fighter ranger rogue sorcerer wizard'.split():
-        pc = Creature.from_sample_creature(sample_name)
-        assert_equal(type(pc), Creature)
-        assert_equal(str(pc), test_strings[sample_name].strip())
-
-    # now check monsters
-    for sample_name in 'aboleth angel arkite_caster arkite_grappler arkite_monk black_bear brown_bear demogorgon dummy planetar super_bear torvid troll_mech wee_bear'.split():
-        monster = Creature.from_sample_creature(sample_name)
-        assert_equal(type(monster), Creature)
-        assert_equal(str(monster), test_strings[sample_name].strip())
+def test_all_monsters():
+    monsters = None
+    with open('content/monsters.yaml', 'r') as sample_creatures_file:
+        monsters = yaml.load(sample_creatures_file)
+    for monster_name, properties in monsters.items():
+        if properties.get('hidden'):
+            continue
+        print('monster_name', monster_name)
+        creature = Creature.from_sample_creature(monster_name)
+        assert_equal(type(creature), Creature)

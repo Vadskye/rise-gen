@@ -30,6 +30,7 @@ class CreatureStatistics(object):
             skill_points=None,
             shield=None,
             size='medium',
+            special_attack_name=None,
             speeds=None,
             subtraits=None,
             templates=None,
@@ -64,6 +65,7 @@ class CreatureStatistics(object):
         self.languages = languages
         self.level = level
         self.skill_points = skill_points
+        self.special_attack_name = special_attack_name
         self.speeds = speeds
         self.starting_attributes = attributes
         self.subtraits = subtraits
@@ -390,7 +392,7 @@ class CreatureStatistics(object):
         strength, dexterity, constitution, intelligence, perception, willpower
         """
         attribute_value = calculate_attribute_progression(
-            self.starting_attributes.get(attribute_name, None),
+            self.starting_attributes.get(attribute_name, None) if self.starting_attributes else None,
             self.level
         )
         for effect in self.active_effects_with_tag(attribute_name):

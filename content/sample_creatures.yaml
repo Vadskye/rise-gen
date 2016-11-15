@@ -1,17 +1,19 @@
-standard_warrior_equipment: &STANDARD_WARRIOR_EQUIPMENT
-  armor: breastplate
-  weapons:
-    - longsword
-  shield: heavy shield
-light_warrior_equipment: &LIGHT_WARRIOR_EQUIPMENT
-  armor: studded leather
-  weapons:
-    - short sword
-  shield: light shield
-mage_equipment: &MAGE_EQUIPMENT
-  armor: mage armor
-  weapons:
-    - club
+EQUIPMENT:
+  hidden: True
+  standard_warrior_equipment: &STANDARD_WARRIOR_EQUIPMENT
+    armor: breastplate
+    weapons:
+      - longsword
+    shield: heavy shield
+  light_warrior_equipment: &LIGHT_WARRIOR_EQUIPMENT
+    armor: studded leather
+    weapons:
+      - short sword
+    shield: light shield
+  mage_equipment: &MAGE_EQUIPMENT
+    armor: mage armor
+    weapons:
+      - club
 barbarian: &BARBARIAN
   <<: *STANDARD_WARRIOR_EQUIPMENT
   race: human
@@ -78,12 +80,6 @@ druid_healing:
   traits:
     - magic items
     - fast healing
-druid_dr:
-  <<: *DRUID
-  traits:
-    - magic items
-    - armor discipline (resilience)
-    - acanite armor
 druid_spells:
   <<: *DRUID
   attack type: spell
@@ -166,7 +162,6 @@ ranger_dex: &RANGER_DEX
     dexterity: 4
   armor: studded leather
   feats:
-    - dodge
     - weapon finesse
     - mighty blows
   traits:
@@ -243,7 +238,6 @@ warrior_dex:
   weapons:
     - short sword
   feats:
-    - dodge
     - weapon finesse
   traits:
     - magic items
@@ -254,7 +248,6 @@ warrior_str_dex:
     dexterity: 4
   armor: studded leather
   feats:
-    - dodge
     - mighty blows
     - weapon finesse
   traits:
@@ -308,7 +301,6 @@ assassin:
     dexterity: 4
     intelligence: 4
   feats:
-    - dodge
     - weapon finesse
-  description: Assassins are typically garbed in black or dark grey.
-  combat_description: Assassins strike from the shadows and use concealment and cover to their advantage.
+  # description: Assassins are typically garbed in black or dark grey.
+  # combat_description: Assassins strike from the shadows and use concealment and cover to their advantage.
