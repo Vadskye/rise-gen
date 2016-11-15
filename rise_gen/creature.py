@@ -5,20 +5,12 @@ import copy
 from rise_gen.ability import Ability
 from rise_gen.dice import Die, DieCollection, d20
 from rise_gen.rise_data import (
-    Armor, MonsterType, Race, RiseClass, Shield, Weapon, calculate_attribute_progression
+    ATTRIBUTES, SKILLS,
+    Armor, MonsterType, Race, RiseClass, Shield, Skill, Weapon,
+    calculate_attribute_progression, calculate_skill_modifier
 )
 import rise_gen.latex as latex
 import rise_gen.util as util
-
-ATTRIBUTES = """
-    strength
-    dexterity
-    constitution
-    intelligence
-    perception
-    willpower
-""".split()
-
 
 class CreatureStatistics(object):
     def __init__(
@@ -53,6 +45,7 @@ class CreatureStatistics(object):
         self.monster_type = None
         self.race = None
         self.shield = None
+        self.skills = None
         self.speeds = dict()
         self.templates = None
         self.traits = None
@@ -94,6 +87,13 @@ class CreatureStatistics(object):
             self.race = Race.from_name(self.race)
         if isinstance(self.shield, str):
             self.shield = Shield.from_name(self.shield)
+
+        # Skills are given as a dictionary of skill name -> skill points
+        # We also want to store a dictionary of skill name -> Skill object
+        if self.skill_points is not None:
+            self.skills = dict()
+            for skill_name in self.skill_points.keys():
+                self.skills[skill_name] = Skill.from_name(skill_name)
 
         # construct classes from the 'levels' given
         self.classes = dict()
@@ -555,6 +555,21 @@ class CreatureStatistics(object):
             size = effect(self, size)
         return size
 
+    def _calculate_skill(self, skill_name):
+        """Any of the creature's skills"""
+        # for now, ignore all skills not specified on character creation
+        # this is wrong, but simpler
+        if self.skills is None or self.skills.get(skill_name) is None:
+            return 0
+        skill_modifier = calculate_skill_modifier(
+            self.skill_points[skill_name],
+            self.level,
+            getattr(self, self.skills[skill_name].attribute)
+        )
+        for effect in self.active_effects_with_tag(skill_name):
+            skill_modifier = effect(self, skill_modifier)
+        return skill_modifier
+
     def _calculate_numerical_statistic(self, statistic_tag_name):
         """Any generic numerical statistic which is typically 0
         such as damage reduction, temporary hit points, etc.
@@ -720,6 +735,8 @@ for property_name in cached_properties:
 
 for attribute in ATTRIBUTES:
     create_cached_property(attribute, '_calculate_attribute', attribute)
+for skill in SKILLS:
+    create_cached_property(skill, '_calculate_skill', skill)
 create_cached_property(
     property_name='temporary_hit_points',
     calculation_function='_calculate_numerical_statistic',

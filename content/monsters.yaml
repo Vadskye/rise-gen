@@ -11,6 +11,8 @@ aboleth:
     intelligence: 3
     perception: 2
     willpower: 5
+  skills:
+    awareness: 2
   speeds:
     land: 10
     swim: 60
@@ -158,6 +160,8 @@ bear, brown: &BROWN_BEAR
     intelligence: -7
     perception: 1
     willpower: 0
+  skill points:
+    awareness: 2
   traits:
     - durable
     - natural armor: 2

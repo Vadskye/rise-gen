@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from rise_gen.dice import Die
+from rise_gen.rise_data import ATTRIBUTES, SKILLS
 import re
 
 POSSIBLE_EFFECT_TAGS = [
@@ -14,28 +15,22 @@ POSSIBLE_EFFECT_TAGS = [
     'physical damage dice',
     'spell damage dice',
     'combat prowess',
-    'constitution',
     'critical multiplier',
     'critical threshold',
     'damage reduction',
-    'dexterity',
     'end of round',
     'fortitude',
     'hit points',
-    'intelligence',
     'maneuver accuracy',
     'maneuver defense',
     'mental',
-    'perception',
     'power',
     'reflex',
     'temporary hit points',
     'size',
     'speed',
-    'strength',
     'weapon',
-    'willpower',
-]
+] + ATTRIBUTES + SKILLS
 
 SIZES = ['fine', 'diminuitive', 'tiny', 'small', 'medium', 'large', 'huge', 'gargantuan', 'colossal']
 

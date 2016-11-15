@@ -3,6 +3,19 @@
 from rise_gen.dice import Die, DieCollection
 import yaml
 
+SKILLS = """
+    awareness
+    sprint
+""".split()
+
+ATTRIBUTES = """
+    strength
+    dexterity
+    constitution
+    intelligence
+    perception
+    willpower
+""".split()
 
 class RiseData(object):
     data = None
@@ -167,18 +180,27 @@ class Weapon(RiseData):
         with open('content/weapons.yaml', 'r') as weapons_file:
             return yaml.load(weapons_file)
 
+class Skill(RiseData):
+
+    def __init__(self, name, attribute, sense=False, encumbrance_penalty=False):
+        super().__init__(name=name, attribute=attribute, sense=sense, encumbrance_penalty=encumbrance_penalty)
+
+    @classmethod
+    def init_data(cls):
+        with open('content/skills.yaml', 'r') as skills_file:
+            return yaml.load(skills_file)
+
+    def __str__(self):
+        return "Skill({}, {}, {}, {})".format(
+            self.name,
+            self.attribute,
+            self.sense,
+            self.encumbrance,
+        )
+
 
 def calculate_attribute_progression(progression, level):
-    """Calculate an attribute's actual value based on level and progression
-
-    The possible progressions and their purposes are as follows:
-        'full': a PC's primary attribute, starting at 4 and increased at each level
-        'primary': a primary attribute for a monster
-        'secondary': an secondary attribute for a monster
-        'tertiary': a tertiary attribute for a monster
-        'bad': a penalized attribute for a monster
-        <number>: the number
-    """
+    """Calculate an attribute's actual value based on level and progression"""
 
     # key is by starting value
     return {
@@ -189,3 +211,27 @@ def calculate_attribute_progression(progression, level):
         4: level + 3,
         5: level + 4
     }.get(progression, progression) # if not in here, just use the given value
+
+def calculate_skill_ranks(skill_points, level):
+    """Calculate an skill's ranks based on level and skill points"""
+
+    # key is by starting value
+    return {
+        None: 0,
+        0: 0,
+        1: level // 2 + 2,
+        2: level + 5,
+    }[skill_points]
+
+def calculate_skill_modifier(skill_points, level, attribute):
+    """Calculate total skill modifier based on level, attribute, and skill points"""
+
+    return max(
+        calculate_skill_ranks(skill_points, level),
+        {
+            None: attribute // 2,
+            0: attribute // 2,
+            1: attribute,
+            2: attribute + 5,
+        }[skill_points]
+    )

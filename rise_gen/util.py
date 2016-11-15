@@ -80,3 +80,9 @@ def num_to_word(n):
     elif n < 0:
         raise Exception("num_to_word yet supported for negative n")
     return _number_words[n]
+
+def modifier_prefix(value):
+    if value >= 0:
+        return "+{}".format(value)
+    else:
+        return "-{}".format(value)

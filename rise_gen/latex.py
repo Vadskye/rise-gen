@@ -1,5 +1,5 @@
 import re
-from rise_gen.util import num_to_word
+from rise_gen.util import num_to_word, modifier_prefix
 
 def monster_latex(creature):
     """Generate LaTeX necessary to create a monster from the given creature"""
@@ -137,12 +137,21 @@ def name(creature):
         return "<{}>".format(creature.name.title())
 
 def senses(creature):
-    return "\\pari \\mb<Senses> " + ", ".join(sorted(
-        [str(ability) for ability in filter(
-            lambda ability: ability.has_tag('sense'),
-            creature.visible_abilities
-        )])
-    ).capitalize()
+    # multi-layer join fixes capitalization issues
+    return "\\pari \\mb<Senses> " + ", ".join([
+        ", ".join(sorted([
+            str(ability) for ability in filter(
+                lambda ability: ability.has_tag('sense'),
+                creature.visible_abilities
+            )
+        ])).capitalize(),
+        ", ".join([
+            "{} {}".format(
+                skill_name.title(),
+                modifier_prefix(getattr(creature, skill_name))
+            ) for skill_name in sorted(creature.skills.keys())
+        ])
+    ])
 
 def size(creature):
     return "\\pari \\mb<Size> {size}; \\mb<Reach> {reach} ft.".format(size=creature.size.capitalize(), reach=creature.reach)
