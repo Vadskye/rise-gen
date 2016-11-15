@@ -72,10 +72,11 @@ _number_words = {
     17: 'seventeen',
     18: 'eighteen',
     19: 'nineteen',
+    20: 'twenty',
 }
 def num_to_word(n):
     if n >= 20:
-        raise Exception("num_to_word yet supported for n >= 20")
+        raise Exception("num_to_word yet supported for n > 20")
     elif n < 0:
         raise Exception("num_to_word yet supported for negative n")
     return _number_words[n]

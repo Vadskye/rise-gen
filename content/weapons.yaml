@@ -1,6 +1,6 @@
 bite:
   die: d8
-  encumbrance: medium
+  encumbrance: light
   group: natural weapons
 greatsword:
   die: d10

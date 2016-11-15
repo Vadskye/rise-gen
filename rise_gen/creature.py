@@ -901,7 +901,7 @@ class Creature(CreatureStatistics):
             name=sample_name,
             # 'levels' is required
             levels=sample_properties.pop('levels'),
-            properties=sample_properties
+            properties=sample_properties,
         )
 
 def base_class_combat_prowess_bonus(progression):

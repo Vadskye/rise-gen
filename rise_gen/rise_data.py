@@ -30,9 +30,12 @@ class RiseData(object):
             cls.data = cls.init_data()
         relevant_data = cls.data.get(thing_name)
 
-        for key in relevant_data:
+        # pull the keys into a list to keep them from changing as we change the
+        # dictionary
+        for key in list(relevant_data.keys()):
             python_friendly_key = key.replace(' ', '_')
-            relevant_data[python_friendly_key] = relevant_data.pop(key)
+            if python_friendly_key != key:
+                relevant_data[python_friendly_key] = relevant_data.pop(key)
 
         if relevant_data is None:
             raise Exception(

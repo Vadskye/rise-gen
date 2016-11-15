@@ -27,6 +27,7 @@ allip:
   monster class: adept
   monster type: undead
   level: 4
+  encounter: Any environment; solitary
   weapons:
     - touch
   speeds:
@@ -43,9 +44,9 @@ allip:
     - incorporeal
     - magical ability
 angel - astral deva:
-  monster class: adept
   monster type: outsider
-  level: 14
+  levels:
+    adept: 14
   weapons:
     - greatsword
   attributes:
@@ -68,10 +69,84 @@ angel - astral deva:
     - skilled
     - superior senses
     # two missing traits
+ankheg:
+  monster type: magical beast
+  levels:
+    slayer: 6
+  weapons:
+    - bite
+  attributes:
+    strength: 5
+    dexterity: 1
+    constitution: 3
+    intelligence: -8
+    perception: 1
+    willpower: 0
+  encounter: Warm plains; solitary or cluster (2--4)
+  speeds:
+    burrow: 20
+  subtraits:
+    - natural armor: 4
+    - tremorsense: 50 ft.
+  traits:
+    - burrower
+    - increased size
+    - natural grab
+    - natural energy
+aranea:
+  monster type: magical beast
+  levels:
+    adept: 5
+  weapons:
+    - bite
+  encounter: Temperate forests; solitary or colony (3--6)
+  attributes:
+    strength: 1
+    dexterity: 3
+    constitution: 0
+    intelligence: 3
+    perception: 2
+    willpower: 4
+  speeds:
+    climb: 20
+  subtraits:
+    - natural armor: 4
+  traits:
+    - humanoid form
+    - spit web
+    - natural venom
+    - spellcaster
+arrowhawk:
+  monster type: outsider
+  levels:
+    slayer: 3
+  encounter: Plane of Air; solitary or clutch (2--4)
+  weapons:
+    - bite
+  languages:
+    - Auran
+  size: small
+  attributes:
+    strength: 2
+    dexterity: 5
+    constitution: 2
+    intelligence: 0
+    perception: 4
+    willpower: 1
+  speeds:
+    land: ~
+    fly: 60 # perfect
+  subtraits:
+    - natural armor: 2
+  traits:
+    - flight
+    - damaging ray
+    - natural energy
 bear, brown: &BROWN_BEAR
   monster type: animal
   levels:
     behemoth: 6
+  encounter: Temperate forests; solitary or pair
   weapons:
     - bite
     - claw
@@ -101,12 +176,28 @@ bear, black:
     - great fortitude
     - scent
     - low-light vision
+cultist:
+  monster type: humanoid
+  levels:
+    adept: 1
+  weapons:
+    - club
+  attributes:
+    intelligence: -1
+    perception: -1
+    willpower: 3
+  encounter: Any environment; solitary, group (5--10), or cult (11\plus)
+  languages:
+    - common
+  traits:
+    - magical ability
+    - mighty will
 demon, bebelith:
   monster type: outsider
-  base_class: behemoth
   levels:
     behemoth: 5
     slayer: 6
+  base_class: behemoth
   weapons:
     - bite
     - claw

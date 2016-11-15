@@ -62,7 +62,7 @@ _vowels = set(['a', 'e', 'i', 'u'])
 def adept_points(creature):
     if not 'adept' in creature.levels:
         return None
-    count = max(creature.level, creature.intelligence, creature.perception, creature.willpower) // 2
+    count = max(creature.level, creature.intelligence // 2, creature.perception // 2, creature.willpower // 2)
     return "\\parhead<Adept Points> {a_an} {name} has {count} adept {point}. {it_they} one hour after being spent.".format(
         a_an="An" if creature.name[0] in _vowels else "A",
         name=creature.name,
@@ -108,8 +108,9 @@ def levels(creature):
     return "\\pari \\mb<Levels> {levels} [{monster_type}]".format(
         levels=", ".join([
             "{class_name} {level}".format(
-                class_name=rise_class.name.capitalize(), level=creature.levels[class_name])
-            for class_name, rise_class in creature.classes.items()
+                class_name='\\textbf<{}>'.format(class_name.capitalize()) if class_name == creature.base_class.name else class_name.capitalize(),
+                level=creature.levels[class_name])
+            for class_name in sorted(creature.classes.keys())
         ]),
         monster_type=creature.monster_type.name.capitalize(),
     )

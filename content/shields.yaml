@@ -2,8 +2,8 @@ buckler:
   bonus: 1
   armor check penalty: 1
 heavy shield:
-  bonus: 2
+  bonus: 3
   armor check penalty: 3
 light shield:
-  bonus: 1
+  bonus: 2
   armor check penalty: 2

@@ -322,6 +322,18 @@ def get_ability_definitions():
             ],
             'prerequisite': lambda creature: creature.combat_prowess >= 8
         },
+        'heavy hitter': {
+            'effects': [
+                Modifier(['physical damage bonus'],
+                         lambda creature, value: value + 2),
+            ],
+            'prerequisite': lambda creature: (
+                creature.strength >= 5
+                and creature.combat_prowess >= 4
+                and creature.attack_range is None
+                and creature.weapon.encumbrance == 'heavy'
+            )
+        },
         'mighty blows': {
             'effects': [
                 Modifier(['physical damage bonus'],
@@ -551,7 +563,7 @@ def get_ability_definitions():
                          # find the current size in the list and go to the next
                          # larger one
                          # this fails for colossal; for now, that is a feature
-                         lambda creature, value: SIZES[SIZES.index(value) + creature.levels['behemoth'] // 4]),
+                         lambda creature, value: SIZES[SIZES.index(value) + creature.level // 4]),
             ],
             'prerequisite': min_level(4, 'behemoth')
         },
@@ -600,6 +612,12 @@ def get_ability_definitions():
             ],
             'prerequisite': lambda creature: creature.level >= 6,
         },
+        'mighty will': {
+            'effects': [
+                Modifier(['mental'],
+                         lambda creature, value: value + 4)
+            ],
+        },
         'natural force': {
             'effects': [
                 Modifier(['physical damage bonus'],
@@ -629,12 +647,17 @@ def get_ability_definitions():
 
         # these traits have no effects that can be calculated for now
         'attribute mastery': {},
+        'burrower': {},
+        'damaging ray': {},
+        'flight': {},
+        'humanoid form': {},
         'incorporeal': {},
         'innate magic': {},
         'magical ability': {},
         'magical retribution': {},
         'magical strike': {},
         'myriad magical abilities': {},
+        'natural energy': {},
         'natural grab': {},
         'natural venom': {},
         'resist magic': {},

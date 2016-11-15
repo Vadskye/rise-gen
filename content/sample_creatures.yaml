@@ -101,12 +101,32 @@ fighter: &FIGHTER
   traits:
     - magic items
     - armor discipline (resilience)
+
+fighter_dual:
+  <<: *FIGHTER
+  attributes:
+    strength: 4
+    dexterity: 2  # for the feat
+    constitution: 4
+  feats:
+    - two weapon fighting
+  weapons:
+    - dual short swords
+  shield: ~
 fighter_healing:
   <<: *FIGHTER
   traits:
     - magic items
     - armor discipline (resilience)
     - fast healing
+
+fighter_heavy:
+  <<: *FIGHTER
+  weapons:
+    - greatsword
+  shield: ~
+  feats:
+    - heavy hitter
 fighter_halfling:
   <<: *FIGHTER
   race: halfling
