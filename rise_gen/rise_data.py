@@ -4,8 +4,32 @@ from rise_gen.dice import Die, DieCollection
 import yaml
 
 SKILLS = """
-    awareness
+    climb
+    jump
     sprint
+    swim
+    balance
+    escape artist
+    ride
+    sleight of hand
+    stealth
+    tumble
+    craft
+    devices
+    disguise
+    heal
+    knowledge
+    linguistics
+    awareness
+    creature handling
+    sense motive
+    spellcraft
+    survival
+    intimidate
+    perform
+    profession
+    bluff
+    persuasion
 """.split()
 
 ATTRIBUTES = """
@@ -233,5 +257,5 @@ def calculate_skill_modifier(skill_points, level, attribute):
             0: attribute // 2,
             1: attribute,
             2: attribute + 5,
-        }[skill_points]
+        }[skill_points] if attribute is not None else 0
     )

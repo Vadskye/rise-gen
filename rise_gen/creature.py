@@ -46,6 +46,7 @@ class CreatureStatistics(object):
         self.race = None
         self.shield = None
         self.skills = None
+        self.skill_points = None
         self.speeds = dict()
         self.templates = None
         self.traits = None
@@ -393,12 +394,12 @@ class CreatureStatistics(object):
             attribute_value = attribute_value // 2
         return attribute_value
 
-    def _calculate_armor_check_penalty(self):
+    def _calculate_encumbrance_penalty(self):
         if self.armor is None:
             penalty = 0
         else:
-            penalty = self.armor.armor_check_penalty
-        for effect in self.active_effects_with_tag('armor check penalty'):
+            penalty = self.armor.encumbrance_penalty
+        for effect in self.active_effects_with_tag('encumbrance penalty'):
             penalty = effect(self, penalty)
         return max(0, penalty)
 
@@ -561,11 +562,19 @@ class CreatureStatistics(object):
         # this is wrong, but simpler
         if self.skills is None or self.skills.get(skill_name) is None:
             return 0
+
+        attribute_name = self.skills[skill_name].attribute
+        if attribute_name is not None:
+            attribute = getattr(self, attribute_name)
+        else:
+            attribute = None
         skill_modifier = calculate_skill_modifier(
             self.skill_points[skill_name],
             self.level,
-            getattr(self, self.skills[skill_name].attribute)
+            attribute
         )
+        if self.skills[skill_name].encumbrance_penalty:
+            skill_modifier -= self.encumbrance_penalty
         for effect in self.active_effects_with_tag(skill_name):
             skill_modifier = effect(self, skill_modifier)
         return skill_modifier
@@ -713,7 +722,7 @@ cached_properties = """
     accuracy
     attack_count
     armor
-    armor_check_penalty
+    encumbrance_penalty
     armor_defense
     combat_prowess
     critical_threshold

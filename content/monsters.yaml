@@ -162,6 +162,8 @@ bear, brown: &BROWN_BEAR
     willpower: 0
   skill points:
     awareness: 2
+    climb: 2
+    swim: 1
   traits:
     - durable
     - natural armor: 2

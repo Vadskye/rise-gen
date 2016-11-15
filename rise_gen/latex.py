@@ -24,6 +24,7 @@ def monster_latex(creature):
                     defenses(creature),
                     attacks(creature),
                     attributes(creature),
+                    skills(creature),
                 ]),
                 "\\end<spelleffects>",
             ]),
@@ -138,6 +139,10 @@ def name(creature):
 
 def senses(creature):
     # multi-layer join fixes capitalization issues
+    sense_skills = list(filter(
+        lambda skill: skill.sense,
+        creature.skills.values()
+    ))
     return "\\pari \\mb<Senses> " + ", ".join([
         ", ".join(sorted([
             str(ability) for ability in filter(
@@ -145,16 +150,32 @@ def senses(creature):
                 creature.visible_abilities
             )
         ])).capitalize(),
-        ", ".join([
+        ", ".join(sorted([
             "{} {}".format(
-                skill_name.title(),
-                modifier_prefix(getattr(creature, skill_name))
-            ) for skill_name in sorted(creature.skills.keys())
-        ])
+                skill.name.title(),
+                modifier_prefix(getattr(creature, skill.name))
+            ) for skill in sense_skills
+        ]))
     ])
 
 def size(creature):
     return "\\pari \\mb<Size> {size}; \\mb<Reach> {reach} ft.".format(size=creature.size.capitalize(), reach=creature.reach)
+
+def skills(creature):
+    if creature.skills is None:
+        return None
+    relevant_skills = list(filter(
+        lambda skill: not skill.sense,
+        creature.skills.values()
+    ))
+    if not len(relevant_skills):
+        return None
+    return "\\pari \\mb<Skills> " + ", ".join(sorted([
+        "{} {}".format(
+            skill.name.title(),
+            modifier_prefix(getattr(creature, skill.name))
+        ) for skill in relevant_skills
+    ]))
 
 def traits(creature):
     return "\\parhead<Traits> " + ", ".join(

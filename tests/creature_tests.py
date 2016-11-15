@@ -13,8 +13,8 @@ def test_fighter_properties():
     c = Creature.from_sample_creature('fighter', level=1)
     correct_properties = {
         'accuracy': 8,
-        'armor_check_penalty': 3,
-        'armor_defense': 21,
+        'encumbrance_penalty': 3,
+        'armor_defense': 22,
         'attack_count': 1,
         'combat_prowess': 3,
         'damage_bonus': 3,
@@ -37,8 +37,8 @@ def test_fighter_properties_at_higher_level():
     c = Creature.from_sample_creature('fighter', level=10)
     correct_properties = {
         'accuracy': 18,
-        'armor_check_penalty': 3,
-        'armor_defense': 30,
+        'encumbrance_penalty': 3,
+        'armor_defense': 31,
         'attack_count': 3,
         'combat_prowess': 12,
         'damage_bonus': 12,
@@ -61,7 +61,7 @@ def test_fighter_string():
     c = Creature.from_sample_creature('fighter', level=1)
     assert_equal(str(c), """
 human fighter Fighter 1
-[HP] 10; [Defs] AD 21, MD 14; Fort 20, Ref 10, Ment 13
+[HP] 10; [Defs] AD 22, MD 14; Fort 20, Ref 10, Ment 13
 [Atk] 8: 1d8+3; [Prowess] 3
 [Attr] 4 0 4 0 0 0
 [Space] 5, [Reach] 5, [Speed] 30
