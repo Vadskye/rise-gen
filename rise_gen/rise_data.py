@@ -66,6 +66,8 @@ class RiseData(object):
         if cls.data is None:
             cls.data = cls.init_data()
         relevant_data = cls.data.get(thing_name)
+        if relevant_data is None:
+            raise Exception("Error finding data for '{}'".format(thing_name))
 
         # pull the keys into a list to keep them from changing as we change the
         # dictionary

@@ -146,7 +146,7 @@ def senses(creature):
         lambda skill: skill.sense,
         creature.skills.values()
     )) if creature.skills else list()
-    return "\\pari \\mb<Senses> " + ", ".join([
+    return "\\pari \\mb<Senses> " + ", ".join(filter(None, [
         ", ".join(sorted([
             str(ability) for ability in filter(
                 lambda ability: ability.has_tag('sense'),
@@ -159,7 +159,7 @@ def senses(creature):
                 modifier_prefix(getattr(creature, skill.name))
             ) for skill in sense_skills
         ]))
-    ])
+    ]))
 
 def size(creature):
     return "\\pari \\mb<Size> {size}; \\mb<Reach> {reach} ft.".format(size=creature.size.capitalize(), reach=creature.reach)

@@ -470,10 +470,16 @@ def get_ability_definitions():
         'extraplanar body': {
             'tags': set(['hidden']),
         },
+        'mindless': {
+            'tags': set(['hidden']),
+        },
         'necromantic body': {
             'tags': set(['hidden']),
         },
         'nonliving': {
+            'tags': set(['hidden']),
+        },
+        'nonsentient': {
             'tags': set(['hidden']),
         },
         'telepathy': {},
@@ -484,6 +490,7 @@ def get_ability_definitions():
     # but this makes it easy to add senses with effects later
     senses = dict()
     sense_names = ['darkvision', 'lifesense', 'lifesight', 'low-light vision',
+                   'blindsense', 'blindsight',
                    'scent', 'tremorsense', 'tremorsight', 'truesight']
     for name in sense_names:
         senses[name] = dict()
@@ -562,6 +569,13 @@ def get_ability_definitions():
             ],
             'prerequisite': min_level(4, 'behemoth')
         },
+        'brute force': {
+            'effects': [
+                Modifier(['physical damage bonus'],
+                                lambda creature, value: value + creature.levels['slayer'] // 2),
+            ],
+            'prerequisite': min_level(1, 'slayer')
+        },
         'draining touch': {
             # this should only be applied to creatures with a single touch attack
             'effects': [
@@ -576,6 +590,13 @@ def get_ability_definitions():
                 Modifier(['hit points'],
                          lambda creature, value: value + creature.power * 2),
             ],
+        },
+        'evasive': {
+            'effects': [
+                Modifier(['armor defense', 'reflex'],
+                         lambda creature, value: value + 2),
+            ],
+            'prerequisite': lambda creature: creature.dexterity >= 5,
         },
         'great fortitude': {
             'effects': [
@@ -613,13 +634,6 @@ def get_ability_definitions():
                          lambda creature, value: value + 4)
             ],
         },
-        'natural force': {
-            'effects': [
-                Modifier(['physical damage bonus'],
-                                lambda creature, value: value + creature.levels['slayer'] // 2),
-            ],
-            'prerequisite': min_level(1, 'slayer')
-        },
         'resist damage': {
             'effects': [
                 Modifier(['damage reduction'],
@@ -632,17 +646,14 @@ def get_ability_definitions():
                          lambda creature, value: value + 2),
             ],
         },
-        'weapon mastery': {
-            'effects': [
-                ModifierInPlace(['physical damage bonus'],
-                                lambda creature, value: value + creature.levels['slayer'] // 2),
-            ],
-            'prerequisite': min_level(1, 'slayer')
-        },
 
         # these traits have no effects that can be calculated for now
         'attribute mastery': {},
+        'boulder toss': {},
+        'breath weapon: cone': {},
+        'breath weapon: line': {},
         'burrower': {},
+        'damaging aura': {},
         'damaging ray': {},
         'flight': {},
         'humanoid form': {},
@@ -651,6 +662,7 @@ def get_ability_definitions():
         'magical ability': {},
         'magical retribution': {},
         'magical strike': {},
+        'multistrike': {},
         'myriad magical abilities': {},
         'natural energy': {},
         'natural grab': {},

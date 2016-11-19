@@ -2669,7 +2669,3 @@ babble:
       duration: brief
   limit affected: mind affecting
   targets: all
-burning line:
-  area: medium line burst
-  damage: normal
-  targets: all

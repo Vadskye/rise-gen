@@ -108,6 +108,8 @@ class CreatureStatistics(object):
             self.skills = dict()
             for skill_name in self.skill_points.keys():
                 self.skills[skill_name] = Skill.from_name(skill_name)
+        else:
+            self.skills = None
 
         # construct classes from the 'levels' given
         self.classes = dict()
@@ -128,8 +130,11 @@ class CreatureStatistics(object):
             self.base_class = self.classes[self.base_class]
 
         # assume the base class if only one class is given
-        if self.base_class is None and len(self.classes) == 1:
-            self.base_class = next(iter(self.classes.values()))
+        if self.base_class is None:
+            if len(self.classes) == 1:
+                self.base_class = next(iter(self.classes.values()))
+            else:
+                raise Exception("Error: No base class given")
 
         # use the race's size as a default if no size is specified
         if self.base_size is None and self.race is not None:

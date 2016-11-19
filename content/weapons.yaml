@@ -2,6 +2,10 @@ bite:
   die: d8
   encumbrance: light
   group: natural weapons
+greataxe:
+  die: d10
+  encumbrance: heavy
+  group: axes
 greatsword:
   die: d10
   encumbrance: heavy
@@ -49,3 +53,15 @@ touch: # TODO: make this hit Reflex defense
   group: natural
 no weapon: # default if a creature has no other weapon specified
   encumbrance: light
+slam:
+  die: d8
+  encumbrance: medium
+  group: natural weapons
+warhammer:
+  die: d8
+  encumbrance: medium
+  group: headed weapons
+spear:
+  die: d8
+  encumbrance: medium
+  group: spears

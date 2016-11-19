@@ -11,7 +11,7 @@ aboleth:
     intelligence: 3
     perception: 2
     willpower: 5
-  skill_points:
+  skill points:
     awareness: 2
   speeds:
     land: 10
@@ -48,7 +48,9 @@ allip:
 angel - astral deva:
   monster type: outsider
   levels:
-    adept: 14
+    adept: 7
+    slayer: 7
+  base class: adept
   weapons:
     - greatsword
   attributes:
@@ -64,13 +66,14 @@ angel - astral deva:
     - truesight: 50 ft.
   traits:
     - innate magic
-    - magical retribution
     - resist damage
     - resist magic
     - spellcaster
     - skilled
     - superior senses
-    # two missing traits
+    - brute force
+    - damaging ray
+    # one extra trait
 ankheg:
   monster type: magical beast
   levels:
@@ -118,7 +121,7 @@ aranea:
     - spit web
     - natural venom
     - spellcaster
-arrowhawk:
+arrowhawk, juvenile: &ARROWHAWK
   monster type: outsider
   levels:
     slayer: 3
@@ -144,6 +147,147 @@ arrowhawk:
     - flight
     - damaging ray
     - natural energy
+arrowhawk, adult:
+  <<: *ARROWHAWK
+  levels:
+    slayer: 6
+  size: medium
+  traits:
+    - flight
+    - damaging ray
+    - natural energy
+    - brute force
+arrowhawk, elder:
+  <<: *ARROWHAWK
+  levels:
+    slayer: 10
+  size: medium
+  traits:
+    - flight
+    - damaging ray
+    - natural energy
+    - brute force
+    - increased size
+    - evasive
+
+assassin vine:
+  monster type: animate
+  levels:
+    behemoth: 4
+  encounter: Temperate forests; solitary or patch (2--4)
+  weapons:
+    - slam
+  attributes:
+    strength: 5
+    dexterity: 1
+    constitution: 3
+    intelligence: ~
+    perception: 2
+    willpower: ~
+  skill points:
+    stealth: 2
+  speeds:
+    land: 5
+  subtraits:
+    natural armor: 2
+    blindsight: 50
+  traits:
+    - behemoth size
+    - natural grab
+    - superior senses
+
+athach:
+  monster type: aberration
+  levels:
+    slayer: 12
+  encounter: Temperate hills; solitary, gang (2--4), or tribe (7--12)
+  languages:
+    - giant
+  weapons:
+    - slam
+    - bite
+    - thrown rock
+  skill points:
+    awareness: 1
+  attributes:
+    strength: 5
+    dexterity: 1
+    constitution: 1
+    intelligence: -3
+    perception: 1
+    willpower: 4
+  subtraits:
+    - natural armor: 4
+  traits:
+    - brute force
+    - increased size
+    - rend
+    - multistrike
+    - great fortitude
+    - improved natural armor
+    - mighty will
+
+azer, grunt: &AZER
+  monster type: outsider
+  levels:
+    slayer: 2
+  encounter: Plane of Fire; solitary, pair, or team (3--6)
+  weapons:
+    - warhammer
+    - spear
+  armor: breastplate
+  shield: heavy shield
+  attributes:
+    strength: 3
+    dexterity: 3
+    constitution: 3
+    intelligence: 3
+    perception: 1
+    willpower: 3
+  subtraits:
+    - darkvision: 50 ft.
+    - natural armor: 2
+  traits:
+    - damaging aura
+    - brute force
+
+azer, elite guard:
+  <<: *AZER
+  levels:
+    slayer: 5
+  traits:
+    - damaging aura
+    - brute force
+    - 'breath weapon: cone'
+    - mighty will
+
+barghest:
+  monster type: outsider
+  levels:
+    adept: 6
+  weapons:
+    - bite
+    - claw
+    - claw
+  attributes:
+    strength: 5
+    dexterity: 3
+    constitution: 1
+    intelligence: 2
+    perception: 2
+    willpower: 2
+  skill points:
+    awareness: 2
+    bluff: 2
+    intimidate: 2
+    jump: 2
+    stealth: 2
+  subtraits:
+    natural armor: 4
+  traits:
+    - magical ability
+    - humanoid form
+
 bear, brown: &BROWN_BEAR
   monster type: animal
   levels:
@@ -172,6 +316,7 @@ bear, brown: &BROWN_BEAR
     - behemoth size
     - scent
     - low-light vision
+
 bear, black:
   <<: *BROWN_BEAR
   levels:
@@ -183,6 +328,7 @@ bear, black:
     - great fortitude
     - scent
     - low-light vision
+
 cultist:
   monster type: humanoid
   levels:
@@ -199,12 +345,13 @@ cultist:
   traits:
     - magical ability
     - mighty will
+
 demon, bebelith:
   monster type: outsider
   levels:
     behemoth: 5
     slayer: 6
-  base_class: behemoth
+  base class: behemoth
   weapons:
     - bite
     - claw
@@ -228,5 +375,36 @@ demon, bebelith:
     - natural venom
     - rend
     - spit web
-    - natural force
+    - brute force
     - durable
+
+giant, frost:
+  monster type: monstrous humanoid
+  levels:
+    behemoth: 5
+    slayer: 5
+  base class: behemoth
+  weapons:
+    - greataxe
+  armor: breastplate
+  attributes:
+    strength: 4
+    dexterity: 0
+    constitution: 3
+    intelligence: 0
+    perception: 1
+    willpower: 1
+  languages:
+    - giant
+  skill points:
+    awareness: 1
+    craft: 1
+  subtraits:
+    - natural armor: 4
+  traits:
+    - behemoth size
+    - 'breath weapon: line'
+    - brute force
+    - innate magic
+    - durable
+    - boulder toss
