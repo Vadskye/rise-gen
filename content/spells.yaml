@@ -1732,7 +1732,7 @@ repulsion:
         - instant effect: shove
           misc: 4 # this is a weak critical effect and that is okay
   area: huge radius emanation
-  targets: all
+  targets: enemies
 resist energy:
   buffs:
     - damage reduction: energy all
@@ -2668,4 +2668,8 @@ babble:
       conditions: [confused]
       duration: brief
   limit affected: mind affecting
+  targets: all
+burning line:
+  area: medium line burst
+  damage: normal
   targets: all
