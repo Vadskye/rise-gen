@@ -2,6 +2,8 @@
 
 import argparse
 from rise_gen.creature import Creature
+from rise_gen.ability import Ability
+import rise_gen.util as util
 import cProfile
 from pprint import pprint
 
@@ -25,6 +27,19 @@ class CreatureGroup(object):
                 return
             else:
                 c.standard_attack(target)
+
+    def get_accuracy(self, group, trials):
+        """Test the average accuracy against the given group"""
+        hits = 0
+        misses = 0
+        for i in range(trials):
+            for creature in self.creatures:
+                for target in group.creatures:
+                    if creature.check_hit(target):
+                        hits += 1
+                    else:
+                        misses += 1
+        return hits / (hits + misses)
 
     def get_living_creature(self):
         """Return a single living creature
@@ -174,7 +189,8 @@ def custom_red_modifications(red):
     Args:
         red (CreatureGroup): Group of red creatures
     """
-    pass
+    for c in red.creatures:
+        c.add_ability(Ability.by_name('critical threshold'))
 
 def custom_blue_modifications(blue):
     """Modify the CreatureGroup for random testing
@@ -182,6 +198,8 @@ def custom_blue_modifications(blue):
     Args:
         blue (CreatureGroup): Group of blue creatures
     """
+    for c in blue.creatures:
+        c.add_ability(Ability.by_name('mighty blows'))
     pass
 
 def generate_combat_results(red, blue, trials):
@@ -205,7 +223,14 @@ def generate_combat_results(red, blue, trials):
     return results
 
 def test_training_dummy(level, trials):
-    sample_creature_names = 'barbarian barbarian_greatsword cleric cleric_spells druid druid_spells fighter fighter_dex ranger rogue rogue_str sorcerer warrior warrior_dex warrior_str_dex wizard'.split()
+    sample_creature_names = util.import_yaml_file('content/sample_creatures.yaml').keys()
+    # strip out the templates and non-creature stuff
+    sample_creature_names = list(filter(
+        lambda name: name.upper() != name,
+        sample_creature_names,
+    ))
+    # remove the dummy, which shouldn't fight itself
+    sample_creature_names.pop(sample_creature_names.index('dummy'))
     sample_creatures = [Creature.from_sample_creature(name, level=level) for name in sample_creature_names]
     training_dummy = Creature.from_sample_creature('dummy', level=level)
 
@@ -225,8 +250,7 @@ def test_training_dummy(level, trials):
 
     pprint(results)
 
-
-def main(args):
+def generate_creature_groups(args):
     blue_creatures = [Creature.from_sample_creature(
         name,
         level=args['blue level'] or args['level']
@@ -238,6 +262,12 @@ def main(args):
         level=args['red level'] or args['level']
     ) for name in args['red']]
     red = CreatureGroup(red_creatures)
+
+    return blue, red
+
+def main(args):
+
+    blue, red = generate_creature_groups(args)
 
     custom_blue_modifications(blue)
     custom_red_modifications(red)
@@ -262,6 +292,10 @@ if __name__ == "__main__":
             cmd_args['level'] = i
             print(str(i) + ": ", end="")
             main(cmd_args)
+    elif cmd_args.get('test') == 'accuracy':
+        blue, red = generate_creature_groups(cmd_args)
+        print("blue", blue.get_accuracy(red, cmd_args['trials']))
+        print("red", red.get_accuracy(blue, cmd_args['trials']))
     elif cmd_args.get('test') == 'level_diff':
         cmd_args['trials'] //= 10
         for i in range(3, 21):

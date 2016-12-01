@@ -75,7 +75,6 @@ agony:
 aid:
   buffs:
     - temporary hp
-    - immune: fear
   duration: personal long
   range: close
 air walk:
@@ -1164,7 +1163,6 @@ heroism:
   duration: short
   buffs:
     - temporary hp
-    - immune: fear
     - legend point: physical
   range: close
 heroism mass:
@@ -1645,11 +1643,11 @@ prismatic orange:
     success:
       conditions:
         - frightened
-      duration: short fixed
+      duration: brief
     failure:
       conditions:
         - shaken
-      duration: short fixed
+      duration: brief
     critical success: ~
 prismatic red:
   range: medium
@@ -2603,6 +2601,7 @@ aquatic sphere:
       - immune: underwater
       duration: short
       range: personal
+  spell resistance: false
 avatar of growth:
   $ref: AVATAR
   conditions:
@@ -2669,3 +2668,20 @@ babble:
       duration: brief
   limit affected: mind affecting
   targets: all
+shining beacon:
+  conditions: [partially blinded]
+  duration: brief
+  range: close
+  trigger:
+    condition: when attacked
+    duration: short
+boulder drop:
+  range: medium
+  damage: normal
+  area: small radius burst
+  spell resistance: false
+  targets: all
+weapon of power:
+  damage: over time
+  range: close
+  misc: 2  # can deal more than 5 rounds of dot

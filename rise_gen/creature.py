@@ -309,14 +309,7 @@ class CreatureStatistics(object):
             class_scaling = 2
             # this feat scaling is weird and approximate, but whatever
             # feat_scaling = min(4, (self.level - 1) // 4)
-            if self.level < 8:
-                feat_scaling = 0
-            elif self.level < 12:
-                feat_scaling = 2
-            elif self.level < 16:
-                feat_scaling = 3
-            else:
-                feat_scaling = 4
+            feat_scaling = 0 # if self.level < 10 else 2
             return self.level + class_scaling + feat_scaling
         else:
             raise Exception("Error: invalid attack type '{0}'".format(self.attack_type))
@@ -366,8 +359,11 @@ class CreatureStatistics(object):
 
         damage_dice = None
         if self.attack_type == 'physical':
-            # this used to have a try/catch; why?
-            damage_dice = self.weapon.dice
+            # separate effects on the weapon, such as size modifiers
+            # from effects on the creature, such as sneak attacks
+            for effect in self.active_effects_with_tag('weapon damage dice'):
+                self.weapon.dice = effect(self, self.weapon.dice)
+            damage_dice = copy.deepcopy(self.weapon.dice)
             for effect in self.active_effects_with_tag('physical damage dice'):
                 damage_dice = effect(self, damage_dice)
 
@@ -378,11 +374,15 @@ class CreatureStatistics(object):
                 damage_dice = DieCollection(
                     Die(size=6, count=self.accuracy // 2)
                 )
-            elif self.special_attack_name == 'scorching ray' or self.special_attack_name == 'inflict wounds':
+            elif self.level <= 10:
                 damage_dice = DieCollection(
                     Die(size=6, count=self.accuracy)
                 )
             else:
+                damage_dice = DieCollection(
+                    Die(size=8, count=self.accuracy)
+                )
+            if not (self.special_attack_name == 'scorching ray' or self.special_attack_name == 'inflict wounds'):
                 raise Exception("Error: Unrecognized spell '{}'".format(self.special_attack_name))
             for effect in self.active_effects_with_tag('spell damage dice'):
                 damage_dice = effect(self, damage_dice)
@@ -467,6 +467,7 @@ class CreatureStatistics(object):
             self.strength,
             sum([calculate_base_defense(rise_class.fortitude, self.levels[class_name])
                  for class_name, rise_class in self.classes.items()])
+
         )
         fortitude += base_class_defense_bonus(self.base_class.fortitude)
         # add the automatic modifier from Con
@@ -526,6 +527,9 @@ class CreatureStatistics(object):
                  for class_name, rise_class in self.classes.items()])
         )
         reflex += base_class_defense_bonus(self.base_class.reflex)
+        # add the modifier for shields
+        if self.shield is not None:
+            reflex += self.shield.bonus
         # add the automatic modifier from Dexterity
         if self.dexterity >= 0:
             reflex += self.dexterity // 5
@@ -849,6 +853,22 @@ class Creature(CreatureStatistics):
         else:
             raise Exception("Error: invalid attack type '{0}'".format(self.attack_type))
 
+    def check_hit(self, creature):
+        """Test if a single strike hits against the given creature"""
+
+        roll = d20.roll()
+        attack_result = roll + self.accuracy
+        if roll == 20:
+            attack_result += 10
+        elif roll == 1:
+            attack_result -= 10
+        if self.attack_type == 'physical':
+            defense = creature.armor_defense
+        else:
+            defense = min(creature.fortitude, creature.mental, creature.reflex)
+
+        return attack_result >= defense
+
     def strike(self, creature):
         """Execute a single strike against the given creature"""
 
@@ -865,7 +885,7 @@ class Creature(CreatureStatistics):
                 damage = self.roll_damage() + self.weapon.roll_damage()
             else:
                 damage = self.roll_damage()
-            creature.take_damage(self.roll_damage())
+            # creature.take_damage(self.roll_damage())
             # check for critical hits
             if roll >= self.critical_threshold:
                 # start from 1 because the first hit was already counted
@@ -972,11 +992,7 @@ def calculate_combat_prowess(progression, level):
     }[progression]
 
 def calculate_base_defense(progression, level):
-    return {
-        'good': (level * 5) // 4,
-        'average': level,
-        'poor': (level * 3) // 4,
-    }[progression]
+    return level
 
 def default_land_speed(size):
     return {

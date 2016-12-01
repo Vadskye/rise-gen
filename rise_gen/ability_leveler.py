@@ -7,6 +7,7 @@ import rise_gen.util as util
 doc = """
 Usage:
     ability_leveler class [options]
+    ability_leveler feats [options]
     ability_leveler items [options]
     ability_leveler rituals [options]
     ability_leveler spells [options]
@@ -543,6 +544,9 @@ def main(args):
         ability_type = 'spell'
     elif args['class']:
         abilities = util.import_yaml_file('content/class_features.yaml')
+        ability_type = 'class feature'
+    elif args['feats']:
+        abilities = util.import_yaml_file('content/feats.yaml')
         ability_type = 'class feature'
     else:
         raise Exception("I don't know what ability data to use")

@@ -86,28 +86,30 @@ buffs:
   # make sure these don't stack well with other crit range bonuses
   critical multiplier: 4
   critical range: 4
-  critical immunity: 1
+  critical immunity: 2
   darkvision: 1
   damage immunity:
     single fixed: 2
     single choice: 5
   damage reduction:
+    arcane: 2
     energy all: 3
     energy single: 1
     physical half: 1
     physical: 4
     single: 1
-    spell: 2
+    spell: 3
     alignment: 3
     all: 5
   double dr:
     energy all: 5
     energy single: 3
-    physical: 7
+    physical: 8
     single: 5
-    spell: 6
+    spell: 7
     alignment: 7
-    all: 8
+    all: 9
+  double range: 1  # for ranged weapons
   deal half damage to allies: 3  # affects all of target's abilities
   deal no damage to allies: 6  # affects all of target's abilities
   defense:  # for class features, not spells!
@@ -156,7 +158,6 @@ buffs:
     death: 1
     delusion: 1
     falling damage: 1
-    fear: 1
     grapple: 2
     mind: 6
     movement effects: 1
@@ -189,6 +190,7 @@ buffs:
   natural trip: 4
   natural weapon: 1
   nondetection: 2
+  one attack misses: 8  # per round; as Reflexive Dodge
   radiate light: 0
   rage bonus plus2: 8
   ranged melee weapon:
@@ -229,6 +231,7 @@ buffs:
   swim speed: 1
   spell resistance limited: 3
   spell resistance: 5
+  target reflex: 4  # attacks target lower of armor and reflex
   telepathy: 6
   temporary hp: 3  # lower than dr, but no stacking and smaller total "healing"
   ten foot speed: 2
@@ -249,6 +252,11 @@ buffs:
   weapon reach - ten: 4
   win initiative: 6
   woodland stride: 1
+  free augment, limited: 3
+  free augment: 6
+  defense bonus:
+    1: 3
+    2: 5
 casting time:
   immediate: 4
   personal move: 2 # only very few spells should be move - stuff like teleportation
@@ -302,6 +310,7 @@ conditions:
   immobilized: 6
   slowed: 6
   staggered: 6
+  super taunted: 6
   # significant reduction in ability to act
   # but can still try to do things normally, mostly
   aversion: 8 # conditional severe impairment, but often better
@@ -337,6 +346,7 @@ damage:
   double: 5 # only for use with critical effects
   # "double" damage should STACK with "normal" damage; the total cost is 8
   physical attack: 1
+  empowered: 7
   healing: 3
   normal: 3
   kill at zero: 7

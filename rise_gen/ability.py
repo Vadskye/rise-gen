@@ -12,6 +12,7 @@ POSSIBLE_EFFECT_TAGS = [
     'attack count',
     'physical damage bonus',
     'spell damage bonus',
+    'weapon damage dice',
     'physical damage dice',
     'spell damage dice',
     'combat prowess',
@@ -245,22 +246,19 @@ def get_ability_definitions():
                          # this can be approximated by simply increasing armor
                          # defense
                          lambda creature, value: value + (
-                             4 if creature.levels['fighter'] >= 13 else
-                             (2 if creature.levels['fighter'] >= 7 else value)
+                             4 if creature.levels['fighter'] >= 9 else 2
                          )),
             ],
-            'prerequisite': min_level(1, 'fighter')
+            'prerequisite': min_level(3, 'fighter')
         },
         'armor discipline (resilience)': {
             'effects': [
-                Modifier(['armor defense'],
-                         lambda creature, value: value + 1),
                 Modifier(['damage reduction'],
-                         lambda creature, value: value + (
-                             creature.levels.get('fighter') if creature.levels['fighter'] >= 7 else 0
+                         lambda creature, value: value + creature.levels['fighter'] * (
+                             2 if creature.levels['fighter'] >= 15 else 1
                          )),
             ],
-            'prerequisite': min_level(1, 'fighter')
+            'prerequisite': min_level(3, 'fighter')
         },
 
         # RANGER
@@ -420,7 +418,7 @@ def get_ability_definitions():
                                  'colossal': 16,
                              }[creature.size]
                          )),
-                ModifierInPlace(['physical damage dice'],
+                ModifierInPlace(['weapon damage dice'],
                                 lambda creature, damage_dice: damage_dice.resize_dice(
                                     {
                                         'fine': -4,
@@ -483,6 +481,20 @@ def get_ability_definitions():
             'tags': set(['hidden']),
         },
         'telepathy': {},
+
+        # testing abilities
+        'critical multiplier': {
+            'effects': [
+                Modifier(['critical multiplier'],
+                         lambda creature, value: value + 1),
+            ],
+        },
+        'critical threshold': {
+            'effects': [
+                Modifier(['critical threshold'],
+                         lambda creature, value: value - 1),
+            ],
+        },
     }
 
     # SENSES
@@ -520,7 +532,11 @@ def get_ability_definitions():
                 Modifier(['fortitude', 'mental', 'maneuver defense'],
                          lambda creature, value: creature.level + 14),
                 Modifier(['reflex'],
-                         lambda creature, value: creature.level + 10),
+                         lambda creature, value: creature.level + 12),
+                Modifier(['accuracy'],
+                         lambda creature, value: -50),
+                Modifier(['attack count'],
+                         lambda creature, value: 1),
             ],
         },
     }
@@ -579,7 +595,7 @@ def get_ability_definitions():
         'draining touch': {
             # this should only be applied to creatures with a single touch attack
             'effects': [
-                ModifierInPlace(['physical damage dice'],
+                ModifierInPlace(['weapon damage dice'],
                                 lambda creature, damage_dice: damage_dice.resize_dice(2)),
                 Modifier(['physical damage bonus'],
                           lambda creature, value: creature.power // 2),

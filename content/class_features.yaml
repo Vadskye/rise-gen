@@ -56,11 +56,6 @@ aura - baleful:
   $ref: AURA
   battlefield effects: [impaired]
   targets: enemies
-aura - courage:
-  $ref: AURA
-  buffs:
-    - immune: fear
-  targets: allies
 aura - disorienting:
   $ref: AURA
   battlefield effects: [disoriented]
@@ -1110,7 +1105,6 @@ perform, inspire competence:
 perform, inspire courage:
   buffs:
     - temporary hp
-    - immune: fear
   duration: short
   range: medium
 
@@ -1118,6 +1112,12 @@ perform, inspire resilience:
   buffs:
     - damage reduction: all
     - legend point: defensive
+  duration: short
+  range: medium
+
+perform, inspire serenity:
+  buffs:
+    - immune: mind
   duration: short
   range: medium
 
@@ -1132,6 +1132,13 @@ perform, mocking performance:
   attack subeffects:
     success:
       conditions: [impaired]
+      duration: short fixed
+  limit affected: mind affecting
+  range: medium
+perform, taunting performance: 
+  attack subeffects:
+    success:
+      conditions: [super taunted]
       duration: short fixed
   limit affected: mind affecting
   range: medium
@@ -1156,3 +1163,28 @@ perform, terrifying performance:
 feat, blindsense:
   $ref: FEATURE
   buffs: [blindsense]
+feat, supreme speed:
+  $ref: FEATURE
+  buffs: [extra attack]
+feat, reflexive dodge:
+  $ref: FEATURE
+  buffs: [one attack misses]
+feat, pierce defenses:
+  $ref: FEATURE
+  buffs:
+    - ignore hardness
+    - ignore damage reduction
+  misc: 1  # buffs all
+feat, rapid recovery:
+  $ref: FEATURE
+  buffs:
+    - fast healing
+  misc: 2  # narrative power, better healing, crit healing
+feat, mental fortress:
+  $ref: FEATURE
+  buffs:
+    - immune: mind
+armor discipline, resilience:
+  $ref: FEATURE
+  buffs:
+    - damage reduction: physical

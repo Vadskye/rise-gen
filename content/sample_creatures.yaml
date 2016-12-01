@@ -28,12 +28,25 @@ barbarian: &BARBARIAN
     - magic items
 barbarian_greatsword:
   <<: *BARBARIAN
+  feats:
+    - heavy hitter
   weapons:
     - greatsword
   shield: ~
 barbarian_full_plate:
   <<: *BARBARIAN
   armor: full plate
+barbarian_dual:
+  <<: *BARBARIAN
+  attributes:
+    strength: 4
+    dexterity: 2  # for the feat
+    constitution: 4
+  feats:
+    - two weapon fighting
+  weapons:
+    - dual short swords
+  shield: ~
 barbarian_ranged:
   <<: *BARBARIAN
   attributes:
@@ -166,21 +179,80 @@ ranger_dex: &RANGER_DEX
     - mighty blows
   traits:
     - magic items
+ranger_greatsword:
+  <<: *RANGER
+  weapons:
+    - greatsword
+  feats:
+    - heavy hitter
+  shield: ~
+ranger_dual:
+  <<: *RANGER
+  attributes:
+    strength: 4
+    dexterity: 2 # to get 2wf
+    constitution: 4
+  weapons:
+    - dual short swords
+  feats:
+    - two weapon fighting
+  shield: ~
 rogue: &ROGUE
   <<: *LIGHT_WARRIOR_EQUIPMENT
   race: human
   levels:
     rogue: 1
   attributes:
-    dexterity: 4
-    intelligence: 4
-  traits:
-    - magic items
-rogue_str:
-  <<: *ROGUE
-  attributes:
     strength: 4
     dexterity: 4
+  feats:
+    - weapon finesse
+  traits:
+    - magic items
+rogue_heavy:
+  <<: *ROGUE
+  weapons:
+    - greatsword
+  shield: ~
+  feats:
+    - heavy hitter
+rogue_warrior: &ROGUE_WARRIOR
+  <<: *STANDARD_WARRIOR_EQUIPMENT
+  race: human
+  levels:
+    rogue: 1
+  attributes:
+    strength: 4
+    constitution: 4
+  feats:
+    - mighty blows
+  traits:
+    - magic items
+rogue_warrior_heavy:
+  <<: *ROGUE_WARRIOR
+  weapons:
+    - greatsword
+  shield: ~
+  feats:
+    - heavy hitter
+rogue_warrior_dual:
+  <<: *ROGUE_WARRIOR
+  attributes:
+    strength: 4
+    dexterity: 2
+    constitution: 4
+  weapons:
+    - dual short swords
+  shield: ~
+  feats:
+    - two weapon fighting
+rogue_dual:
+  <<: *ROGUE
+  weapons:
+    - dual short swords
+  shield: ~
+  feats:
+    - two weapon fighting
 sorcerer: &SORCERER
   <<: *MAGE_EQUIPMENT
   race: human
@@ -304,3 +376,16 @@ assassin:
     - weapon finesse
   # description: Assassins are typically garbed in black or dark grey.
   # combat_description: Assassins strike from the shadows and use concealment and cover to their advantage.
+dummy:
+  monster type: humanoid
+  levels:
+    adept: 1
+  attributes:
+    strength: 0
+    dexterity: 0
+    constitution: 0
+    intelligence: 0
+    perception: 0
+    willpower: 0
+  templates:
+    - training dummy

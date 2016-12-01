@@ -320,7 +320,7 @@ bear, brown: &BROWN_BEAR
 bear, black:
   <<: *BROWN_BEAR
   levels:
-    behemoth: 6
+    behemoth: 1
   traits:
     - durable
     - natural armor: 2
@@ -408,3 +408,124 @@ giant, frost:
     - innate magic
     - durable
     - boulder toss
+revenant:
+  monster type: undead
+  levels:
+    slayer: 6
+  weapons:
+    - claw
+    - claw
+  attributes:
+    strength: 4
+    dexterity: 3
+    constitution: 0
+    intelligence: 0
+    perception: 2
+    willpower: 3
+  skill points:
+    awareness: 2
+  subtraits:
+    - lifesense: 50 ft.
+    - natural armor: 4
+  traits:
+    - brute force
+    - resist damage
+    - superior senses
+    - evasive
+
+ghast:
+  monster type: undead
+  levels:
+    adept: 6
+  weapons:
+    - claw
+    - claw
+  attributes:
+    strength: 4
+    dexterity: 3
+    constitution: 0
+    intelligence: 0
+    perception: 2
+    willpower: 3
+  skill points:
+    awareness: 2
+  subtraits:
+    - lifesense: 50 ft.
+    - natural armor: 4
+  traits:
+    - brute force
+    - resist damage
+    - superior senses
+    - evasive
+
+zombie, human: &ZOMBIE
+  monster type: undead
+  levels:
+    behemoth: 2
+  weapons:
+    - slam
+  attributes:
+    strength: 4
+    dexterity: -2
+    constitution: 4
+    intelligence: ~
+  subtraits:
+    - natural armor: 2
+  traits:
+    - great fortitude
+    - durable
+
+zombie, bugbear:
+  <<: *ZOMBIE
+  monster type: undead
+  levels:
+    behemoth: 4
+  weapons:
+    - slam
+  attributes:
+    strength: 4
+    dexterity: -2
+    constitution: 4
+    intelligence: ~
+  subtraits:
+    - natural armor: 2
+  traits:
+    - great fortitude
+    - durable
+
+zombie, troll:
+  monster type: undead
+  levels:
+    behemoth: 8
+  weapons:
+    - slam
+  attributes:
+    strength: 5
+    dexterity: -2
+    constitution: 4
+    intelligence: ~
+  subtraits:
+    - natural armor: 2
+  traits:
+    - great fortitude
+    - durable
+    - increased size
+    - durable
+
+carrion crawler:
+  monster type: aberration
+  levels:
+    adept: 8
+  weapons:
+    - tentacle
+  attributes:
+    strength: 4
+    dexterity: 1
+    constitution: 3
+    perception: 1
+    willpower: 1
+  subtraits:
+    - natural armor: 4
+  traits:
+    - magical strike
+    - increased size

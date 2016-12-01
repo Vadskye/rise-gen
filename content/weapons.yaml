@@ -2,6 +2,10 @@ bite:
   die: d8
   encumbrance: light
   group: natural weapons
+claw:
+  die: d6
+  encumbrance: light
+  group: natural weapons
 greataxe:
   die: d10
   encumbrance: heavy
