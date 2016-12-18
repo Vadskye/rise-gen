@@ -1929,9 +1929,7 @@ resist magic:
 spider climb:
   buffs:
     - climb speed
-  duration: medium
-  noncombat: true
-  range: close
+  duration: short
 spiritual weapon:
   damage: normal
   trigger:

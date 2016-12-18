@@ -74,7 +74,7 @@ aura - worthy foe:
   targets: enemies
 aura - accelerating:
   $ref: AURA
-  buffs: [double speed]
+  buffs: [ten foot speed]
   targets: allies
 aura - lifebound:
   $ref: AURA
@@ -241,7 +241,6 @@ domain aspect - travel:
   $ref: FEATURE
   buffs:
     - double speed
-    - skill: mastery
   misc: 1  # having it at long duration is narrative power
 domain aspect - trickery:
   $ref: FEATURE
@@ -437,13 +436,6 @@ domain invocation greater - strength:
     - increase size
   duration: short
   range: personal
-domain invocation greater - travel:
-  buffs:
-    - quadruple speed
-    - move through foes
-    - ignore threatened terrain
-  duration: end of round
-  casting time: swift
 domain invocation greater - trickery:
   buffs:
     - invisible
@@ -951,7 +943,6 @@ sw, pyromancy, flight of the phoenix:
   buffs: [flight]
   range: personal
   duration: short
-  misc: 1  # fly while encumbered
 
 sw, telekinesis, sickening crush:
   subeffects:

@@ -1,5 +1,18 @@
+Warning: Leveler('rogue, agonizing ambush') is missing critical success
+Warning: Leveler('divine invocation, seeking smite') has nonpositive property 'instant effect'
+Warning: Leveler('divine invocation, exhausting smite') is missing critical success
+Warning: Leveler('perform, mocking performance') is missing critical success
+Warning: Leveler('rogue, dispelling ambush') is missing critical success
+Warning: Leveler('divine invocation, dispelling smite') is missing critical success
+Warning: Leveler('sw, immolate') has critical success with incorrect level 21 instead of 12
+Warning: Leveler('perform, fascinating performance') is missing critical success
+Warning: Leveler('divine invocation, converting smite') has critical success with incorrect level 20 instead of 18
+Warning: Leveler('rogue, staggering ambush') is missing critical success
+Warning: Leveler('divine invocation, terrifying smite') is missing critical success
+Warning: Leveler('ki - awaken the pacifist heart') is missing critical success
+Warning: Leveler('perform, taunting performance') is missing critical success
 armor discipline, resilience: 3
-aura - accelerating: 4.5
+aura - accelerating: 5.5
 aura - baleful: 6
 aura - disorienting: 9
 aura - freedom: 5.5
@@ -27,7 +40,7 @@ divine invocation, penetrating smite: 5
 divine invocation, resounding smite: 3
 divine invocation, seeking smite: 3
 divine invocation, spellreaving smite: 7
-divine invocation, terrifying smite: 5
+divine invocation, terrifying smite: 6
 domain aspect - air: 3
 domain aspect - chaos: 4
 domain aspect - death: 4
@@ -39,11 +52,11 @@ domain aspect - good: 4
 domain aspect - knowledge: 4
 domain aspect - law: 4
 domain aspect - magic: 4
-domain aspect - travel: 4
+domain aspect - travel: 5
 domain aspect - trickery: 5
 domain aspect - vitality: 3
 domain aspect - war: 4
-domain aspect - water: 4
+domain aspect - water: 6
 domain gift - air: 1
 domain gift - chaos: 2
 domain gift - death: 2
@@ -75,7 +88,7 @@ domain invocation greater - law: 6
 domain invocation greater - magic: 6
 domain invocation greater - protection: 5.0
 domain invocation greater - strength: 6
-domain invocation greater - travel: 7
+domain invocation greater - travel: 8
 domain invocation greater - trickery: 6
 domain invocation greater - vitality: 5
 domain invocation greater - water: 6
@@ -87,7 +100,7 @@ hunting lore, no escape: 2
 infuriating strike: 5
 ki - all energy becomes one: 1
 ki - awaken the pacifist heart: 7
-ki - burst of blinding speed: 2
+ki - burst of blinding speed: 3
 ki - empty body: 9
 ki - empty step: 7
 ki - fists of distant force: 2
@@ -115,8 +128,8 @@ perform, mind clearing performance: 4.5
 perform, mocking performance: -1
 perform, suggestive performance: 4
 perform, taunting performance: 3
-perform, terrifying performance: 3
-rage - accelerated rage: 2
+perform, terrifying performance: 4
+rage - accelerated rage: 3
 rage - athletic rage: 3
 rage - critical rage: 5
 rage - destructive rage: 1
@@ -127,7 +140,7 @@ rage - overwhelming rage: 2
 rage - savage rage: 1
 rage - spellbreaker rage: 4
 rage - taunting rage: 6
-rage - terrifying rage: 4
+rage - terrifying rage: 5
 rage - wary rage: 1
 ranger, blindsense: 2
 ranger, blindsight: 5
@@ -146,8 +159,8 @@ rogue, staggering ambush: 2
 strike feat - basic: 2
 strike feat - bonus damage: 4
 strike feat - driving assault: 3
-strike feat - intimidating strike: 4
-supreme battlemaster: 8
+strike feat - intimidating strike: 5
+supreme battlemaster: 9
 sw, alter size: 4
 sw, alter size alt: 4
 sw, alteration, flight: 3
@@ -159,7 +172,7 @@ sw, amorphous body: -2
 sw, bludgeon the horde: 4
 sw, body bludgeon: 1
 sw, damage reduction: 3
-sw, fast movement: 3
+sw, fast movement: 4
 sw, immolate: 0
 sw, pyromancy, conflagration: 3
 sw, pyromancy, energy resistance: 2
@@ -189,18 +202,18 @@ wild aspect 12 - elemental retribution: 5.5
 wild aspect 12 - flight: 6
 wild aspect 12 - swiftstrike: 6
 wild aspect 14 - earth glide: 7
-wild aspect 14 - mantle of air: 4
+wild aspect 14 - mantle of air: 3
 wild aspect 16 - solar radiance: 9
 wild aspect 2 - armaments of the bear: 1
-wild aspect 2 - climb: 1
+wild aspect 2 - climb: 2
 wild aspect 2 - senses: 1
 wild aspect 2 - woodland stride: 0
 wild aspect 4 - animal affinity: 2
 wild aspect 4 - constrict: 2
 wild aspect 4 - gore: 2
 wild aspect 4 - hawk: 2
-wild aspect 4 - lope: 2
-wild aspect 4 - slither: 2
+wild aspect 4 - lope: 3
+wild aspect 4 - slither: 3
 wild aspect 6 - enhanced natural weapons: 3
 wild aspect 6 - scent: 3
 wild aspect 6 - shrink: 3

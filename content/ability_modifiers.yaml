@@ -81,7 +81,7 @@ buffs:
   attack special defense: 8
   blindsense: 3
   blindsight: 6
-  climb speed: 2
+  climb speed: 3
   cover miss physical: 4
   # make sure these don't stack well with other crit range bonuses
   critical multiplier: 4
@@ -117,9 +117,9 @@ buffs:
     plus5: 5
   delay damage: 5
   disguise: 3
-  double speed: 3
+  double speed: 4
   finesse weapon: 1
-  quadruple speed: 6
+  quadruple speed: 7
   earth glide: 7
   earthen blade: 1
   ethereal: 9
@@ -229,7 +229,7 @@ buffs:
     plus5: 2
     plus10: 5
   spellsight: 6  # worse than blindsight, but spell info balances
-  swim speed: 1
+  swim speed: 3
   spell resistance limited: 3
   spell resistance: 5
   target reflex: 4  # attacks target lower of armor and reflex
