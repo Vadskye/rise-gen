@@ -1,6 +1,6 @@
+armor discipline, resilience: 3
 aura - accelerating: 4.5
 aura - baleful: 6
-aura - courage: 2.5
 aura - disorienting: 9
 aura - freedom: 5.5
 aura - healing aura: 6.5
@@ -10,6 +10,7 @@ aura - lifebound: 13.5
 aura - martyrs: 8.5
 aura - mindshielding: 7.5
 aura - worthy foe: 5
+battlemaster: 3
 discernment - thoughts: 10.0
 divine invocation, bless: 1
 divine invocation, converting smite: 10
@@ -19,14 +20,14 @@ divine invocation, divine might: 5
 divine invocation, executing smite: 6
 divine invocation, exhausting smite: 3
 divine invocation, freedom: 2
+divine invocation, goading smite: 3
 divine invocation, immobilizing smite: 9
 divine invocation, lay on hands: -1
 divine invocation, penetrating smite: 5
 divine invocation, resounding smite: 3
 divine invocation, seeking smite: 3
 divine invocation, spellreaving smite: 7
-divine invocation, taunting smite: 3
-divine invocation, terrifying smite: 7
+divine invocation, terrifying smite: 5
 domain aspect - air: 3
 domain aspect - chaos: 4
 domain aspect - death: 4
@@ -80,7 +81,9 @@ domain invocation greater - vitality: 5
 domain invocation greater - water: 6
 domain invocation greater - wild: 6
 fast movement: 1
-feat, blindsense: 2
+half speedhunting lore, super impaired quarry: 10
+hunting lore, impaired quarry: 4
+hunting lore, no escape: 2
 infuriating strike: 5
 ki - all energy becomes one: 1
 ki - awaken the pacifist heart: 7
@@ -99,24 +102,20 @@ ki - see the flow of life: 4
 ki - stunning fist: 6
 ki flow: 4
 larger than life: 3
-natural aspect 12 - fire shield: 5
-natural aspect 12 - fluid motion: 6
-natural aspect 12 - stoneskin: 6
-natural aspect 14 - earth glide: 7
-natural aspect 14 - flight: 7
-natural aspect 16 - solar radiance: 9
 perfect mind: 5
 perfect motion: 3
 perfect soul: 4
 perform, fascinating performance: 0
 perform, inspire competence: 0.5
-perform, inspire courage: 2.5
+perform, inspire courage: 1.5
 perform, inspire legends: 6.5
 perform, inspire resilience: 5.5
+perform, inspire serenity: 4.5
 perform, mind clearing performance: 4.5
 perform, mocking performance: -1
 perform, suggestive performance: 4
-perform, terrifying performance: 5
+perform, taunting performance: 3
+perform, terrifying performance: 3
 rage - accelerated rage: 2
 rage - athletic rage: 3
 rage - critical rage: 5
@@ -148,6 +147,7 @@ strike feat - basic: 2
 strike feat - bonus damage: 4
 strike feat - driving assault: 3
 strike feat - intimidating strike: 4
+supreme battlemaster: 8
 sw, alter size: 4
 sw, alter size alt: 4
 sw, alteration, flight: 3
@@ -160,6 +160,7 @@ sw, bludgeon the horde: 4
 sw, body bludgeon: 1
 sw, damage reduction: 3
 sw, fast movement: 3
+sw, immolate: 0
 sw, pyromancy, conflagration: 3
 sw, pyromancy, energy resistance: 2
 sw, pyromancy, fiery protection: 2
@@ -168,6 +169,7 @@ sw, pyromancy, flight of the phoenix: 4
 sw, pyromancy, ignite: 3
 sw, pyromancy, surge of power: 4
 sw, retributive flames: 3
+sw, seeking flame: 5
 sw, telekinesis, immobilize: 4
 sw, telekinesis, sickening crush: 1
 sw, telekinesis, tactile telekinesis: 2
@@ -179,11 +181,16 @@ sw, temporal, slow: 2
 sw, temporal, timestream: 5
 sw, temporal, timetheft: 1
 vital flow: 4
+wild aspect 10 - fluid motion: 5
 wild aspect 10 - grow: 5
 wild aspect 10 - natural renewal: 5
-wild aspect 10 - swiftstrike: 6
-wild aspect 10 - wings: 6
 wild aspect 10 - wolfpack: 5
+wild aspect 12 - elemental retribution: 5.5
+wild aspect 12 - flight: 6
+wild aspect 12 - swiftstrike: 6
+wild aspect 14 - earth glide: 7
+wild aspect 14 - mantle of air: 4
+wild aspect 16 - solar radiance: 9
 wild aspect 2 - armaments of the bear: 1
 wild aspect 2 - climb: 1
 wild aspect 2 - senses: 1
@@ -201,5 +208,6 @@ wild aspect 6 - thousand faces: 3
 wild aspect 6 - totemic mind: 3
 wild aspect 6 - totemic power: 3
 wild aspect 6 - venom: 3
+wild aspect 8 - barkskin: 4
 wild aspect 8 - natural grab: 4
 wild aspect 8 - natural trip: 4
