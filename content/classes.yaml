@@ -4,8 +4,9 @@ barbarian:
   reflex: average
   mental: poor
   class features:
+    - durable
     - rage
-    - damage reduction
+    - barbarian damage reduction
     - fast movement
     - larger than life
     - larger than belief
@@ -27,6 +28,7 @@ fighter:
   class features:
     # skip armor discipline because it's a choice
     # assume specialist for weapon discipline for simplicity
+    - martial excellence
     - weapon discipline
     - improved weapon discipline
     - greater weapon discipline

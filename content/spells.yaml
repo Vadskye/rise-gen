@@ -853,7 +853,7 @@ fear:
         - shaken
       duration: brief
   limit affected: mind affecting
-  range: close
+  range: medium
 fear mass:
   $ref: fear
   range: medium
@@ -1472,15 +1472,13 @@ phantasmal killer:
   attack subeffects:
     critical success:
       instant effect: death
-      misc:
-        -2 # must hit both Will and Fort
     success:
       conditions:
-        - frightened
+        - panicked
       duration: brief
     failure:
       conditions:
-        - shaken
+        - frightened
       duration: brief
 phantasmal killer mass:
   $ref: phantasmal killer
@@ -1968,7 +1966,7 @@ storm of vengeance:
 stormlord:
   buffs:
     - half miss ranged
-    - retributive damage: long
+    - retributive damage: close
   duration: short
   range: personal
 strip the flesh:

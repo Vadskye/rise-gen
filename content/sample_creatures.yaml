@@ -29,7 +29,7 @@ barbarian: &BARBARIAN
 barbarian_greatsword:
   <<: *BARBARIAN
   feats:
-    - heavy hitter
+    - weapon style, heavy
   weapons:
     - greatsword
   shield: ~
@@ -135,7 +135,7 @@ fighter_heavy:
     - greatsword
   shield: ~
   feats:
-    - heavy hitter
+    - weapon style, heavy
 fighter_halfling:
   <<: *FIGHTER
   race: halfling
@@ -184,7 +184,7 @@ ranger_greatsword:
   weapons:
     - greatsword
   feats:
-    - heavy hitter
+    - weapon style, heavy
   shield: ~
 ranger_dual:
   <<: *RANGER
@@ -215,7 +215,7 @@ rogue_heavy:
     - greatsword
   shield: ~
   feats:
-    - heavy hitter
+    - weapon style, heavy
 rogue_warrior: &ROGUE_WARRIOR
   <<: *STANDARD_WARRIOR_EQUIPMENT
   race: human
@@ -234,7 +234,7 @@ rogue_warrior_heavy:
     - greatsword
   shield: ~
   feats:
-    - heavy hitter
+    - weapon style, heavy
 rogue_warrior_dual:
   <<: *ROGUE_WARRIOR
   attributes:
@@ -244,6 +244,7 @@ rogue_warrior_dual:
   weapons:
     - dual short swords
   shield: ~
+  armor: studded leather
   feats:
     - two weapon fighting
 rogue_dual:
@@ -277,14 +278,56 @@ warrior: &WARRIOR
     - mighty blows
   traits:
     - magic items
+warrior_featless:
+  <<: *WARRIOR
+  feats: ~
+warrior_itemless:
+  <<: *WARRIOR
+  traits: ~
+warrior_featless_dual:
+  <<: *WARRIOR
+  feats: ~
+  weapons:
+    - dual short swords
+  shield: ~
+warrior_featless_heavy:
+  <<: *WARRIOR
+  feats: ~
+  weapons:
+    - greatsword
+  shield: ~
+warrior_precise:
+  <<: *WARRIOR
+  feats:
+    - precise attack
+warrior_speed:
+  <<: *WARRIOR
+  feats:
+    - legendary speed
+warrior_shield:
+  <<: *WARRIOR
+  feats:
+    - mighty blows
+    - shielded fighting
+warrior_defensive_fighting:
+  <<: *WARRIOR
+  feats:
+    - defensive fighting
+warrior_dual_mighty:
+  <<: *WARRIOR
+  weapons:
+    - dual short swords
+  shield: ~
 warrior_dual:
   <<: *WARRIOR
   attributes:
     strength: 4
-    dexterity: 2 # to get 2wf
-    constitution: 4
+    dexterity: 4 # to get 2wf
+    constitution: 2
+  armor: studded leather
   feats:
     - two weapon fighting
+    - mighty blows
   weapons:
     - dual short swords
   shield: ~
@@ -295,17 +338,12 @@ warrior_heavy:
   shield: ~
   feats:
     - mighty blows
-    - two weapon fighting
-wenley:
-  <<: *WARRIOR
-  attributes:
-    strength: 4
-    willpower: 4
+    - heavy weapon fighting
 warrior_dex:
   <<: *WARRIOR
   attributes:
     dexterity: 4
-    constitution: 4
+    constitution: 2
   armor: studded leather
   weapons:
     - short sword
@@ -313,27 +351,40 @@ warrior_dex:
     - weapon finesse
   traits:
     - magic items
+warrior_dex_counterattack:
+  <<: *WARRIOR
+  attributes:
+    dexterity: 4
+    constitution: 2
+  armor: studded leather
+  weapons:
+    - short sword
+  feats:
+    - counterattack
+  traits:
+    - magic items
 warrior_str_dex:
   <<: *WARRIOR
   attributes:
     strength: 4
     dexterity: 4
+    constitution: 2
   armor: studded leather
   feats:
     - mighty blows
-    - weapon finesse
   traits:
     - magic items
 warrior_int:
   <<: *WARRIOR
   attributes:
     strength: 4
+    constitution: 2
     intelligence: 4
   feats:
     - mighty blows
   traits:
     - magic items
-wizard:
+wizard: &WIZARD
   <<: *MAGE_EQUIPMENT
   race: human
   levels:
@@ -341,25 +392,21 @@ wizard:
   attack type: spell
   special_attack_name: inflict wounds
   attributes:
-    constitution: 4
+    constitution: 2
     intelligence: 4
-  traits:
-    - magic items
-
-# multiclass!
-fighter_rogue:
-  <<: *STANDARD_WARRIOR_EQUIPMENT
-  race: human
-  levels:
-    fighter: 1
-    rogue: 1
-  base_class: fighter
+    willpower: 1
   feats:
-    - mighty blows
-    - weapon finesse
+    - devastating magic
   traits:
     - magic items
-    - armor discipline (agility)
+wizard_perception:
+  <<: *WIZARD
+  attributes:
+    intelligence: 4
+    perception: 4
+wizard_itemless:
+  <<: *WIZARD
+  traits: ~
 
 # npcs!
 assassin:
@@ -389,3 +436,21 @@ dummy:
     willpower: 0
   templates:
     - training dummy
+taito:
+  <<: *STANDARD_WARRIOR_EQUIPMENT
+  weapons:
+    - longbow
+  shield: ~
+  armor: studded leather
+  race: human
+  levels:
+    fighter: 1
+  attributes:
+    strength: 3
+    perception: 4
+    willpower: 3
+  feats:
+    - mighty blows
+  traits:
+    - magic items
+    - armor discipline (resilience)

@@ -70,7 +70,7 @@ aura - immobilizing:
   targets: enemies
 aura - worthy foe:
   $ref: AURA
-  battlefield effects: [taunted]
+  battlefield effects: [goaded]
   targets: enemies
 aura - accelerating:
   $ref: AURA
@@ -104,9 +104,9 @@ divine invocation, bless:
   range: close
 divine invocation, lay on hands:
   damage: healing
-divine invocation, taunting smite:
+divine invocation, goading smite:
   $ref: SMITE
-  conditions: [taunted]
+  conditions: [goaded]
   duration: brief
 divine invocation, exhausting smite:
   $ref: SMITE
@@ -575,45 +575,6 @@ ki - awaken the pacifist heart:
         - no violence
       duration: brief
 
-# NATURAL ASPECTS
-natural aspect 12 - fire shield:
-  $ref: FEATURE
-  buffs:
-    - retributive damage: close
-    - damage reduction: energy single
-    - radiate light
-natural aspect 12 - fluid motion:
-  $ref: FEATURE
-  buffs:
-    - immune: grapple
-    - immune: movement effects
-    - immune: underwater
-    - move through foes
-  misc: 1  # narrative power
-natural aspect 12 - stoneskin:
-  $ref: FEATURE
-  buffs:
-    - damage reduction: physical
-    - immune: critical hits
-  misc: 1  # narrative power
-natural aspect 14 - earth glide:
-  $ref: FEATURE
-  buffs:
-    - earth glide
-  misc: 1  # narrative power, despite 5 round limit
-natural aspect 14 - flight:
-  $ref: FEATURE
-  buffs:
-    - flight
-  misc: 1  # narrative power, despite 5 round limit
-natural aspect 16 - solar radiance:
-  conditions: [partially blinded]
-  duration: brief
-  trigger:
-    condition: when attacked
-    duration: class feature
-  range: long
-
 # RAGES
 rage - athletic rage:
   $ref: RAGE
@@ -665,7 +626,7 @@ rage - savage rage:
 rage - taunting rage:
   casting time: swift
   conditions:
-    - taunted
+    - goaded
   duration: brief
   misc: 1  # everyone you hit
   trigger:
@@ -810,16 +771,6 @@ wild aspect 10 - grow:
   buffs:
     - increase size
   misc: 1  # build around me
-wild aspect 10 - swiftstrike:
-  $ref: FEATURE
-  buffs:
-    - extra attack
-  misc: -1  # natural weapon only
-wild aspect 10 - wings:
-  $ref: FEATURE
-  buffs:
-    - flight
-  # '5 round' limit offsets build around me
 wild aspect 10 - natural renewal:
   $ref: FEATURE
   buffs:
@@ -831,6 +782,49 @@ wild aspect 10 - wolfpack:
     - increase overwhelm
     - increase overwhelm
 
+wild aspect 12 - elemental retribution:
+  $ref: FEATURE
+  buffs:
+    - retributive damage: medium
+    - radiate light
+  misc: 1  # choose damage type
+wild aspect 12 - flight:
+  $ref: FEATURE
+  buffs:
+    - flight
+wild aspect 10 - fluid motion:
+  $ref: FEATURE
+  buffs:
+    - immune: grapple
+    - immune: movement effects
+    - immune: underwater
+    - move through foes
+wild aspect 8 - barkskin:
+  $ref: FEATURE
+  buffs:
+    - damage reduction: physical
+  misc: 1  # narrative power? druids shouldn't be tanks?
+wild aspect 12 - swiftstrike:
+  $ref: FEATURE
+  buffs:
+    - extra attack
+  misc: -1  # natural weapon only
+wild aspect 14 - earth glide:
+  $ref: FEATURE
+  buffs:
+    - earth glide
+  misc: 1  # narrative power, despite 5 round limit
+
+wild aspect 16 - solar radiance:
+  conditions: [partially blinded]
+  duration: brief
+  trigger:
+    condition: when attacked
+    duration: class feature
+  range: long
+wild aspect 14 - mantle of air:
+  $ref: FEATURE
+  buffs: [half miss ranged]
 # RANGER STUFF
 
 ranger, scent:
@@ -1061,7 +1055,7 @@ rogue, immobilizing ambush:
 infuriating strike:
   $ref: STRIKE
   conditions:
-    - taunted
+    - goaded
   duration: short fixed
 vital flow:
   $ref: FEATURE
@@ -1135,10 +1129,10 @@ perform, mocking performance:
       duration: short fixed
   limit affected: mind affecting
   range: medium
-perform, taunting performance: 
+perform, taunting performance:
   attack subeffects:
     success:
-      conditions: [super taunted]
+      conditions: [taunted]
       duration: short fixed
   limit affected: mind affecting
   range: medium
@@ -1160,31 +1154,40 @@ perform, terrifying performance:
   limit affected: mind affecting
   range: medium
 
-feat, blindsense:
-  $ref: FEATURE
-  buffs: [blindsense]
-feat, supreme speed:
-  $ref: FEATURE
-  buffs: [extra attack]
-feat, reflexive dodge:
-  $ref: FEATURE
-  buffs: [one attack misses]
-feat, pierce defenses:
-  $ref: FEATURE
-  buffs:
-    - ignore hardness
-    - ignore damage reduction
-  misc: 1  # buffs all
-feat, rapid recovery:
-  $ref: FEATURE
-  buffs:
-    - fast healing
-  misc: 2  # narrative power, better healing, crit healing
-feat, mental fortress:
-  $ref: FEATURE
-  buffs:
-    - immune: mind
 armor discipline, resilience:
   $ref: FEATURE
   buffs:
     - damage reduction: physical
+hunting lore, no escape:
+  $ref: STRIKE
+  conditions: [half speed]
+  duration: brief
+hunting lore, impaired quarry:
+  $ref: STRIKE
+  conditions: [impaired]
+  duration: brief
+half speedhunting lore, super impaired quarry:
+  $ref: STRIKE
+  conditions: [severely impaired]
+  duration: brief
+
+supreme battlemaster:
+  $ref: STRIKE
+  conditions: [frightened]
+  duration: brief
+battlemaster:
+  $ref: STRIKE
+  conditions: [goaded]
+  duration: brief
+
+sw, seeking flame:
+  range: long
+  damage: normal
+  targets: automatically find one
+sw, immolate:
+  range: close
+  attack subeffects:
+    effect:
+      damage: normal
+    critical success:
+      instant effect: death

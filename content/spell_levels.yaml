@@ -1,14 +1,34 @@
+Warning: Leveler('flare') has nonpositive property 'attack subeffects'
+Warning: Leveler('flare') has unexpected key 'conditions' in attack_subeffects
+Warning: Leveler('flare') has unexpected key 'duration' in attack_subeffects
+Warning: Leveler('flare') is missing critical success
+Warning: Leveler('imprisonment') has critical success with incorrect level 17 instead of 20
+Warning: Leveler('unholy blight') has critical success with incorrect level 17 instead of 15
+Warning: Leveler('blasphemy') has critical success with incorrect level 17 instead of 15
+Warning: Leveler('funny hats') has nonpositive property 'instant effect'
+Warning: Leveler('charm monster mass') has critical success with incorrect level 16 instead of 18
+Warning: Leveler('power word stun') has critical success with incorrect level 18 instead of 15
+Warning: Leveler('death knell') Should not have subeffects under success
+Warning: Leveler('charm monster') has critical success with incorrect level 16 instead of 18
+Warning: Leveler('charm person') has critical success with incorrect level 16 instead of 18
+Warning: Leveler('forget') has critical success with incorrect level 10 instead of 12
+Warning: Leveler('orders wrath') has critical success with incorrect level 17 instead of 15
+Warning: Leveler('sever magic') has failure with incorrect level 3 instead of 6
+Warning: Leveler('curse of the wayward mind') has critical success with incorrect level 14 instead of 17
+Warning: Leveler('charm person persistent') has critical success with incorrect level 16 instead of 20.5
+Warning: Leveler('charm person mass') has critical success with incorrect level 16 instead of 18
+Warning: Leveler('dictum') has critical success with incorrect level 17 instead of 15
 ablative shield: 2
 acid arrow: 3
 acid arrow greater: 6
 acid fog: 6
 acid splash: 1
 agony: 3
-aid: 2
+aid: 1
 air walk: 4
 antilife shell: 7
 antimagic field: 7
-aquatic sphere: 4
+aquatic sphere: 5
 aqueous blade: 3
 assimilate: 11
 aura of immunity: 5.5
@@ -44,6 +64,7 @@ boon of mastery greater: 7
 boon of perception: 1
 boon of perception mass: 4.5
 boon of precision: 5
+boulder drop: 4
 burning hands: 1
 call lightning: 3
 call lightning - repeatable: 2
@@ -120,7 +141,7 @@ enlarge: 2
 enlarge mass: 5.5
 entangle: 1
 entangle greater: 4
-entropic shield: 1
+entropic shield: 3
 ethereal jaunt: 5
 etherealness: 9
 excrete slime: 1
@@ -131,7 +152,7 @@ eyebite - earbite: 5
 faerie fire: 1
 faerie fire - blinding: 5
 fear: 2
-fear mass: 6
+fear mass: 5
 feather fall: 0.5
 feeblemind: 7
 finger of death: 6
@@ -175,8 +196,8 @@ haste - empowered: 5
 haste mass: 4.5
 heal: 5
 heat metal: 1
-heroism: 4
-heroism mass: 7.5
+heroism: 3
+heroism mass: 6.5
 hold monster: 3
 hold monster mass: 7
 hold person: 1
@@ -234,13 +255,13 @@ neutral ground: 13
 nondetection: 4
 orders wrath: 3
 overland flight: 8
-phantasmal killer: 2
-phantasmal killer mass: 6
+phantasmal killer: 6
+phantasmal killer mass: 10
 planar disruption: 1
 planar disruption mass: 4
 polar ray: 6
 power word blind: 6
-power word fear: 3
+power word fear: 2
 power word impair: 4
 power word stagger: 1
 power word stun: 3
@@ -250,7 +271,7 @@ prismatic beam: 3
 prismatic blue: 4
 prismatic green: 4
 prismatic indigo: 4
-prismatic orange: 6
+prismatic orange: 3
 prismatic red: 4
 prismatic spray: 6
 prismatic storm: 9
@@ -295,6 +316,7 @@ shadowstep: 5
 shadowstorm: 7
 share pain: 2
 shield of faith: 1
+shining beacon: 3
 shocking grasp: 1
 shout: 4
 shout greater: 7
@@ -315,7 +337,7 @@ spiritual weapon: 4.5
 spore cloud: 1
 stinking cloud: 3
 storm of vengeance: 11
-stormlord: 5
+stormlord: 6
 strip the flesh: 7
 suggestion: 4
 suggestion mass: 8
@@ -353,6 +375,7 @@ water walk: 0.5
 water walk - persistent: 2.5
 waves of exhaustion: 6
 waves of fatigue: 3
+weapon of power: 2
 web: 5
 windstrike: 2
 windstrike greater: 5

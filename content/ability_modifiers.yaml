@@ -138,9 +138,10 @@ buffs:
   half critical damage: 2  # take half normal critical damage
   half miss all: 10
   half miss physical: 7
-  half miss ranged: 3
+  half miss ranged: 4
   heal critical: 4  # heal critical as easily as hp
   hide attack effects: 1
+  ignore minor miss chance: 3
   increase overwhelm: 3
   increase size: 5 # mix of upsides and downsides
   increase effective size: 4 # as larger than life
@@ -282,11 +283,11 @@ conditions:
   half speed: 1
   lower max hp: 1
   reduce hardness: 1  # by spellpower
-  shaken: 1
   sickened: 1
   # lose ability to take less important actions
   # or low probability of losing important actions
-  taunted: 2  # like impaired, but weaker
+  shaken: 2
+  goaded: 2  # like impaired, but weaker
   crouching: 3
   deafened: 3
   die from critical: 3 # die from taking critical damage at 0 HP
@@ -310,13 +311,13 @@ conditions:
   immobilized: 6
   slowed: 6
   staggered: 6
-  super taunted: 6
+  taunted: 7
+  frightened: 8
   # significant reduction in ability to act
   # but can still try to do things normally, mostly
   aversion: 8 # conditional severe impairment, but often better
   charmed: 9 # weird - how does interact with combat?
   command movement: 9 # like staggered, but worse
-  frightened: 9 # conditional severe impairment, but can be better
   no violence: 9
   out of battle: 9
   severely impaired: 9
@@ -330,12 +331,12 @@ conditions:
   blinded: 11  # some actions are totally unpenalized
   antimagic: 12
   confused: 12
-  grappled: 12
   feeblemind: 12
+  grappled: 12
+  panicked: 13
   # can take no actions
   command full movement: 16 # slightly better than no actions
   nauseated: 15
-  panicked: 15
   paralyzed: 15 # mental actions offset coup de grace
   stunned: 15
   # even worse than unable to act
