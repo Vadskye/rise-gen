@@ -372,15 +372,15 @@ class CreatureStatistics(object):
             # we use cantrips instead of full spells until 4th level
             if self.level <= 3:
                 damage_dice = DieCollection(
-                    Die(size=6, count=self.accuracy // 2)
+                    Die(size=6, count=self.spellpower // 2)
                 )
             elif self.level <= 10:
                 damage_dice = DieCollection(
-                    Die(size=6, count=self.accuracy)
+                    Die(size=6, count=self.spellpower)
                 )
             else:
                 damage_dice = DieCollection(
-                    Die(size=8, count=self.accuracy)
+                    Die(size=8, count=self.spellpower)
                 )
             if not (self.special_attack_name == 'scorching ray' or self.special_attack_name == 'inflict wounds'):
                 raise Exception("Error: Unrecognized spell '{}'".format(self.special_attack_name))
@@ -538,6 +538,12 @@ class CreatureStatistics(object):
         for effect in self.active_effects_with_tag('reflex'):
             reflex = effect(self, reflex)
         return reflex
+
+    def _calculate_spellpower(self):
+        spellpower = self.level + 2
+        for effect in self.active_effects_with_tag('spellpower'):
+            spellpower = effect(self, spellpower)
+        return spellpower
 
     def _calculate_land_speed(self):
         """The creature's land speed in feet (int)"""
@@ -762,6 +768,7 @@ cached_properties = """
     reflex
     power
     size
+    spellpower
     weapon
 """.split()
 for property_name in cached_properties:
@@ -798,7 +805,7 @@ class Creature(CreatureStatistics):
         self.refresh_combat()
 
     def refresh_combat(self):
-        self.current_hit_points = self.hit_points
+        self.current_hit_points = self.hit_points + self.temporary_hit_points
         self.zero_threshold = True
         self.refresh_round()
 
@@ -806,6 +813,7 @@ class Creature(CreatureStatistics):
         for effect in self.active_effects_with_tag('end of round'):
             effect(self)
         self.available_damage_reduction = self.damage_reduction
+        self.hit_once = False
         if self.current_hit_points <= 0:
             # apply the zero threshold
             if (self.zero_threshold
@@ -885,18 +893,25 @@ class Creature(CreatureStatistics):
                 damage = self.roll_damage() + self.weapon.roll_damage()
             else:
                 damage = self.roll_damage()
+            if not self.hit_once:
+                for effect in self.active_effects_with_tag('first hit'):
+                    damage = effect(self, damage)
             # creature.take_damage(self.roll_damage())
             # check for critical hits
             if roll >= self.critical_threshold:
                 # start from 1 because the first hit was already counted
                 for i in range(1, self.critical_multiplier):
                     damage += self.roll_damage()
+                    if not self.hit_once:
+                        for effect in self.active_effects_with_tag('first hit'):
+                            damage = effect(self, damage)
             creature.take_damage(damage)
+            self.hit_once = True
 
     def attack_with_spell(self, creature):
         """Attack the given creature with a spell"""
         roll = d20.roll()
-        attack_result = roll + self.accuracy
+        attack_result = roll + self.spellpower
         #TODO: implement generic framework for spells
         spell_damage = self.roll_damage()
         defense = min(creature.fortitude, creature.mental, creature.reflex)

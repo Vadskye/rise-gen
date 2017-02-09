@@ -164,7 +164,7 @@ def initialize_argument_parser():
     )
     parser.add_argument(
         '--trials',
-        default=10000,
+        default=1000,
         dest='trials',
         help='The number of trials to run',
         type=int,
@@ -189,8 +189,9 @@ def custom_red_modifications(red):
     Args:
         red (CreatureGroup): Group of red creatures
     """
-    for c in red.creatures:
-        c.add_ability(Ability.by_name('critical threshold'))
+    # for c in red.creatures:
+    #     c.add_ability(Ability.by_name('critical threshold'))
+    pass
 
 def custom_blue_modifications(blue):
     """Modify the CreatureGroup for random testing
@@ -198,8 +199,8 @@ def custom_blue_modifications(blue):
     Args:
         blue (CreatureGroup): Group of blue creatures
     """
-    for c in blue.creatures:
-        c.add_ability(Ability.by_name('mighty blows'))
+    # for c in blue.creatures:
+    #     c.add_ability(Ability.by_name('mighty blows'))
     pass
 
 def generate_combat_results(red, blue, trials):
@@ -231,7 +232,12 @@ def test_training_dummy(level, trials):
     ))
     # remove the dummy, which shouldn't fight itself
     sample_creature_names.pop(sample_creature_names.index('dummy'))
-    sample_creatures = [Creature.from_sample_creature(name, level=level) for name in sample_creature_names]
+    sample_creatures = list()
+    for name in sample_creature_names:
+        try:
+            sample_creatures.append(Creature.from_sample_creature(name, level=level))
+        except Exception as e:
+            print(e)
     training_dummy = Creature.from_sample_creature('dummy', level=level)
 
     results = dict()
@@ -287,7 +293,7 @@ if __name__ == "__main__":
             trials=100
         )
     elif cmd_args.get('test') == 'levels':
-        cmd_args['trials'] //= 10
+        cmd_args['trials'] //= 2
         for i in range(1, 21):
             cmd_args['level'] = i
             print(str(i) + ": ", end="")

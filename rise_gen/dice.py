@@ -3,6 +3,12 @@
 import random
 import re
 
+def quick_roll(count, size):
+    total = 0
+    for i in range(count):
+        total += random.randint(1, size)
+    return total
+
 class Die(object):
     def __init__(self, size, count=1):
         self.count = count
@@ -20,7 +26,7 @@ class Die(object):
     def roll(self):
         total = 0
         for i in range(self.count):
-            total += random.randrange(1, self.size + 1)
+            total += random.randint(1, self.size)
         return total
 
     # adding and subtracting from a Die increases the die size
@@ -51,7 +57,13 @@ class Die(object):
         if self.size <= 3:
             self.size += 1
         elif self.size <= 8:
-            self.size += 2
+            if self.count >= 4:
+                if self.size == 6:
+                    self.count += 1
+                else:
+                    raise Exception("Impossible die size: too many non-d6s")
+            else:
+                self.size += 2
         elif self.size == 10:
             self.size = 6
             self.count *= 2
