@@ -1,0 +1,74 @@
+# strength
+climb:
+  attribute: strength
+  encumbrance penalty: true
+jump:
+  attribute: strength
+  encumbrance penalty: true
+sprint:
+  attribute: strength
+  encumbrance penalty: true
+swim:
+  attribute: strength
+  encumbrance penalty: true
+
+# dexterity
+balance:
+  attribute: dexterity
+  encumbrance penalty: true
+escape artist:
+  attribute: dexterity
+  encumbrance penalty: true
+ride:
+  attribute: dexterity
+  encumbrance penalty: true
+sleight of hand:
+  attribute: dexterity
+  encumbrance penalty: true
+stealth:
+  attribute: dexterity
+  encumbrance penalty: true
+tumble:
+  attribute: dexterity
+  encumbrance penalty: true
+
+# intelligence
+craft:
+  attribute: intelligence
+devices:
+  attribute: intelligence
+disguise:
+  attribute: intelligence
+heal:
+  attribute: intelligence
+knowledge:
+  attribute: intelligence
+linguistics:
+  attribute: intelligence
+
+# perception
+awareness:
+  attribute: perception
+  sense: true
+creature handling:
+  attribute: perception
+sense motive:
+  attribute: perception
+  sense: true
+spellcraft:
+  attribute: perception
+  sense: true
+survival:
+  attribute: perception
+
+# no attribute
+intimidate:
+  attribute: ~
+perform:
+  attribute: ~
+profession:
+  attribute: ~
+bluff:
+  attribute: ~
+persuasion:
+  attribute: ~

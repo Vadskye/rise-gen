@@ -1,0 +1,300 @@
+TEMPLATES:
+  CONT:
+    # actually extreme duration and no personal modifier
+    # but this calculates buff duration correctly
+    duration: week
+    range: personal
+  TRIG:
+    duration: end of round
+    casting time: immediate
+
+bracers of archery:
+  $ref: CONT
+  buffs:
+    - weapon proficiency
+bracers of repulsion:
+  casting time: immediate
+  instant effect: shove
+  misc: 1  # high bonus
+burning gloves:
+  damage: normal
+  range: close
+greatreach bracers:
+  casting time: swift
+  buffs: [weapon reach]
+  duration: end of round
+mask of water breathing:
+  buffs: [water breathing]
+  range: personal
+  duration: long
+boots of earths embrace:
+  $ref: TRIG
+  buffs:
+    - immune: movement effects
+    - temporary hp  # actually damage reduction, but without the duration it's the same
+boots of speed:
+  buffs: [double speed]
+  duration: short
+  misc: 1  # can double move while concentrating
+boots of levitation:
+  buffs: [levitation]
+  duration: short
+boots of striding and springing:
+  $ref: CONT
+  buffs: [ten foot speed]
+boots of swift passage:
+  casting time: move
+  teleport:
+    range: medium
+    type: line of effect
+    willing: true
+  misc: 1  # narrative power?
+boots of teleportation:
+  teleport:
+    range: extreme
+    type: unrestricted
+    willing: true
+seven league boots:
+  teleport:
+    range: extreme
+    type: unrestricted
+    willing: true
+  misc: 2  # +4 for distance, -2 for unable to choose distance
+winged boots:
+  buffs: [flight]
+  duration: short
+healing belt:
+  healing: normal
+heroic recovery:
+  casting time: immediate
+  healing: normal
+  misc: -2  # difficult trigger
+obscuring cloak:
+  battlefield effects: [fog]
+  duration: short fixed
+  misc: 1  # very thick for first round
+  targets: all
+  area: medium radius zone
+  spell resistance: false
+vanishing cloak:
+  subeffects:
+    - battlefield effects: [fog]
+      duration: short fixed
+      misc: 1  # very thick for first round
+      targets: all
+      area: medium radius zone
+      spell resistance: false
+    - teleport:
+        range: medium
+        type: line of effect
+        willing: true
+
+armor, titan:
+  $ref: CONT
+  buffs:
+    - increase size
+armor, invulnerable:
+  $ref: CONT
+  buffs:
+    - damage reduction: physical
+armor, resilient:
+  buffs:
+    - damage reduction: physical
+  duration: short
+armor, flameforged:
+  $ref: CONT
+  buffs:
+    - retributive damage: melee
+armor, freezing burst:
+  casting time: immediate
+  damage: normal
+  range: close
+armor, freezing burst alt:
+  buffs:
+    - retributive damage: close
+  duration: short
+armor, spell resistant:
+  buffs:
+    - spell resistance
+  duration: short
+
+ring of damage reduction, active:
+  buffs:
+    - damage reduction: physical
+  duration: short
+ring of damage reduction, continuous:
+  $ref: CONT
+  buffs:
+    - damage reduction: physical
+ring of energy resistance, active:
+  buffs:
+    - damage reduction: energy all
+  duration: short
+ring of energy resistance, triggered:
+  $ref: TRIG
+  buffs:
+    - damage reduction: energy all
+ring of energy resistance, continuous:
+  $ref: CONT
+  buffs:
+    - damage reduction: energy all
+ring of fireball:
+  damage: normal
+  area: small radius burst
+  range: medium
+  targets: all
+ring of heroic vengeance:
+  casting time: immediate
+  damage: normal
+  range: medium
+  misc: -2  # difficult trigger
+amulet of nondetection:
+  $ref: CONT
+  buffs: [nondetection]
+
+weapon, sweeping:
+  casting time: on hit
+  damage: physical attack
+weapon, flaming:
+  casting time: on hit
+  damage: normal # auto scaled down for immediate action
+  range: close
+weapon, disorienting:
+  casting time: on hit
+  conditions: [disoriented]
+  duration: brief
+  range: close
+weapon, forceful:
+  casting time: on hit
+  instant effect: shove
+  misc: 1  # high bonus
+weapon, surestrike:
+  casting time: on hit
+  damage: physical attack
+  range: close
+weapon, thundering:
+  casting time: on hit
+  conditions: [deafened]
+  duration: brief
+  range: close
+weapon, vampiric:
+  casting time: on hit
+  healing: normal
+
+wand, flaming:
+  casting time: on hit
+  conditions: [ignited]
+  duration: brief
+  range: close
+wand, shocking:
+  casting time: on hit
+  conditions: [staggered]
+  duration: brief
+  range: close
+witchs broom:
+  $ref: CONT
+  buffs: [flight]
+  misc: -1  # broom is less convenient than proper flight
+hunters cloak:
+  buffs: [invisible]
+  breakable: if attack
+  duration: short # kinda
+  # -1 for break if move, +1 for can last a long time
+
+material, adamantine armor:
+  $ref: CONT
+  buffs:
+    - damage reduction: physical
+material, adamantine weapon:
+  $ref: CONT
+  buffs:
+    - ignore hardness
+  misc: 1  # adamantine DR is common
+material, cold iron armor:
+  $ref: CONT
+  buffs:
+    - immune: compulsion
+    - immune: delusion
+material, cold iron weapon:
+  casting time: on hit
+  conditions: [impaired]
+  duration: brief
+  range: close
+  misc: -1  # casting arcane spells only
+material, darkwood weapon:
+  $ref: CONT
+  buffs:
+    - finesse weapon
+material, darkwood armor:
+  $ref: CONT
+  buffs:
+    - reduce encumbrance: 2
+material, dragonbone armor:
+  $ref: CONT
+  buffs:
+    - spell resistance
+material, dragonbone weapon:
+  $ref: CONT
+  buffs:
+    - legend point: offensive
+    - legend point: offensive
+  # scaling is weird
+material, dragonhide armor:
+  $ref: CONT
+  buffs:
+    - damage reduction: energy single
+
+armor, fortified:
+  $ref: CONT
+  buffs:
+    - critical immunity
+weapon, brilliant:
+  $ref: CONT
+  buffs:
+    - target reflex
+  misc: 1  # toggleable
+weapon, distant:
+  $ref: CONT
+  buffs:
+    - double range
+weapon, speed:
+  $ref: CONT
+  buffs:
+    - extra attack with penalty
+
+boots of freedom:
+  buffs:
+    - immune: grapple
+    - immune: movement effects
+    - immune: underwater
+  duration: short
+ring of invisibility:
+  buffs:
+    - invisible
+  duration: short
+  breakable: if attack
+ring of regeneration:
+  $ref: CONT
+  buffs:
+    - fast healing
+
+boots of water walk:
+  buffs:
+    - water walk
+  duration: short
+  misc: 1  # long maintenance
+
+horseshoes of shrinking:
+  buffs: [reduce size]
+  duration: short
+
+weapon, seeking:
+  casting time: immediate
+  buffs: [ignore minor miss chance]
+  duration: end of round
+
+holy symbol, sympathetic:
+  casting time: immediate
+  healing: normal
+  range: close
+  misc: -1 # require dealing damage

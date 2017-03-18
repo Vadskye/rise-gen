@@ -1,0 +1,56 @@
+aberration:
+  fortitude: poor
+  reflex: poor
+  mental: good
+  abilities:
+    - darkvision: 50 ft.
+animal:
+  fortitude: average
+  reflex: average
+  mental: poor
+  abilities:
+    - limited intelligence
+animate:
+  fortitude: good
+  reflex: poor
+  mental: good
+  abilities:
+    - mindless
+    - nonsentient
+construct:
+  fortitude: average
+  reflex: poor
+  mental: good
+  abilities:
+    - artificial body
+    - mindless
+    - nonliving
+humanoid:
+  fortitude: poor
+  reflex: poor
+  mental: poor
+magical beast:
+  fortitude: average
+  reflex: average
+  mental: poor
+  abilities:
+    - low-light vision
+monstrous humanoid:
+  fortitude: average
+  reflex: poor
+  mental: average
+outsider:
+  fortitude: average
+  reflex: average
+  mental: average
+  abilities:
+    - darkvision: 50 ft.
+    - extraplanar body
+undead:
+  fortitude: poor
+  reflex: poor
+  mental: good
+  abilities:
+    - darkvision: 50 ft.
+    - necromantic body
+    - nonliving

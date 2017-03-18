@@ -1,0 +1,33 @@
+antipathy:
+  attack subeffects:
+    success:
+      conditions:
+        - frightened
+      duration: brief
+    critical success:
+      conditions:
+        - panicked
+      duration: brief
+    failure:
+      conditions:
+        - shaken
+      duration: brief
+  trigger:
+    condition: enter zone
+    duration: week
+  area: large radius zone
+  targets: all
+  limit affected: mind affecting
+antipathy - widened:
+  $ref: antipathy
+  area: mile radius zone
+light:
+  battlefield effects:
+    - light
+  duration: extreme
+  misc: 2  # 1 for mobile, 1 for toggle light on and off
+mind blank:
+  buffs:
+    - immune: mind
+  duration: short
+  range: close

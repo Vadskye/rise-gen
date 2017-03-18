@@ -1,0 +1,228 @@
+TEMPLATES:
+  AMBUSH:
+    casting time: strike feat
+    range: personal
+      # personal range is a hack; ambush feats are hard to use, so -2 levels
+  RAGE:
+    duration: short fixed
+    casting time: swift
+    range: personal
+  FEATURE:
+    duration: class feature
+    range: personal
+  SMITE:
+    casting time: strike feat
+    range: close
+    # we don't add a misc modifier here though we probably should
+  STRIKE:
+    casting time: strike feat
+    range: close
+  SURGE:
+    casting time: swift
+    duration: short fixed
+    range: personal
+  KI:
+    casting time: swift
+    duration: end of round
+    # don't apply personal modifier
+    # to add misc + 1 for ease of recovery
+  AURA:
+    duration: class feature
+    area: medium radius emanation
+    range: personal
+
+blindsense:
+  $ref: FEATURE
+  buffs: [blindsense]
+supreme speed:
+  $ref: FEATURE
+  buffs: [extra attack]
+reflexive dodge:
+  $ref: FEATURE
+  buffs: [one attack misses]
+pierce defenses:
+  $ref: FEATURE
+  buffs:
+    - ignore hardness
+    - ignore damage reduction
+  misc: 1  # buffs all
+rapid recovery:
+  $ref: FEATURE
+  buffs:
+    - fast healing
+  misc: 2  # narrative power, better healing, crit healing
+mental fortress:
+  $ref: FEATURE
+  buffs:
+    - immune: mind
+
+
+abjurer, base:
+  $ref: FEATURE
+  buffs:
+    - free augment, limited
+abjurer, two:
+  $ref: FEATURE
+  buffs:
+    - free augment, limited
+    - defense bonus: 1
+abjurer, three:
+  $ref: FEATURE
+  buffs:
+    - free augment, limited
+    - defense bonus: 2
+
+
+accelerated rage, base:
+  $ref: RAGE
+  buffs: [ten foot speed]
+accelerated rage, two:
+  $ref: RAGE
+  buffs:
+    - double speed
+accelerate rage, three:
+  $ref: RAGE
+  buffs:
+    - extra attack
+
+all energy becomes one:
+  $ref: FEATURE
+  buffs:
+    - damage reduction: energy all
+  # ki points vs. immediate action offsets
+
+arcane resilience, base:
+  $ref: FEATURE
+  buffs:
+    - damage reduction: arcane
+arcane resilience, two:
+  $ref: FEATURE
+  buffs:
+    - damage reduction: spell
+arcane resilience, three:
+  $ref: FEATURE
+  buffs:
+    - double dr: spell
+
+      celestial heritage, holy protection:
+  $ref: FEATURE
+  buffs:
+    - damage reduction: alignment
+
+
+celestial heritage, holy blessing:
+  buffs:
+    - legend point: all
+  range: close
+  duration: short
+celestial heritage, holy blessing, mass:
+  buffs:
+    - legend point: all
+  range: close
+  targets: five
+  duration: short
+celestial heritage, holy retribution:
+  buffs:
+    - retributive damage: close
+  range: close
+  duration: short
+celestial heritage, holy protection:
+  buffs:
+    - damage reduction: alignment
+  range: close
+  duration: short
+celestial heritage, holy protection, permanent:
+  $ref: FEATURE
+  buffs:
+    - damage reduction: alignment
+celestial heritage, holy retribution, permanent:
+  $ref: FEATURE
+  buffs:
+    - retributive damage: close
+celestial apotheosis, holy judgment:
+  limit affected: nonalignment
+  range: long
+  attack subeffects:
+    effect:
+      damage: normal
+    success:
+      conditions: [dazed]
+      duration: brief
+
+rapid recovery, two:
+  $ref: FEATURE
+  buffs:
+    - fast healing
+  misc: 1 # narrative power
+
+fearsome, base:
+  $ref: STRIKE
+  conditions: [shaken]
+  duration: brief
+fearsome, two:
+  $ref: STRIKE
+  conditions: [frightened]
+  duration: brief
+
+infuriating, base:
+  $ref: STRIKE
+  conditions: [goaded]
+  duration: brief
+infuriating, two:
+  $ref: STRIKE
+  conditions: [taunted]
+  duration: brief
+
+inescapable, base:
+  $ref: STRIKE
+  conditions: [immobilized]
+  duration: brief
+  range: ~
+
+iron will, two:
+  $ref: FEATURE
+  buffs:
+    - immune: mind
+
+climb mastery, base:
+  $ref: FEATURE
+  buffs:
+    - climb speed
+
+performance, mocking:
+  range: medium
+  conditions: [impaired]
+  duration: brief
+
+performance, taunting:
+  range: medium
+  attack subeffects:
+    success:
+      conditions: [taunted]
+      duration: brief
+performance, inspire resilience:
+  range: medium
+  buffs:
+    - damage reduction: all
+  duration: short
+
+transmuter:
+  $ref: FEATURE
+  buffs: [damage reduction: all]
+vivimancer:
+  $ref: FEATURE
+  buffs: [fast healing]
+  misc: 1  # narrative power
+diviner:
+  $ref: FEATURE
+  buffs:
+    - skill: plus5
+    - skill: extra plus5
+arcane resilience, base:
+  $ref: FEATURE
+  buffs:
+    - damage reduction: magical
+arcane resilience, second:
+  $ref: FEATURE
+  buffs:
+    - double dr: magical
