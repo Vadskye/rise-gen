@@ -1,226 +1,31 @@
-Warning: Leveler('rogue, agonizing ambush') is missing critical success
-Warning: Leveler('divine invocation, seeking smite') has nonpositive property 'instant effect'
-Warning: Leveler('divine invocation, exhausting smite') is missing critical success
-Warning: Leveler('perform, mocking performance') is missing critical success
-Warning: Leveler('rogue, dispelling ambush') is missing critical success
-Warning: Leveler('divine invocation, dispelling smite') is missing critical success
-Warning: Leveler('sw, immolate') has critical success with incorrect level 21 instead of 12
-Warning: Leveler('perform, fascinating performance') is missing critical success
-Warning: Leveler('divine invocation, converting smite') has critical success with incorrect level 20 instead of 18
-Warning: Leveler('rogue, staggering ambush') is missing critical success
-Warning: Leveler('divine invocation, terrifying smite') is missing critical success
-Warning: Leveler('ki - awaken the pacifist heart') is missing critical success
-Warning: Leveler('perform, taunting performance') is missing critical success
-armor discipline, resilience: 3
-aura - accelerating: 5.5
-aura - baleful: 6
-aura - disorienting: 9
-aura - freedom: 5.5
-aura - healing aura: 6.5
-aura - immobilizing: 9
-aura - inhibition: 4
-aura - lifebound: 13.5
-aura - martyrs: 8.5
-aura - mindshielding: 7.5
-aura - worthy foe: 5
-battlemaster: 3
-discernment - thoughts: 10.0
-divine invocation, bless: 1
-divine invocation, converting smite: 10
-divine invocation, dazing smite: 7
-divine invocation, dispelling smite: 5
-divine invocation, divine might: 5
-divine invocation, executing smite: 6
-divine invocation, exhausting smite: 3
-divine invocation, freedom: 2
-divine invocation, goading smite: 3
-divine invocation, immobilizing smite: 9
-divine invocation, lay on hands: -1
-divine invocation, penetrating smite: 5
-divine invocation, resounding smite: 3
-divine invocation, seeking smite: 3
-divine invocation, spellreaving smite: 7
-divine invocation, terrifying smite: 6
-domain aspect - air: 3
-domain aspect - chaos: 4
-domain aspect - death: 4
-domain aspect - destruction: 4
-domain aspect - earth: 4
-domain aspect - evil: 4
-domain aspect - fire: 4
-domain aspect - good: 4
-domain aspect - knowledge: 4
-domain aspect - law: 4
-domain aspect - magic: 4
-domain aspect - travel: 5
-domain aspect - trickery: 5
-domain aspect - vitality: 3
-domain aspect - war: 4
-domain aspect - water: 6
-domain gift - air: 1
-domain gift - chaos: 2
-domain gift - death: 2
-domain gift - destruction: 3
-domain gift - earth: 2
-domain gift - evil: 1
-domain gift - fire: 1
-domain gift - good: 1
-domain gift - knowledge: 2
-domain gift - law: 0
-domain gift - protection: 2
-domain gift - strength: 2
-domain gift - travel: 2
-domain gift - trickery: 2
-domain gift - vitality: 2
-domain gift - war: 1
-domain gift - water: 2
-domain gift - wild: 2
-domain invocation - normal: 1
-domain invocation greater - air: 6
-domain invocation greater - chaos: 6
-domain invocation greater - death: 5
-domain invocation greater - earth: 6
-domain invocation greater - evil: 7
-domain invocation greater - fire: 6
-domain invocation greater - good: 7
-domain invocation greater - knowledge: 6
-domain invocation greater - law: 6
-domain invocation greater - magic: 6
-domain invocation greater - protection: 5.0
-domain invocation greater - strength: 6
-domain invocation greater - travel: 8
-domain invocation greater - trickery: 6
-domain invocation greater - vitality: 5
-domain invocation greater - water: 6
-domain invocation greater - wild: 6
-fast movement: 1
-half speedhunting lore, super impaired quarry: 10
-hunting lore, impaired quarry: 4
-hunting lore, no escape: 2
-infuriating strike: 5
-ki - all energy becomes one: 1
-ki - awaken the pacifist heart: 7
-ki - burst of blinding speed: 3
-ki - empty body: 9
-ki - empty step: 7
-ki - fists of distant force: 2
-ki - flash burst: 8
-ki - flash step: 4
-ki - focus the wayward mind: 4
-ki - heal the broken body: -2
-ki - ki-disrupting strike: 4
-ki - ki-shattering strike: 10
-ki - leap of the heavens: 1
-ki - see the flow of life: 4
-ki - stunning fist: 6
-ki flow: 4
-larger than life: 3
-perfect mind: 5
-perfect motion: 3
-perfect soul: 4
-perform, fascinating performance: 0
-perform, inspire competence: 0.5
-perform, inspire courage: 1.5
-perform, inspire legends: 6.5
-perform, inspire resilience: 5.5
-perform, inspire serenity: 4.5
-perform, mind clearing performance: 4.5
-perform, mocking performance: -1
-perform, suggestive performance: 4
-perform, taunting performance: 3
-perform, terrifying performance: 4
-rage - accelerated rage: 3
-rage - athletic rage: 3
-rage - critical rage: 5
-rage - destructive rage: 1
-rage - invulnerable rage: 5
-rage - mindless rage: 5
-rage - overpowering rage: 2
-rage - overwhelming rage: 2
-rage - savage rage: 1
-rage - spellbreaker rage: 4
-rage - taunting rage: 6
-rage - terrifying rage: 5
-rage - wary rage: 1
-ranger, blindsense: 2
-ranger, blindsight: 5
-ranger, energy adaptation: 2
-ranger, keen senses: 1
-ranger, perfect stride: 3
-ranger, scent: 2
-rogue, agonizing ambush: 5
-rogue, confusing ambush: 2
-rogue, deadly ambush: 8
-rogue, dispelling ambush: 3
-rogue, hamstring: 2
-rogue, immobilizing ambush: 5
-rogue, spellreaving ambush: 6
-rogue, staggering ambush: 2
-strike feat - basic: 2
-strike feat - bonus damage: 4
-strike feat - driving assault: 3
-strike feat - intimidating strike: 5
-supreme battlemaster: 9
-sw, alter size: 4
-sw, alter size alt: 4
-sw, alteration, flight: 3
-sw, alteration, healing transformation: 3
-sw, alteration, shrink: 1
-sw, alteration, sturdy body: 1
-sw, alteration, surge of power: 4
-sw, amorphous body: -2
-sw, bludgeon the horde: 4
-sw, body bludgeon: 1
-sw, damage reduction: 3
-sw, fast movement: 4
-sw, immolate: 0
-sw, pyromancy, conflagration: 3
-sw, pyromancy, energy resistance: 2
-sw, pyromancy, fiery protection: 2
-sw, pyromancy, flame shield: 3
-sw, pyromancy, flight of the phoenix: 4
-sw, pyromancy, ignite: 3
-sw, pyromancy, surge of power: 4
-sw, retributive flames: 3
-sw, seeking flame: 5
-sw, telekinesis, immobilize: 4
-sw, telekinesis, sickening crush: 1
-sw, telekinesis, tactile telekinesis: 2
-sw, temporal, accelerate mind: 2
-sw, temporal, disjointed time: 2
-sw, temporal, flash step: 1
-sw, temporal, inhuman speed: 3
-sw, temporal, slow: 2
-sw, temporal, timestream: 5
-sw, temporal, timetheft: 1
-vital flow: 4
-wild aspect 10 - fluid motion: 5
-wild aspect 10 - grow: 5
-wild aspect 10 - natural renewal: 5
-wild aspect 10 - wolfpack: 5
-wild aspect 12 - elemental retribution: 5.5
-wild aspect 12 - flight: 6
-wild aspect 12 - swiftstrike: 6
-wild aspect 14 - earth glide: 7
-wild aspect 14 - mantle of air: 3
-wild aspect 16 - solar radiance: 9
-wild aspect 2 - armaments of the bear: 1
-wild aspect 2 - climb: 2
-wild aspect 2 - senses: 1
-wild aspect 2 - woodland stride: 0
-wild aspect 4 - animal affinity: 2
-wild aspect 4 - constrict: 2
-wild aspect 4 - gore: 2
-wild aspect 4 - hawk: 2
-wild aspect 4 - lope: 3
-wild aspect 4 - slither: 3
-wild aspect 6 - enhanced natural weapons: 3
-wild aspect 6 - scent: 3
-wild aspect 6 - shrink: 3
-wild aspect 6 - thousand faces: 3
-wild aspect 6 - totemic mind: 3
-wild aspect 6 - totemic power: 3
-wild aspect 6 - venom: 3
-wild aspect 8 - barkskin: 4
-wild aspect 8 - natural grab: 4
-wild aspect 8 - natural trip: 4
+Warning: Leveler('performance, taunting') is missing critical success
+abjurer, base: 2
+abjurer, three: 7
+abjurer, two: 5
+accelerate rage, three: 7
+accelerated rage, base: 1
+accelerated rage, two: 3
+all energy becomes one: 2
+arcane resilience, base: 1
+arcane resilience, three: 6
+arcane resilience, two: 2
+blindsense: 2
+celestial apotheosis, holy judgment: 4
+celestial heritage, holy protection, permanent: 2
+celestial heritage, holy retribution, permanent: 4
+climb mastery, base: 2
+fearsome, base: 3
+fearsome, two: 9
+inescapable, base: 6
+infuriating, base: 3
+infuriating, two: 8
+iron will, two: 5
+mental fortress: 5
+performance, inspire resilience: 3.5
+performance, mocking: 1
+performance, taunting: 2
+pierce defenses: 5
+rapid recovery: 6
+rapid recovery, two: 5
+reflexive dodge: 7
+supreme speed: 7

@@ -281,6 +281,15 @@ warrior: &WARRIOR
 warrior_featless:
   <<: *WARRIOR
   feats: ~
+warrior_small:
+  <<: *WARRIOR
+  size: small
+warrior_large:
+  <<: *WARRIOR
+  size: large
+warrior_huge:
+  <<: *WARRIOR
+  size: huge
 warrior_itemless:
   <<: *WARRIOR
   traits: ~
@@ -448,7 +457,7 @@ taito:
   attributes:
     strength: 3
     perception: 4
-    willpower: 3
+    willpower: 2
   feats:
     - mighty blows
   traits:

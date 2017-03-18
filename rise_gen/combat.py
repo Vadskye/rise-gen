@@ -21,12 +21,15 @@ class CreatureGroup(object):
             group (CreatureGroup): Creatures to attack
         """
         for c in self.creatures:
-            target = group.get_living_creature()
-            # if all targets are dead, stop attacking
-            if target is None:
-                return
-            else:
-                c.standard_attack(target)
+            if not c.is_alive():
+                continue
+            for i in range(c.action_count):
+                target = group.get_living_creature()
+                # if all targets are dead, stop attacking
+                if target is None:
+                    return
+                else:
+                    c.standard_attack(target)
 
     def get_accuracy(self, group, trials):
         """Test the average accuracy against the given group"""
@@ -71,7 +74,18 @@ class CreatureGroup(object):
         for c in self.creatures:
             if c.is_alive():
                 return True
-        return None
+        return False
+
+    def all_alive(self):
+        """Check whether all creatures in the group are alive
+
+        Yields:
+            bool: True if all creatures are alive, false otherwise
+        """
+        for c in self.creatures:
+            if not c.is_alive():
+                return False
+        return True
 
     def __str__(self):
         return 'CreatureGroup({})'.format([str(c) for c in self.creatures])
@@ -87,7 +101,9 @@ def run_combat(red, blue):
 
     results = {
         'red is alive': 0,
+        'red all alive': 0,
         'blue is alive': 0,
+        'blue all alive': 0,
         'rounds': 0
     }
 
@@ -104,8 +120,12 @@ def run_combat(red, blue):
 
     if red.is_alive():
         results['red is alive'] += 1
+    if red.all_alive():
+        results['red all alive'] += 1
     if blue.is_alive():
         results['blue is alive'] += 1
+    if blue.all_alive():
+        results['blue all alive'] += 1
 
     red.refresh_combat()
     blue.refresh_combat()
@@ -164,7 +184,7 @@ def initialize_argument_parser():
     )
     parser.add_argument(
         '--trials',
-        default=1000,
+        default=2000,
         dest='trials',
         help='The number of trials to run',
         type=int,
@@ -209,15 +229,25 @@ def generate_combat_results(red, blue, trials):
     for t in range(trials):
         raw_results.append(run_combat(red, blue))
 
+    trials_modifier = float(trials) / 100
+
     results = {
-        'red alive %': int([
+        'red win %': int([
             True if result['red is alive'] else False
             for result in raw_results
-        ].count(True) / float(trials) * 100),
-        'blue alive %': int([
+        ].count(True) / trials_modifier),
+        'red all alive %': int([
+            True if result['red all alive'] else False
+            for result in raw_results
+        ].count(True) / trials_modifier),
+        'blue win %': int([
             True if result['blue is alive'] else False
             for result in raw_results
-        ].count(True) / float(trials) * 100),
+        ].count(True) / trials_modifier),
+        'blue all alive %': int([
+            True if result['blue all alive'] else False
+            for result in raw_results
+        ].count(True) / trials_modifier),
         'average rounds': sum([results['rounds'] for results in raw_results]) / float(trials)
     }
 
@@ -281,7 +311,15 @@ def main(args):
     if args.get('verbose'):
         print("RED:\n{}\nBLUE:\n{}".format(red, blue))
 
-    pprint(generate_combat_results(red, blue, args['trials']))
+    filtered_results = generate_combat_results(red, blue, args['trials'])
+
+    # these are unnecessary if only one creature is in the group
+    if len(blue.creatures) == 1:
+        filtered_results.pop('blue all alive %')
+    if len(red.creatures) == 1:
+        filtered_results.pop('red all alive %')
+
+    pprint(filtered_results)
 
 if __name__ == "__main__":
     cmd_args = initialize_argument_parser()

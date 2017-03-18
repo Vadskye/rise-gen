@@ -99,6 +99,7 @@ buffs:
     physical: 4
     single: 1
     spell: 3
+    magical: 4
     alignment: 3
     all: 5
   double dr:
@@ -107,6 +108,7 @@ buffs:
     physical: 8
     single: 5
     spell: 7
+    magical: 8
     alignment: 7
     all: 9
   double range: 1  # for ranged weapons
@@ -215,8 +217,9 @@ buffs:
   scent: 3
   see invisibility: 3
   shadow duplicate: 8
-  share pain: 3
-  share pain selective: 7
+  share damage:
+    half: 5
+    half selective: 7
   shield of faith: 3
   skill:
     class skills: 1  # up to two class skills
@@ -320,6 +323,7 @@ conditions:
   command movement: 9 # like staggered, but worse
   no violence: 9
   out of battle: 9
+  petrified: 9 # like being out of battle
   severely impaired: 9
   stasis: 9
   suggestion: 9 # like aversion, but more flexible
@@ -468,6 +472,7 @@ instant effect:
   negative levels: 7 # one negative level per two spell levels
   full negative levels: 14 # one negative level per spell level
   maneuver: 3 # +spellpower
+  petrified: 15
   resurrect: 9  # recently deceased only, for world continuity
   nothing: 0
   shove: 1 # +spellpower; one of the weaker maneuvers
@@ -485,13 +490,13 @@ knowledge:
   vulnerabilities: 1
 limit affected:
   normal:
-    alignment: -2
+    alignment: -1
     creature type: -2
     language: -2
     willing: -2
     max size: -1
     mind affecting: -1
-    nonalignment: -1
+    nonalignment: 0
     near ground: -1 # within 10 feet of the ground
     on stone: -1
     near plants: -2 # within 5 feet of plants

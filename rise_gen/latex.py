@@ -6,9 +6,9 @@ def monster_latex(creature):
     # bracket doubling looks crazy within this string
     # so we use <> in place of {}
     # and then substitute those at the end
+    cr_text = "" if creature.challenge_rating == 1 else f"[{creature.challenge_rating}]"
     text = "\n".join(filter(lambda s: s, [
-        "\\begin<monsection>{name}<{level}>".format(
-            name=name(creature), level=creature.level),
+        f"\\begin<monsection>{creature_name(creature)}<{creature.level}>" + cr_text,
         *indent_list(4, [
             "\\begin<spellcontent>",
             *indent_list(4, [
@@ -50,7 +50,7 @@ def monster_latex(creature):
 
 def abilities(creature):
     relevant_abilities = list(filter(
-        lambda ability: not ability.has_tag('monster_trait') and not ability.has_tag('sense'),
+        lambda ability: not ability.has_tag('monster_trait') and not ability.has_tag('sense') and not ability.has_tag('template'),
         creature.visible_abilities
     ))
     if not relevant_abilities:
@@ -106,14 +106,10 @@ def languages(creature):
     ])
 
 def levels(creature):
-    return "\\pari \\mb<Levels> {levels} [{monster_type}]".format(
-        levels=", ".join([
-            "{class_name} {level}".format(
-                class_name='\\textbf<{}>'.format(class_name.capitalize()) if class_name == creature.base_class.name else class_name.capitalize(),
-                level=creature.levels[class_name])
-            for class_name in sorted(creature.classes.keys())
-        ]),
+    return "\\pari \\mb<Level> {monster_type} {level} [{templates}]".format(
+        level=creature.level,
         monster_type=creature.monster_type.name.capitalize(),
+        templates=", ".join([t.capitalize() for t in sorted(set(creature.templates))])
     )
 
 
@@ -131,7 +127,7 @@ def movement(creature):
         speed_strings.insert(0, "{} ft.\\ land speed".format(creature.land_speed))
     return "\\pari \\mb<Movement> {}".format(", ".join(speed_strings))
 
-def name(creature):
+def creature_name(creature):
     if ',' in creature.name:
         parts = creature.name.split(', ')
         if len(parts) != 2:
@@ -188,4 +184,4 @@ def traits(creature):
                 creature.visible_abilities
             )])
         ]
-    )
+    ) + "."

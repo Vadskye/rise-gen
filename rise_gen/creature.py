@@ -9,6 +9,7 @@ from rise_gen.rise_data import (
     Armor, MonsterType, Race, RiseClass, Shield, Skill, Weapon,
     calculate_attribute_progression, calculate_skill_modifier
 )
+import random
 import rise_gen.latex as latex
 import rise_gen.util as util
 
@@ -71,6 +72,8 @@ class CreatureStatistics(object):
         self.subtraits = subtraits
         self.templates = templates
         self.traits = traits
+
+        self.challenge_rating = len(self.templates) if self.templates else 1
 
         # these are usually given as strings
         # but we want to store them as objects
@@ -158,13 +161,16 @@ class CreatureStatistics(object):
             for subtrait in self.subtraits:
                 self.add_ability(subtrait)
         if self.templates is not None:
-            for template in self.templates:
+            # hackery to allow duplicate templates for CR purposes
+            # without duplicating abilities
+            for template in set(self.templates):
                 self.add_ability(template)
         if self.traits is not None:
             for trait in self.traits:
                 self.add_ability(trait)
 
         self.add_ability('size modifiers')
+        self.add_ability('challenge rating')
 
     def add_ability(self, ability):
         """add the given ability to the creature
@@ -244,6 +250,16 @@ class CreatureStatistics(object):
             lambda ability: ability.prerequisite(self) and not ability.has_tag('hidden'),
             self.abilities
         )
+
+    @property
+    def action_count(self):
+        if self.challenge_rating == 2:
+            if random.random() >= 0.5:
+                return 2
+            else:
+                return 1
+        else:
+            return max(1, self.challenge_rating - 1)
 
     @property
     def attack_range(self):
@@ -575,7 +591,7 @@ class CreatureStatistics(object):
 
     def _calculate_power(self):
         """A monster's power (int)"""
-        power = self.level + 1 + self.level // 5
+        power = self.level + self.challenge_rating
         for effect in self.active_effects_with_tag('power'):
             power = effect(self, power)
         return power
@@ -656,10 +672,13 @@ class CreatureStatistics(object):
         )
 
     def _to_string_levels(self):
-        return ", ".join(sorted([
+        text = ", ".join(sorted([
             "{} {}".format(name.capitalize() if name == self.base_class.name else name, level)
             for name, level in self.levels.items()
         ]))
+        if self.challenge_rating != 1:
+            text += f" [CR {self.challenge_rating}]"
+        return text
 
     def _to_string_defenses(self):
         text = '; '.join([
@@ -806,12 +825,14 @@ class Creature(CreatureStatistics):
 
     def refresh_combat(self):
         self.current_hit_points = self.hit_points + self.temporary_hit_points
+        self.alive = True
         self.zero_threshold = True
         self.refresh_round()
 
     def refresh_round(self):
         for effect in self.active_effects_with_tag('end of round'):
             effect(self)
+        self.alive = self.current_hit_points >= 0
         self.available_damage_reduction = self.damage_reduction
         self.hit_once = False
         if self.current_hit_points <= 0:
@@ -924,7 +945,7 @@ class Creature(CreatureStatistics):
             creature.take_damage(spell_damage // 2)
 
     def is_alive(self):
-        return self.current_hit_points >= 0
+        return self.alive
 
     def heal(self, hit_points):
         """Increase current hit points by the given amount"""

@@ -387,7 +387,7 @@ command mass:
   $ref: command
   targets: five
 cone of cold:
-  area: medium cone burst
+  area: large cone burst
   subeffects:
     - damage: normal
     - conditions:
@@ -1266,6 +1266,7 @@ imprisonment:
         - stasis
       duration: permanent
       dispellable: false
+  limit affected: max size
 inertial shield:
   duration: short
   buffs:
@@ -1403,11 +1404,12 @@ mask of the deceiver - persistent:
 ##magic weapon
 #major image
 maze:
-  range: close
+  range: long
   conditions:
     - out of battle
   duration: medium
   breakable: maze
+  limit affected: max size
 #manipulate probability:
 meteor swarm:
   range: medium
@@ -1494,6 +1496,7 @@ planar disruption:
     critical success:
       instant effect: banishment
       limit affected: creature type
+  misc: 1 # conjuration damage and crit success effect
 planar disruption mass:
   $ref: planar disruption
   targets: five
@@ -1815,16 +1818,16 @@ shadowshield:
     - half miss all
     - hide attack effects
 share pain:
-  duration: medium
+  duration: short
   buffs:
-    - share pain
-  noncombat: true  # sorta - you can't "nova" it on multiple people
+    - share damage: half
 martyrs gift:
   duration: short
   buffs:
-    - share pain selective
+    - share damage: half selective
   area: large radius emanation
-  targets: allies
+  targets: all
+  misc: -1  # doesn't scale well with large number of targets
 shield of faith:
   buffs:
     - shield of faith
@@ -2571,12 +2574,12 @@ drown:
       duration: short fixed
   misc: 2  # can continue concentration and kill
 ice spike:
-  range: long
+  range: medium
   subeffects:
     - damage: normal
-    - conditions:
-        - half speed
-      duration: short fixed
+    - conditions: [half speed]
+      duration: brief
+  spell resistance: false
 ice spike - freezing:
   range: long
   attack subeffects:
@@ -2681,3 +2684,17 @@ weapon of power:
   damage: over time
   range: close
   misc: 2  # can deal more than 5 rounds of dot
+
+petrifying gaze:
+  range: close
+  attack subeffects:
+    success:
+      conditions: [petrified]
+      duration: brief
+    critical success:
+      instant effect: petrified
+
+overland speed:
+  buffs: [double speed]
+  duration: extreme
+  noncombat: true

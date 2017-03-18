@@ -83,7 +83,7 @@ aura - lifebound:
 aura - martyrs:
   $ref: AURA
   buffs:
-    - share pain selective
+    - share damage: half selective
   targets: allies
 aura - mindshielding:
   $ref: AURA
@@ -190,7 +190,7 @@ domain aspect - chaos:
   $ref: FEATURE
   buffs:
     - retributive damage: close
-  limit affected: alignment
+  limit affected: nonalignment
   misc: 1  # price limit affected for conditions, not buffs
 domain aspect - death:
   range: personal
@@ -316,7 +316,7 @@ domain gift - law:
 domain gift - protection:
   area: small radius emanation
   buffs:
-    - share pain
+    - share damage: half
   duration: class feature
   targets: allies
   # -1 for adjacent rather than small radius
@@ -372,6 +372,10 @@ domain gift - wild:
 domain invocation - normal:
   range: medium
   damage: normal
+domain invocation - good:
+  range: medium
+  conditions: [staggered]
+  duration: brief
 
 # GREATER DOMAIN INVOCATIONS
 domain invocation greater - air:
@@ -464,6 +468,13 @@ domain invocation greater - wild:
         - half speed
       duration: short fixed
   limit affected: near ground
+
+# DOMAIN MASTERY
+domain mastery - deathfeeder:
+  area: large radius emanation
+  buffs: [temporary hp]
+  $ref: FEATURE
+  targets: allies
 
 # MONK FEATURES
 ki flow:
@@ -746,6 +757,11 @@ wild aspect 6 - totemic mind:
   buffs:
     - attribute: plus2
   choose effect: 1
+wild aspect 6 - spikes:
+  $ref: FEATURE
+  buffs:
+    - retributive damage: melee
+    
 
 wild aspect 8 - natural grab:
   $ref: FEATURE
@@ -774,12 +790,11 @@ wild aspect 10 - wolfpack:
     - increase overwhelm
     - increase overwhelm
 
-wild aspect 12 - elemental retribution:
+wild aspect 10 - elemental retribution:
   $ref: FEATURE
   buffs:
     - retributive damage: medium
     - radiate light
-  misc: 1  # choose damage type
 wild aspect 12 - flight:
   $ref: FEATURE
   buffs:
@@ -842,6 +857,23 @@ ranger, perfect stride:
     - immune: grapple
     - immune: movement effects
     - immune: underwater
+ranger, anchored quarry:
+  $ref: STRIKE
+  conditions: [dimension lock]
+  duration: brief
+ranger, merciless quarry:
+  $ref: STRIKE
+  conditions: [die from critical]
+  duration: brief
+ranger, impaired quarry:
+  $ref: STRIKE
+  conditions: [impaired]
+  duration: brief
+
+ranger, no escape:
+  $ref: STRIKE
+  conditions: [half speed]
+  duration: brief
 
 # SPELLWARPED STUFF
 sw, alteration, surge of power:
@@ -869,12 +901,21 @@ sw, temporal, accelerate mind:
   $ref: FEATURE
   buffs: [skill: plus2 attribute]
   misc: 1  # another attribute
-
-sw, damage reduction:
+sw, temporal, accelerate attack:
   $ref: FEATURE
-  buffs: [damage reduction: physical]
+  buffs: [extra attack]
+sw, temporal, decelerate:
+  range: medium
+  attack subeffects:
+    success:
+      conditions: [immobilized]
+      duration: brief
+    failure:
+      conditions: [half speed]
+      duration: brief
+
 sw, alter size:
-  $ref: SURGE
+  $ref: FEATURE
   buffs: [increase size]
 sw, alter size alt:
   $ref: FEATURE
@@ -1019,6 +1060,10 @@ rogue, confusing ambush:
     critical success:
       conditions: [confused]
       duration: brief
+rogue, staggering ambush:
+  $ref: AMBUSH
+  conditions: [staggered]
+  duration: brief
 rogue, deadly ambush:
   $ref: AMBUSH
   attack subeffects:
@@ -1157,7 +1202,7 @@ hunting lore, impaired quarry:
   $ref: STRIKE
   conditions: [impaired]
   duration: brief
-half speedhunting lore, super impaired quarry:
+hunting lore, super impaired quarry:
   $ref: STRIKE
   conditions: [severely impaired]
   duration: brief
@@ -1182,3 +1227,17 @@ sw, immolate:
       damage: normal
     critical success:
       instant effect: death
+
+combat supremacy:
+  $ref: STRIKE
+  conditions: [impaired]
+  duration: brief
+
+sw, fast healing:
+  $ref: FEATURE
+  buffs: [fast healing]
+  misc: 1  # narrative power
+sw, damage reduction:
+  $ref: FEATURE
+  buffs:
+    - damage reduction: physical

@@ -5,11 +5,12 @@ barbarian:
   mental: poor
   class features:
     - durable
+    - primal resilience
     - rage
-    - barbarian damage reduction
     - fast movement
     - larger than life
     - larger than belief
+    - titan of battle
 cleric:
   combat prowess: average
   fortitude: average
@@ -79,10 +80,6 @@ wizard:
   reflex: poor
   mental: good
 
-# monster classes
-adept:
-  combat prowess: poor
-behemoth:
+# monsters don't have classes
+monster:
   combat prowess: average
-slayer:
-  combat prowess: good

@@ -141,11 +141,13 @@ class ModifierInPlace(AbilityEffect):
 def plus(modifier):
     return lambda creature, value: value + modifier
 
-def min_level(level, class_name=None):
-    if class_name is None:
-        return lambda creature: creature.level >= level
-    else:
+def min_level(level, class_name=None, template=None):
+    if class_name is not None:
         return lambda creature: creature.levels.get(class_name, 0) >= level
+    elif template is not None:
+        return lambda creature: creature.level >= level and template in creature.templates
+    else:
+        return lambda creature: creature.level >= level
 
 
 def get_ability_definitions():
@@ -170,13 +172,6 @@ def get_ability_definitions():
     class_features = {
 
         # BARBARIAN
-        'barbarian damage reduction': {
-            'effects': [
-                Modifier(['damage reduction'],
-                         lambda creature, value: creature.level + value),
-            ],
-            'prerequisite': lambda creature: creature.base_class.name == 'barbarian',
-        },
         'fast movement': {
             'effects': [
                 Modifier(['speed'], plus(10)),
@@ -186,39 +181,46 @@ def get_ability_definitions():
         'durable': {
             'effects': [
                 Modifier(['fortitude'],
-                         lambda creature, value: value + 4),
+                         lambda creature, value: value + 2),
             ],
-            'prerequisite': min_level(9, 'barbarian'),
+            'prerequisite': min_level(4, 'barbarian'),
         },
         'larger than life': {
             'effects': [
                 ModifierInPlace(['weapon'],
-                                lambda creature, weapon: [weapon.dice.increase_size()
-                                                          for i in range(2)]),
+                                lambda creature, weapon: weapon.dice.increase_size()),
             ],
-            'prerequisite': min_level(8, 'barbarian')
+            'prerequisite': min_level(5, 'barbarian')
         },
         'larger than belief': {
             'effects': [
                 ModifierInPlace(['weapon'],
-                                lambda creature, weapon: [weapon.dice.increase_size()
-                                                          for i in range(2)]),
+                                lambda creature, weapon: weapon.dice.increase_size()),
             ],
-            'prerequisite': min_level(16, 'barbarian')
+            'prerequisite': min_level(11, 'barbarian')
+        },
+        'primal resilience': {
+            'effects': [
+                Modifier(['fortitude', 'mental'],
+                         lambda creature, value: value + 2),
+            ],
+            'prerequisite': min_level(4, 'barbarian'),
         },
         'rage': {
             'effects': [
-                Modifier(['temporary hit points'],
-                         lambda creature, value: max(value, creature.willpower * 2)),
-                Modifier(['physical damage bonus', 'fortitude', 'mental'],
+                Modifier(['damage reduction'],
+                         lambda creature, value: value + creature.level),
+                Modifier(['physical damage bonus'],
                          lambda creature, value: value + (creature.levels['barbarian'] // 5) + 2),
-                # undo the effect of the fortitude/mental bonus on HP
-                Modifier(['hit points'],
-                         lambda creature, value: value - (((creature.levels['barbarian'] // 5) + 2) // 2) * creature.willpower),
-                Modifier(['armor defense', 'maneuver defense'],
-                         lambda creature, value: value - 2),
             ],
             'prerequisite': min_level(1, 'barbarian')
+        },
+        'titan of battle': {
+            'effects': [
+                ModifierInPlace(['weapon'],
+                                lambda creature, weapon: weapon.dice.increase_size()),
+            ],
+            'prerequisite': min_level(17, 'barbarian')
         },
 
         # FIGHTER
@@ -457,8 +459,23 @@ def get_ability_definitions():
         },
     }
 
+    def challenge_rating_hp_multiplier(cr):
+        if cr <= 1:
+            return 0
+        elif cr == 2:
+            return 0.5
+        else:
+            return cr - 2
+
     # MISC
     misc = {
+        'challenge rating': {
+            'effects': [
+                Modifier(['hit points'],
+                         lambda creature, value: value + int(challenge_rating_hp_multiplier(creature.challenge_rating) * value)),
+            ],
+            'tags': set(['hidden']),
+        },
         'magic items': {
             'effects': [
                 Modifier(['physical damage bonus'],
@@ -479,32 +496,32 @@ def get_ability_definitions():
         },
         'size modifiers': {
             'effects': [
-                Modifier(['accuracy', 'armor defense', 'reflex'],
+                Modifier(['reflex'],
                          lambda creature, value: (
                              value + {
                                  'fine': 8,
-                                 'diminuitive': 4,
-                                 'tiny': 2,
-                                 'small': 1,
+                                 'diminuitive': 6,
+                                 'tiny': 4,
+                                 'small': 2,
                                  'medium': 0,
-                                 'large': -1,
-                                 'huge': -2,
-                                 'gargantuan': -4,
+                                 'large': -2,
+                                 'huge': -4,
+                                 'gargantuan': -6,
                                  'colossal': -8,
                              }[creature.size]
                          )),
-                Modifier(['maneuver defense', 'maneuver accuracy', 'fortitude'],
+                Modifier(['fortitude'],
                          lambda creature, value: (
                              value + {
-                                 'fine': -16,
-                                 'diminuitive': -12,
-                                 'tiny': -8,
-                                 'small': -4,
+                                 'fine': -8,
+                                 'diminuitive': -6,
+                                 'tiny': -4,
+                                 'small': -2,
                                  'medium': 0,
-                                 'large': 4,
-                                 'huge': 8,
-                                 'gargantuan': 12,
-                                 'colossal': 16,
+                                 'large': 2,
+                                 'huge': 4,
+                                 'gargantuan': 6,
+                                 'colossal': 8,
                              }[creature.size]
                          )),
                 ModifierInPlace(['weapon damage dice'],
@@ -585,6 +602,11 @@ def get_ability_definitions():
             ],
         },
     }
+    for ability in misc.values():
+        if 'tags' in ability:
+            ability['tags'].add('misc')
+        else:
+            ability['tags'] = set(['misc'])
 
     # SENSES
     # pretty much all senses have no effects
@@ -597,12 +619,30 @@ def get_ability_definitions():
         senses[name] = dict()
     for sense in senses.values():
         if 'tags' in sense:
-            sense['tags'].add(['sense'])
+            sense['tags'].add('sense')
         else:
             sense['tags'] = set(['sense'])
 
     # TEMPLATES
     templates = {
+        'adept': {
+            'effects': [
+                Modifier(['power'],
+                         lambda creature, value: value + 2),
+            ],
+        },
+        'behemoth': {
+            'effects': [
+                Modifier(['hit points'],
+                         lambda creature, value: value + creature.power * 2),
+            ],
+        },
+        'slayer': {
+            'effects': [
+                Modifier(['combat prowess'],
+                         lambda creature, value: max(value, creature.level + 2)),
+            ],
+        },
         'summoned monster': {
             'effects': [
                 Modifier(['combat prowess'],
@@ -629,57 +669,26 @@ def get_ability_definitions():
             ],
         },
     }
+    for template in templates.values():
+        if 'tags' in template:
+            template['tags'].add('template')
+        else:
+            template['tags'] = set(['template'])
 
     # TRAITS
     traits = {
-        'arcanite mech': {
-            'effects': [
-                Modifier(['fortitude', 'mental'],
-                         lambda creature, value: value + 4),
-                Modifier(['strength', 'constitution'],
-                         lambda creature, value: value + 2),
-                Modifier(['damage reduction'],
-                         lambda creature, value: value + creature.level),
-                # should drain HP
-                # for now, only trolls wear it, so ignore that
-            ],
-        },
-        'arcanite sigil - armor': {
-            'effects': [
-                Modifier(['armor defense'],
-                         lambda creature, value: value + 3),
-            ],
-        },
-        'arcanite sigil - flaming fists': {
-            'effects': [
-                ModifierInPlace(['physical damage dice'],
-                                lambda creature, damage_dice: damage_dice.add_die(
-                                    Die(size=6, count=creature.level // 2)
-                                )),
-            ],
-        },
-        'arcanite sigil - mind control': {
-            'effects': [
-                Modifier(['mental'],
-                         lambda creature, value: value + 5),
-            ],
-        },
-        'behemoth size': {
-            'effects': [
-                Modifier(['size'],
-                         # find the current size in the list and go to the next
-                         # larger one
-                         # this fails for colossal; for now, that is a feature
-                         lambda creature, value: SIZES[SIZES.index(value) + creature.level // 4]),
-            ],
-            'prerequisite': min_level(4, 'behemoth')
-        },
         'brute force': {
             'effects': [
                 Modifier(['physical damage bonus'],
-                                lambda creature, value: value + creature.levels['slayer'] // 2),
+                                lambda creature, value: value + creature.level // 2),
             ],
-            'prerequisite': min_level(1, 'slayer')
+            'prerequisite': lambda creature: 'slayer' in creature.templates,
+        },
+        'defensive, armor': {
+            'effects': [
+                Modifier(['armor defense'],
+                         lambda creature, value: value + 2 + max(0, (creature.level - 2) // 4)),
+            ],
         },
         'draining touch': {
             # this should only be applied to creatures with a single touch attack
@@ -688,12 +697,6 @@ def get_ability_definitions():
                                 lambda creature, damage_dice: damage_dice.resize_dice(2)),
                 Modifier(['physical damage bonus'],
                           lambda creature, value: creature.power // 2),
-            ],
-        },
-        'durable': {
-            'effects': [
-                Modifier(['hit points'],
-                         lambda creature, value: value + creature.power * 2),
             ],
         },
         'evasive': {
@@ -729,26 +732,18 @@ def get_ability_definitions():
                          # find the current size in the list and go to the next
                          # larger one
                          # this fails for colossal; for now, that is a feature
-                         lambda creature, value: SIZES[SIZES.index(value) + creature.level // 6]),
+                         lambda creature, value: SIZES[
+                             SIZES.index(value)
+                             + (creature.level + 4) // 8
+                             + max(0, (creature.level - 4) // 8 if 'behemoth' in creature.templates else 0)
+                         ]),
             ],
-            'prerequisite': lambda creature: creature.level >= 6,
-        },
-        'mighty will': {
-            'effects': [
-                Modifier(['mental'],
-                         lambda creature, value: value + 4)
-            ],
+            'prerequisite': lambda creature: creature.level >= 4,
         },
         'resist damage': {
             'effects': [
                 Modifier(['damage reduction'],
-                         lambda creature, value: creature.power + value),
-            ],
-        },
-        'tough hide': {
-            'effects': [
-                Modifier(['armor defense'],
-                         lambda creature, value: value + 2),
+                         lambda creature, value: value + (creature.power if creature.level < 10 else creature.power * 2)),
             ],
         },
 
@@ -772,6 +767,7 @@ def get_ability_definitions():
         'natural energy': {},
         'natural grab': {},
         'natural venom': {},
+        'petrifying gaze': {},
         'resist magic': {},
         'rend': {},
         'skilled': {},

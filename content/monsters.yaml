@@ -1,9 +1,14 @@
-aboleth:
+aboleth: &ABOLETH
   monster type: aberration
   levels:
-    adept: 12
+    monster: 12
+  templates:
+    - adept
+    - adept
+    - behemoth
   weapons:
     - tentacle
+  encounter: Underground; solitary
   attributes:
     strength: 4
     dexterity: 0
@@ -16,19 +21,22 @@ aboleth:
   speeds:
     land: 10
     swim: 60
+  subtraits:
+    - natural armor: 4
   traits:
-    - attribute mastery
+    - defensive, armor
     - increased size
     - magical ability
     - magical ability
     - magical strike
     - myriad magical abilities
-    - improved natural armor
-    - natural armor: 4
+    - resist damage
 allip:
   monster type: undead
   levels:
-    adept: 4
+    monster: 4
+  templates:
+    - adept
   encounter: Any environment; solitary
   weapons:
     - touch
@@ -45,12 +53,14 @@ allip:
     - draining touch
     - incorporeal
     - magical ability
-angel - astral deva:
+angel, astral deva:
   monster type: outsider
   levels:
-    adept: 7
-    slayer: 7
-  base class: adept
+    monster: 14
+  templates:
+    - adept
+    - slayer
+  encounter: Any good-aligned plane; solitary, pair, or squad (3--5)
   weapons:
     - greatsword
   attributes:
@@ -65,19 +75,17 @@ angel - astral deva:
     - low-light vision
     - truesight: 50 ft.
   traits:
-    - innate magic
     - resist damage
     - resist magic
     - spellcaster
-    - skilled
     - superior senses
     - brute force
-    - damaging ray
-    # one extra trait
 ankheg:
   monster type: magical beast
   levels:
-    slayer: 6
+    monster: 6
+  templates:
+    - slayer
   weapons:
     - bite
   attributes:
@@ -97,11 +105,13 @@ ankheg:
     - burrower
     - increased size
     - natural grab
-    - natural energy
 aranea:
   monster type: magical beast
   levels:
-    adept: 5
+    monster: 5
+  templates:
+    - adept
+    - adept
   weapons:
     - bite
   encounter: Temperate forests; solitary or colony (3--6)
@@ -124,7 +134,9 @@ aranea:
 arrowhawk, juvenile: &ARROWHAWK
   monster type: outsider
   levels:
-    slayer: 3
+    monster: 3
+  templates:
+    - slayer
   encounter: Plane of Air; solitary or clutch (2--4)
   weapons:
     - bite
@@ -144,36 +156,34 @@ arrowhawk, juvenile: &ARROWHAWK
   subtraits:
     - natural armor: 2
   traits:
-    - flight
+    - brute force
     - damaging ray
     - natural energy
 arrowhawk, adult:
   <<: *ARROWHAWK
   levels:
-    slayer: 6
+    monster: 6
   size: medium
-  traits:
-    - flight
-    - damaging ray
-    - natural energy
-    - brute force
 arrowhawk, elder:
   <<: *ARROWHAWK
   levels:
-    slayer: 10
-  size: medium
+    monster: 10
+  templates:
+    - slayer
+    - slayer
+  size: large
   traits:
-    - flight
-    - damaging ray
-    - natural energy
     - brute force
+    - damaging ray
     - increased size
-    - evasive
+    - natural energy
 
 assassin vine:
   monster type: animate
   levels:
-    behemoth: 4
+    monster: 4
+  templates:
+    - behemoth
   encounter: Temperate forests; solitary or patch (2--4)
   weapons:
     - slam
@@ -192,14 +202,17 @@ assassin vine:
     natural armor: 2
     blindsight: 50
   traits:
-    - behemoth size
+    - increased size
     - natural grab
     - superior senses
 
 athach:
   monster type: aberration
   levels:
-    slayer: 12
+    monster: 12
+  templates:
+    - slayer
+    - slayer
   encounter: Temperate hills; solitary, gang (2--4), or tribe (7--12)
   languages:
     - giant
@@ -223,14 +236,13 @@ athach:
     - increased size
     - rend
     - multistrike
-    - great fortitude
-    - improved natural armor
-    - mighty will
 
 azer, grunt: &AZER
   monster type: outsider
   levels:
-    slayer: 2
+    monster: 2
+  templates:
+    - slayer
   encounter: Plane of Fire; solitary, pair, or team (3--6)
   weapons:
     - warhammer
@@ -250,11 +262,15 @@ azer, grunt: &AZER
   traits:
     - damaging aura
     - brute force
+    - natural energy
 
 azer, elite guard:
   <<: *AZER
   levels:
-    slayer: 5
+    monster: 5
+  templates:
+    - slayer
+    - slayer
   traits:
     - damaging aura
     - brute force
@@ -264,7 +280,9 @@ azer, elite guard:
 barghest:
   monster type: outsider
   levels:
-    adept: 6
+    monster: 6
+  templates:
+    - adept
   weapons:
     - bite
     - claw
@@ -283,15 +301,43 @@ barghest:
     jump: 2
     stealth: 2
   subtraits:
-    natural armor: 4
+    - natural armor: 4
   traits:
     - magical ability
     - humanoid form
 
+basilisk:
+  monster type: magical beast
+  levels:
+    monster: 6
+  templates:
+    - adept
+  encounter: warm deserts; solitary or colony (3--6) 
+  weapons:
+    - bite
+  attributes:
+    strength: 3
+    dexterity: -1
+    constitution: 3
+    intelligence: -8
+    perception: 1
+    willpower: 1
+  skill points:
+    awareness: 2
+  subtraits:
+    - darkvision: 50
+    - low-light vision
+    - natural armor: 4
+  traits:
+    - petrifying gaze
+    - ability focus
+
 bear, brown: &BROWN_BEAR
   monster type: animal
   levels:
-    behemoth: 6
+    monster: 6
+  templates:
+    - behemoth
   encounter: Temperate forests; solitary or pair
   weapons:
     - bite
@@ -308,26 +354,45 @@ bear, brown: &BROWN_BEAR
     awareness: 2
     climb: 2
     swim: 1
-  traits:
-    - durable
+  subtraits:
     - natural armor: 2
-    - natural grab
-    - great fortitude
-    - behemoth size
     - scent
     - low-light vision
+  traits:
+    - natural grab
+    - increased size
 
 bear, black:
   <<: *BROWN_BEAR
   levels:
-    behemoth: 1
+    monster: 1
   traits:
-    - durable
-    - natural armor: 2
     - natural grab
-    - great fortitude
-    - scent
+
+behir:
+  monster type: magical beast
+  levels:
+    monster: 9
+  templates:
+    - behemoth
+    - slayer
+  encounter: Warm hills; solitary or pair
+  attributes:
+    strength: 5
+    dexterity: 1
+    constitution: 3
+    intelligence: -3
+    perception: 2
+    willpower: 1
+  subtraits:
     - low-light vision
+    - natural armor: 4
+    - scent
+  traits:
+    - increased size
+    - "breath weapon: cone"
+    - rend
+    - natural grab
 
 cultist:
   monster type: humanoid
@@ -393,7 +458,7 @@ giant, frost:
     constitution: 3
     intelligence: 0
     perception: 1
-    willpower: 1
+    willpower: 2
   languages:
     - giant
   skill points:
@@ -528,4 +593,47 @@ carrion crawler:
     - natural armor: 4
   traits:
     - magical strike
+    - increased size
+
+mountain landwyrm:
+  monster type: magical beast
+  levels:
+    behemoth: 12
+  weapons:
+    - bite
+  attributes:
+    strength: 5
+    dexterity: -1
+    constitution: 5
+    perception: 2
+    willpower: 2
+  subtraits:
+    - natural armor: 4
+  traits:
+    - increased size
+    - great fortitude
+    - durable
+    - resist damage
+    - improved natural armor
+
+magma titan:
+  monster type: construct
+  levels:
+    monster: 12
+  templates:
+    - behemoth
+    - behemoth
+    - slayer
+    - slayer
+  weapons:
+    - slam
+  attributes:
+    strength: 4
+    dexterity: -1
+    constitution: 3
+    perception: 2
+    willpower: 2
+  subtraits:
+    - natural armor: 4
+  traits:
     - increased size
