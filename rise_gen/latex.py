@@ -75,8 +75,7 @@ def adept_points(creature):
 def attacks(creature):
     return "\\pari \\mb<Attacks> {weapon_name} +{accuracy} ({dice}+{damage_bonus}); \\mb<Strikes> {strikes}".format(
         weapon_name=creature.weapon.name.capitalize(), accuracy=creature.accuracy,
-        dice=str(creature.damage_dice), damage_bonus=creature.damage_bonus,
-        strikes=creature.attack_count)
+        dice=str(creature.damage_dice), damage_bonus=creature.damage_bonus)
 
 def attributes(creature):
     return "\\pari \\mb<Attributes> Str {}, Dex {}, Con {}, Int {}, Per {}, Wil {}".format(

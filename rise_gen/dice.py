@@ -173,3 +173,4 @@ class DieCollection(object):
         return True
 
 d20 = Die(20)
+d10 = Die(10)

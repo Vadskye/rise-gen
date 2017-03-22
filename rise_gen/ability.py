@@ -478,19 +478,6 @@ def get_ability_definitions():
         },
         'magic items': {
             'effects': [
-                Modifier(['physical damage bonus'],
-                         lambda creature, value: value + creature.level // 3),
-                Modifier(['temporary hit points'],
-                         lambda creature, value: max(
-                             value,
-                             (creature.level // 3) * creature.level
-                         )),
-                # ModifierInPlace(['spell damage dice'],
-                #          lambda creature, dice: setattr(dice.dice[0], 'count', dice.dice[0].count + creature.level // 3))
-                # Modifier(['spell damage bonus'],
-                #         lambda creature, value: value + ((creature.level + 2) // 2) * (creature.level // 3)),
-                # Modifier(['spellpower'],
-                #         lambda creature, value: value + (creature.level // 3)),
             ],
             'tags': set(['hidden']),
         },

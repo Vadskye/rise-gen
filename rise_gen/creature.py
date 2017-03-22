@@ -3,7 +3,7 @@
 import argparse
 import copy
 from rise_gen.ability import Ability
-from rise_gen.dice import Die, DieCollection, d20
+from rise_gen.dice import Die, DieCollection, d10
 from rise_gen.rise_data import (
     ATTRIBUTES, SKILLS,
     Armor, MonsterType, Race, RiseClass, Shield, Skill, Weapon,
@@ -12,6 +12,8 @@ from rise_gen.rise_data import (
 import random
 import rise_gen.latex as latex
 import rise_gen.util as util
+
+DEFENSE_BASE=5
 
 class CreatureStatistics(object):
     def __init__(
@@ -330,25 +332,12 @@ class CreatureStatistics(object):
         else:
             raise Exception("Error: invalid attack type '{0}'".format(self.attack_type))
 
-    def _calculate_attack_count(self):
-        """The number of attacks this creature can make each round (int)"""
-
-        if self.attack_type == 'physical':
-            attack_count = 1 + (self.combat_prowess - 1) // 5
-            for effect in self.active_effects_with_tag('attack count'):
-                attack_count = effect(self, attack_count)
-            return attack_count
-        elif self.attack_type == 'spell':
-            return 1
-        else:
-            raise Exception("Error: invalid attack type '{0}'".format(self.attack_type))
-
     def _calculate_damage_bonus(self):
         """The bonus damage this creature deals with attacks. (int)
         Does not include the base weapon damage die."""
 
         if self.attack_type == 'physical':
-            damage_bonus = max(self.strength, self.combat_prowess) // 2
+            damage_bonus = max(self.strength, self.combat_prowess)
 
             # add the attribute bonus from strength
             if self.strength >= 0:
@@ -358,7 +347,7 @@ class CreatureStatistics(object):
 
             # add the +1 bonus for two-handed weapons
             if self.weapon and self.weapon_encumbrance == 'heavy' and not self.attack_range:
-                damage_bonus += 1
+                damage_bonus += 2
             for effect in self.active_effects_with_tag('physical damage bonus'):
                 damage_bonus = effect(self, damage_bonus)
             return damage_bonus
@@ -438,7 +427,7 @@ class CreatureStatistics(object):
         return max(0, penalty)
 
     def _calculate_armor_defense(self):
-        armor_defense = 10 + max(
+        armor_defense = DEFENSE_BASE + max(
             self.combat_prowess,
             self.dexterity,
             self.constitution
@@ -478,7 +467,7 @@ class CreatureStatistics(object):
         return multiplier
 
     def _calculate_fortitude(self):
-        fortitude = 10 + max(
+        fortitude = DEFENSE_BASE + max(
             self.constitution,
             self.strength,
             sum([calculate_base_defense(rise_class.fortitude, self.levels[class_name])
@@ -496,15 +485,14 @@ class CreatureStatistics(object):
         return fortitude
 
     def _calculate_hit_points(self):
-        hit_points = self.level * (
-            max(self.fortitude, self.mental) // 2
-        )
+        best_defense = max(self.fortitude, self.mental)
+        hit_points = best_defense + self.level * 4
         for effect in self.active_effects_with_tag('hit points'):
             hit_points = effect(self, hit_points)
         return hit_points
 
     def _calculate_maneuver_defense(self):
-        maneuver_defense = 10 + max(
+        maneuver_defense = DEFENSE_BASE + max(
             self.combat_prowess,
             self.strength,
             self.dexterity
@@ -519,7 +507,7 @@ class CreatureStatistics(object):
         return maneuver_defense
 
     def _calculate_mental(self):
-        mental = 10 + max(
+        mental = DEFENSE_BASE + max(
             self.willpower,
             self.intelligence,
             sum([calculate_base_defense(rise_class.mental, self.levels[class_name])
@@ -536,7 +524,7 @@ class CreatureStatistics(object):
         return mental
 
     def _calculate_reflex(self):
-        reflex = 10 + max(
+        reflex = DEFENSE_BASE + max(
             self.dexterity,
             self.perception,
             sum([calculate_base_defense(rise_class.reflex, self.levels[class_name])
@@ -710,11 +698,11 @@ class CreatureStatistics(object):
 
     def _to_string_attacks(self):
         text = ""
-        attacks = [str(self.accuracy) for i in range(self.attack_count)]
+        attack = str(self.accuracy)
 
         text = '; '.join([
             "[Atk] {0}: {1}".format(
-                ', '.join(attacks),
+                attack,
                 "{0}+{1}".format(
                     self.damage_dice,
                     self.damage_bonus
@@ -770,7 +758,6 @@ def create_cached_property(
 # add cached properties to CreatureStatistics for easy access
 cached_properties = """
     accuracy
-    attack_count
     armor
     encumbrance_penalty
     armor_defense
@@ -856,7 +843,7 @@ class Creature(CreatureStatistics):
             bool: True if attack hit, False otherwise
         """
 
-        roll = d20.roll()
+        roll = d10.roll()
         attack_result = roll + self.accuracy
         if roll == 20:
             attack_result += 10
@@ -875,8 +862,7 @@ class Creature(CreatureStatistics):
         """
 
         if self.attack_type == 'physical':
-            for attack_number in range(self.attack_count):
-                self.strike(creature)
+            self.strike(creature)
         elif self.attack_type == 'spell':
             self.attack_with_spell(creature)
         else:
@@ -885,7 +871,7 @@ class Creature(CreatureStatistics):
     def check_hit(self, creature):
         """Test if a single strike hits against the given creature"""
 
-        roll = d20.roll()
+        roll = d10.roll()
         attack_result = roll + self.accuracy
         if roll == 20:
             attack_result += 10
@@ -901,7 +887,7 @@ class Creature(CreatureStatistics):
     def strike(self, creature):
         """Execute a single strike against the given creature"""
 
-        roll = d20.roll()
+        roll = d10.roll()
         attack_result = roll + self.accuracy
         if roll == 20:
             attack_result += 10
@@ -931,7 +917,7 @@ class Creature(CreatureStatistics):
 
     def attack_with_spell(self, creature):
         """Attack the given creature with a spell"""
-        roll = d20.roll()
+        roll = d10.roll()
         attack_result = roll + self.spellpower
         #TODO: implement generic framework for spells
         spell_damage = self.roll_damage()

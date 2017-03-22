@@ -236,7 +236,7 @@ def generate_combat_results(red, blue, trials):
             True if result['red is alive'] else False
             for result in raw_results
         ].count(True) / trials_modifier),
-        'red all alive %': int([
+        'red all %': int([
             True if result['red all alive'] else False
             for result in raw_results
         ].count(True) / trials_modifier),
@@ -244,11 +244,11 @@ def generate_combat_results(red, blue, trials):
             True if result['blue is alive'] else False
             for result in raw_results
         ].count(True) / trials_modifier),
-        'blue all alive %': int([
+        'blue all %': int([
             True if result['blue all alive'] else False
             for result in raw_results
         ].count(True) / trials_modifier),
-        'average rounds': sum([results['rounds'] for results in raw_results]) / float(trials)
+        'avg rounds': sum([results['rounds'] for results in raw_results]) / float(trials)
     }
 
     return results
@@ -315,9 +315,9 @@ def main(args):
 
     # these are unnecessary if only one creature is in the group
     if len(blue.creatures) == 1:
-        filtered_results.pop('blue all alive %')
+        filtered_results.pop('blue all %')
     if len(red.creatures) == 1:
-        filtered_results.pop('red all alive %')
+        filtered_results.pop('red all %')
 
     pprint(filtered_results)
 
@@ -330,6 +330,14 @@ if __name__ == "__main__":
             level=cmd_args['level'],
             trials=100
         )
+    elif cmd_args.get('test') == 'doubling':
+        cmd_args['trials'] //= 2
+        level_diff = 2
+        for i in range(1 + level_diff, 21):
+            cmd_args['red level'] = i
+            cmd_args['blue level'] = i - level_diff
+            print(str(i) + ": ", end="")
+            main(cmd_args)
     elif cmd_args.get('test') == 'levels':
         cmd_args['trials'] //= 2
         for i in range(1, 21):
@@ -337,9 +345,25 @@ if __name__ == "__main__":
             print(str(i) + ": ", end="")
             main(cmd_args)
     elif cmd_args.get('test') == 'accuracy':
-        blue, red = generate_creature_groups(cmd_args)
-        print("blue", blue.get_accuracy(red, cmd_args['trials']))
-        print("red", red.get_accuracy(blue, cmd_args['trials']))
+        for i in range(1, 21):
+            cmd_args['level'] = i
+            blue, red = generate_creature_groups(cmd_args)
+            print("{i}: blue {blue_accuracy}, red {red_accuracy}".format(
+                i=i,
+                blue_accuracy=blue.get_accuracy(red, cmd_args['trials']),
+                red_accuracy=red.get_accuracy(blue, cmd_args['trials'])
+            ))
+    elif cmd_args.get('test') == 'doubling_accuracy':
+        level_diff = 2
+        for i in range(1 + level_diff, 21):
+            cmd_args['red level'] = i
+            cmd_args['blue level'] = i - level_diff
+            blue, red = generate_creature_groups(cmd_args)
+            print("{i}: blue {blue_accuracy}, red {red_accuracy}".format(
+                i=i,
+                blue_accuracy=blue.get_accuracy(red, cmd_args['trials']),
+                red_accuracy=red.get_accuracy(blue, cmd_args['trials'])
+            ))
     elif cmd_args.get('test') == 'level_diff':
         cmd_args['trials'] //= 10
         for i in range(3, 21):
