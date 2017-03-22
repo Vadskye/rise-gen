@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from rise_gen.dice import Die, quick_roll
 from rise_gen.rise_data import ATTRIBUTES, SKILLS
