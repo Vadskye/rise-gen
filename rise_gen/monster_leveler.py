@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from docopt import docopt
 from rise_gen.ability import Ability
