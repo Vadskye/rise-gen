@@ -56,17 +56,14 @@ class Die(object):
     def increase_size(self):
         if self.size <= 3:
             self.size += 1
-        elif self.size <= 8:
-            if self.count >= 4:
-                if self.size == 6:
-                    self.count += 1
-                else:
-                    raise Exception("Impossible die size: too many non-d6s")
-            else:
-                self.size += 2
+        elif self.size < 10:
+            self.size += 2
         elif self.size == 10:
-            self.size = 6
-            self.count *= 2
+            if self.count >= 4:
+                self.count += 1
+            else:
+                self.size = 6
+                self.count *= 2
         else:
             raise Exception("Impossible die size")
 

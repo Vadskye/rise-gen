@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from rise_gen.dice import Die, quick_roll
+from rise_gen.dice import quick_roll
 from rise_gen.rise_data import ATTRIBUTES, SKILLS
 import re
 
@@ -10,6 +10,7 @@ POSSIBLE_EFFECT_TAGS = [
     'armor check penalty',
     'armor defense',
     'attack count',
+    'critical damage',
     'physical damage bonus',
     'spell damage bonus',
     'weapon damage dice',
@@ -37,6 +38,7 @@ POSSIBLE_EFFECT_TAGS = [
 
 SIZES = ['fine', 'diminuitive', 'tiny', 'small', 'medium', 'large', 'huge', 'gargantuan', 'colossal']
 
+
 class Ability:
 
     ability_definitions = None
@@ -44,7 +46,7 @@ class Ability:
     def __init__(
         self,
         name,
-        effects = None,
+        effects=None,
         prerequisite=None,
         effect_strength=None,
         tags=None,
@@ -113,12 +115,14 @@ class AbilityEffect:
     def __call__(self, creature):
         return self.effect(creature)
 
+
 class Modifier(AbilityEffect):
     def __call__(self, creature, value):
         return self.effect(creature, value)
 
     def __repr__(self):
         return "{}({})".format(self.__class__.__name__, self.effect_tags)
+
 
 class VariableModifier(AbilityEffect):
 
@@ -138,8 +142,10 @@ class ModifierInPlace(AbilityEffect):
         self.effect(creature, value)
         return value
 
+
 def plus(modifier):
     return lambda creature, value: value + modifier
+
 
 def min_level(level, class_name=None, template=None):
     if class_name is not None:
@@ -296,13 +302,19 @@ def get_ability_definitions():
         # RANGER
         'quarry': {
             'effects': [
-                Modifier(['physical damage bonus'],
-                         lambda creature, value: value + (creature.levels['ranger'] // 5) + 2),
-                Modifier(['armor defense', 'maneuver defense', 'fortitude', 'reflex', 'mental'],
-                         lambda creature, value: value + (creature.levels['ranger'] // 5) + 2),
+                Modifier(
+                    ['physical damage bonus'],
+                    lambda creature, value: value + (creature.levels['ranger'] // 5) + 2
+                ),
+                Modifier(
+                    ['armor defense', 'maneuver defense', 'fortitude', 'reflex', 'mental'],
+                    lambda creature, value: value + (creature.levels['ranger'] // 5) + 2
+                ),
                 # undo the hp bonus from the quarry
-                Modifier(['hit points'],
-                         lambda creature, value: value - (((creature.levels['ranger'] // 5) + 2) // 2) * creature.level),
+                Modifier(
+                    ['hit points'],
+                    lambda creature, value: value - (((creature.levels['ranger'] // 5) + 2) // 2) * creature.level
+                ),
             ],
             'prerequisite': min_level(1, 'ranger')
         },
@@ -312,8 +324,10 @@ def get_ability_definitions():
             'effects': [
                 # correct behavior: the first hit deals d6 = level/2
                 # and subsequent attacks have no bonus
-                Modifier(['first hit'],
-                           lambda creature, value: value + quick_roll(6, creature.levels['rogue'] + 1) // 2),
+                Modifier(
+                    ['first hit'],
+                    lambda creature, value: value + quick_roll(6, creature.levels['rogue'] + 1) // 2
+                ),
             ],
             'prerequisite': min_level(1, 'rogue')
         },
@@ -378,7 +392,7 @@ def get_ability_definitions():
                          ))),
             ],
             'prerequisite': lambda creature: (
-                True # creature.preception >= 3
+                True  # creature.preception >= 3
             ),
         },
         'legendary speed': {
@@ -402,21 +416,14 @@ def get_ability_definitions():
                 and creature.weapon.encumbrance == 'heavy'
             )
         },
-        'mighty blows': {
-            'effects': [
-                Modifier(['physical damage bonus'],
-                         lambda creature, value: value + 1 + (creature.level + 1) // 4),
-            ],
-            'prerequisite': lambda creature: (
-                creature.level >= 5
-                and creature.strength >= 6
-                and creature.attack_range is None
-            )
-        },
         'heavy weapon fighting': {
             'effects': [
-                ModifierInPlace(['weapon damage dice'],
-                         lambda creature, damage_dice: damage_dice.resize_dice(min(4,1 + (creature.level + 1) // 4))),
+                ModifierInPlace(
+                    ['weapon damage dice'],
+                    lambda creature, damage_dice: damage_dice.resize_dice(
+                        min(4, 1 + (creature.level + 1) // 4)
+                    )
+                ),
             ],
             'prerequisite': lambda creature: (
                 creature.strength >= 3
@@ -471,13 +478,71 @@ def get_ability_definitions():
     misc = {
         'challenge rating': {
             'effects': [
-                Modifier(['hit points'],
-                         lambda creature, value: value + int(challenge_rating_hp_multiplier(creature.challenge_rating) * value)),
+                Modifier(
+                    ['hit points'],
+                    lambda creature, value: value + int(
+                        challenge_rating_hp_multiplier(creature.challenge_rating) * value
+                    )
+                ),
+            ],
+            'tags': set(['hidden']),
+        },
+        'dwarf': {
+            'effects': [
+                Modifier(['fortitude'], plus(4)),
+                Modifier(['mental'], plus(2)),
+            ],
+            'tags': set(['hidden']),
+        },
+        'elf': {
+            'effects': [
+                Modifier(['reflex'], plus(4)),
+                Modifier(['mental'], plus(2)),
+            ],
+            'tags': set(['hidden']),
+        },
+        'gnome': {
+            'effects': [
+                Modifier(['fortitude'], plus(4)),
+                Modifier(['mental'], plus(2)),
+            ],
+            'tags': set(['hidden']),
+        },
+        'halfling': {
+            'effects': [
+                Modifier(['reflex'], plus(4)),
+                Modifier(['mental'], plus(2)),
+            ],
+            'tags': set(['hidden']),
+        },
+        'human': {
+            'effects': [
+                Modifier(['fortitude'], plus(2)),
+                Modifier(['mental'], plus(2)),
+                Modifier(['reflex'], plus(2)),
+            ],
+            'tags': set(['hidden']),
+        },
+        'orc': {
+            'effects': [
+                Modifier(['fortitude'], plus(4)),
+                Modifier(['reflex'], plus(2)),
             ],
             'tags': set(['hidden']),
         },
         'magic items': {
             'effects': [
+            ],
+            'tags': set(['hidden']),
+        },
+        'prowess weapon damage': {
+            'effects': [
+                ModifierInPlace(
+                    ['weapon damage dice'],
+                    lambda creature, damage_dice: damage_dice.resize_dice(
+                        creature.combat_prowess // 2
+                    ),
+                )
             ],
             'tags': set(['hidden']),
         },
@@ -554,8 +619,10 @@ def get_ability_definitions():
         },
         'natural armor': {
             'effects': [
-                VariableModifier(['armor defense'],
-                               lambda creature, value, effect_strength: value + effect_strength),
+                VariableModifier(
+                    ['armor defense'],
+                    lambda creature, value, effect_strength: value + effect_strength
+                ),
             ],
         },
         'extraplanar body': {
@@ -576,12 +643,6 @@ def get_ability_definitions():
         'telepathy': {},
 
         # testing abilities
-        'critical multiplier': {
-            'effects': [
-                Modifier(['critical multiplier'],
-                         lambda creature, value: value + 1),
-            ],
-        },
         'critical threshold': {
             'effects': [
                 Modifier(['critical threshold'],
@@ -666,8 +727,10 @@ def get_ability_definitions():
     traits = {
         'brute force': {
             'effects': [
-                Modifier(['physical damage bonus'],
-                                lambda creature, value: value + creature.level // 2),
+                Modifier(
+                    ['physical damage bonus'],
+                    lambda creature, value: value + creature.level // 2
+                ),
             ],
             'prerequisite': lambda creature: 'slayer' in creature.templates,
         },
@@ -682,8 +745,10 @@ def get_ability_definitions():
             'effects': [
                 ModifierInPlace(['weapon damage dice'],
                                 lambda creature, damage_dice: damage_dice.resize_dice(2)),
-                Modifier(['physical damage bonus'],
-                          lambda creature, value: creature.power // 2),
+                Modifier(
+                    ['physical damage bonus'],
+                    lambda creature, value: creature.power // 2
+                ),
             ],
         },
         'evasive': {
@@ -695,8 +760,10 @@ def get_ability_definitions():
         },
         'great fortitude': {
             'effects': [
-                Modifier(['fortitude'],
-                              lambda creature, value: value + 4),
+                Modifier(
+                    ['fortitude'],
+                    lambda creature, value: value + 4
+                ),
             ],
         },
         'fast healing': {
@@ -709,8 +776,10 @@ def get_ability_definitions():
         },
         'improved natural armor': {
             'effects': [
-                Modifier(['armor defense'],
-                               lambda creature, value: value + 2),
+                Modifier(
+                    ['armor defense'],
+                    lambda creature, value: value + 2
+                ),
             ],
         },
         'increased size': {
@@ -729,8 +798,10 @@ def get_ability_definitions():
         },
         'resist damage': {
             'effects': [
-                Modifier(['damage reduction'],
-                         lambda creature, value: value + (creature.power if creature.level < 10 else creature.power * 2)),
+                Modifier(
+                    ['damage reduction'],
+                    lambda creature, value: value + (creature.power if creature.level < 10 else creature.power * 2)
+                ),
             ],
         },
 

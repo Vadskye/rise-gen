@@ -1,3 +1,4 @@
+---
 bite:
   die: d8
   encumbrance: light
@@ -11,7 +12,7 @@ greataxe:
   encumbrance: heavy
   group: axes
 greatsword:
-  die: d10
+  die: 1d10
   encumbrance: heavy
   group: heavy blades
 longbow:
@@ -51,11 +52,11 @@ tentacle:
   die: d8
   encumbrance: medium
   group: natural
-touch: # TODO: make this hit Reflex defense
+touch:  # TODO: make this hit Reflex defense
   die: d3
   encumbrance: light
   group: natural
-no weapon: # default if a creature has no other weapon specified
+no weapon:  # default if a creature has no other weapon specified
   encumbrance: light
 slam:
   die: d8

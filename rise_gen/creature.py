@@ -13,7 +13,9 @@ import random
 import rise_gen.latex as latex
 import rise_gen.util as util
 
-DEFENSE_BASE=5
+AUTOMATIC_ABILITIES = ['size modifiers', 'challenge rating', 'prowess weapon damage']
+DEFENSE_BASE = 5
+
 
 class CreatureStatistics(object):
     def __init__(
@@ -100,12 +102,12 @@ class CreatureStatistics(object):
             # to sum to the given level
             total_levels = sum(self.levels.values())
             if self.level < total_levels:
-                raise Exception("Level {} is too low for this multiclass character ({})".format(self.level, self.levels))
+                raise Exception(f"Level {self.level} is too low for this multiclass character ({self.levels})")
             # maintain the ratio between the levels
             for class_name, level in self.levels.items():
                 self.levels[class_name] = level * self.level // total_levels
             if sum(self.levels.values()) != self.level:
-                raise Exception("Level {} is not possible to express exactly for this multiclass character".format(self.level))
+                raise Exception(f"Level {self.level} is not possible to express exactly for this multiclass character")
 
         # Skills are given as a dictionary of skill name -> skill points
         # We also want to store a dictionary of skill name -> Skill object
@@ -152,6 +154,8 @@ class CreatureStatistics(object):
         if self.monster_type and self.monster_type.abilities:
             for ability in self.monster_type.abilities:
                 self.add_ability(ability)
+        if self.race is not None:
+            self.add_ability(self.race.name)
         for rise_class in self.classes.values():
             if rise_class.class_features:
                 for class_feature in rise_class.class_features:
@@ -171,8 +175,8 @@ class CreatureStatistics(object):
             for trait in self.traits:
                 self.add_ability(trait)
 
-        self.add_ability('size modifiers')
-        self.add_ability('challenge rating')
+        for ability_name in AUTOMATIC_ABILITIES:
+            self.add_ability(ability_name)
 
     def add_ability(self, ability):
         """add the given ability to the creature
@@ -323,12 +327,10 @@ class CreatureStatistics(object):
                 accuracy = effect(self, accuracy)
             return accuracy
         elif self.attack_type == 'spell':
-            # class_scaling = (self.level // 5) + 2
-            class_scaling = 2
-            # this feat scaling is weird and approximate, but whatever
-            # feat_scaling = min(4, (self.level - 1) // 4)
-            feat_scaling = 0 # if self.level < 10 else 2
-            return self.level + class_scaling + feat_scaling
+            return self.spellpower
+            # class_scaling = 2
+            # feat_scaling = 0  # if self.level < 10 else 2
+            # return self.level + class_scaling + feat_scaling
         else:
             raise Exception("Error: invalid attack type '{0}'".format(self.attack_type))
 
@@ -337,17 +339,16 @@ class CreatureStatistics(object):
         Does not include the base weapon damage die."""
 
         if self.attack_type == 'physical':
-            damage_bonus = max(self.strength, self.combat_prowess)
-
+            damage_bonus = 0
             # add the attribute bonus from strength
             if self.strength >= 0:
-                damage_bonus += self.strength // 5
-            else:
                 damage_bonus += self.strength // 2
+            else:
+                damage_bonus += self.strength
 
             # add the +1 bonus for two-handed weapons
             if self.weapon and self.weapon_encumbrance == 'heavy' and not self.attack_range:
-                damage_bonus += 2
+                damage_bonus += 1
             for effect in self.active_effects_with_tag('physical damage bonus'):
                 damage_bonus = effect(self, damage_bonus)
             return damage_bonus
@@ -375,18 +376,11 @@ class CreatureStatistics(object):
         elif self.attack_type == 'spell':
             # TODO: make framework for named spells
             # we use cantrips instead of full spells until 4th level
-            if self.level <= 3:
-                damage_dice = DieCollection(
-                    Die(size=6, count=self.spellpower // 2)
-                )
-            elif self.level <= 10:
-                damage_dice = DieCollection(
-                    Die(size=6, count=self.spellpower)
-                )
-            else:
-                damage_dice = DieCollection(
-                    Die(size=8, count=self.spellpower)
-                )
+            damage_dice = DieCollection(
+                Die(size=6, count=1)
+            )
+            damage_dice.resize_dice(self.spellpower // 2)
+
             if not (self.special_attack_name == 'scorching ray' or self.special_attack_name == 'inflict wounds'):
                 raise Exception("Error: Unrecognized spell '{}'".format(self.special_attack_name))
             for effect in self.active_effects_with_tag('spell damage dice'):
@@ -408,11 +402,11 @@ class CreatureStatistics(object):
         for effect in self.active_effects_with_tag(attribute_name):
             attribute_value = effect(self, attribute_value)
 
-        # heavier armor halves dexterity
+        # heavy armor halves dexterity
         if (
                 attribute_name == 'dexterity'
                 and self.armor
-                and self.armor.encumbrance in ('medium', 'heavy')
+                and self.armor.encumbrance == 'heavy'
         ):
             attribute_value = attribute_value // 2
         return attribute_value
@@ -486,25 +480,10 @@ class CreatureStatistics(object):
 
     def _calculate_hit_points(self):
         best_defense = max(self.fortitude, self.mental)
-        hit_points = best_defense + self.level * 4
+        hit_points = best_defense + 5 * self.level
         for effect in self.active_effects_with_tag('hit points'):
             hit_points = effect(self, hit_points)
         return hit_points
-
-    def _calculate_maneuver_defense(self):
-        maneuver_defense = DEFENSE_BASE + max(
-            self.combat_prowess,
-            self.strength,
-            self.dexterity
-        )
-        # add the automatic modifier from Dexterity
-        if self.dexterity >= 0:
-            maneuver_defense += self.dexterity // 5
-        else:
-            maneuver_defense += self.dexterity // 2
-        for effect in self.active_effects_with_tag('maneuver defense'):
-            maneuver_defense = effect(self, maneuver_defense)
-        return maneuver_defense
 
     def _calculate_mental(self):
         mental = DEFENSE_BASE + max(
@@ -544,7 +523,9 @@ class CreatureStatistics(object):
         return reflex
 
     def _calculate_spellpower(self):
-        spellpower = self.level + 2
+        spellpower = max(self.level + 2, self.intelligence, self.perception, self.willpower)
+        # add 1/5 casting attribute to spellpower
+        spellpower += max(self.intelligence, self.perception, self.willpower) // 5
         for effect in self.active_effects_with_tag('spellpower'):
             spellpower = effect(self, spellpower)
         return spellpower
@@ -675,9 +656,8 @@ class CreatureStatistics(object):
                     self.hit_points + self.temporary_hit_points
                 ) if self.temporary_hit_points else ""
             ),
-            "[Defs] AD {0}, MD {1}".format(
+            "[Defs] AD {0}".format(
                 self.armor_defense,
-                self.maneuver_defense,
             ),
             "Fort {0}, Ref {1}, Ment {2}".format(
                 self.fortitude,
@@ -749,11 +729,12 @@ def create_cached_property(
         except KeyError:
             return creature.cache(
                 property_name,
-                getattr(creature, calculation_function)(calculation_args)
+                (getattr(creature, calculation_function)(calculation_args)
                     if calculation_args is not None
-                    else getattr(creature, calculation_function)()
+                    else getattr(creature, calculation_function)())
             )
     setattr(CreatureStatistics, property_name, property(get_cached_property))
+
 
 # add cached properties to CreatureStatistics for easy access
 cached_properties = """
@@ -769,7 +750,6 @@ cached_properties = """
     fortitude
     hit_points
     land_speed
-    maneuver_defense
     mental
     reflex
     power
@@ -815,6 +795,7 @@ class Creature(CreatureStatistics):
         self.alive = True
         self.zero_threshold = True
         self.refresh_round()
+        self.critical_hits = 0
 
     def refresh_round(self):
         for effect in self.active_effects_with_tag('end of round'):
@@ -833,24 +814,6 @@ class Creature(CreatureStatistics):
             self.zero_threshold = True
         self.damage_taken_this_round = 0
 
-    def strike_hits(self, creature):
-        """Make an attack against the given creature and check whether it hit
-
-        Args:
-            creature (Creature): creature being attacked
-
-        Yields:
-            bool: True if attack hit, False otherwise
-        """
-
-        roll = d10.roll()
-        attack_result = roll + self.accuracy
-        if roll == 20:
-            attack_result += 10
-        elif roll == 1:
-            attack_result -= 10
-        return attack_result >= creature.armor_defense
-
     def standard_attack(self, creature):
         """Execute a full round of strikes against the target creature
 
@@ -868,67 +831,58 @@ class Creature(CreatureStatistics):
         else:
             raise Exception("Error: invalid attack type '{0}'".format(self.attack_type))
 
-    def check_hit(self, creature):
+    def attack_roll(self):
+        attack_result = self.accuracy
+        roll = d10.roll()
+        if self.weapon.dual_wielding:
+            roll = max(roll, d10.roll())
+        attack_result += roll
+        while roll == 10:
+            roll = d10.roll()
+            attack_result += roll
+        return attack_result
+
+    def check_hit(self, creature, attack_type=None):
         """Test if a single strike hits against the given creature"""
 
-        roll = d10.roll()
-        attack_result = roll + self.accuracy
-        if roll == 20:
-            attack_result += 10
-        elif roll == 1:
-            attack_result -= 10
-        if self.attack_type == 'physical':
+        if (attack_type or self.attack_type) == 'physical':
             defense = creature.armor_defense
         else:
             defense = min(creature.fortitude, creature.mental, creature.reflex)
 
-        return attack_result >= defense
+        return self.attack_roll() >= defense
 
     def strike(self, creature):
         """Execute a single strike against the given creature"""
 
-        roll = d10.roll()
-        attack_result = roll + self.accuracy
-        if roll == 20:
-            attack_result += 10
-        elif roll == 1:
-            attack_result -= 10
-
-        if attack_result >= creature.armor_defense:
-            if (self.weapon.dual_wielding):
-                # damage = max(self.roll_damage(), self.roll_damage())
-                damage = self.roll_damage() + self.weapon.roll_damage()
-            else:
-                damage = self.roll_damage()
-            if not self.hit_once:
-                for effect in self.active_effects_with_tag('first hit'):
-                    damage = effect(self, damage)
-            # creature.take_damage(self.roll_damage())
-            # check for critical hits
-            if roll >= self.critical_threshold:
-                # start from 1 because the first hit was already counted
-                for i in range(1, self.critical_multiplier):
-                    damage += self.roll_damage()
-                    if not self.hit_once:
-                        for effect in self.active_effects_with_tag('first hit'):
-                            damage = effect(self, damage)
+        attack_roll = self.attack_roll()
+        if attack_roll >= creature.armor_defense:
+            damage = self.roll_damage()
+            # critical success deals double damage
+            if attack_roll >= creature.armor_defense + 10:
+                damage += self.roll_damage()
+                # temp debug
+                self.critical_hits += 1
+            for effect in self.active_effects_with_tag('first hit'):
+                damage = effect(self, damage)
             creature.take_damage(damage)
             self.hit_once = True
 
     def attack_with_spell(self, creature):
         """Attack the given creature with a spell"""
-        roll = d10.roll()
-        attack_result = roll + self.spellpower
-        #TODO: implement generic framework for spells
-        spell_damage = self.roll_damage()
+        # TODO: implement generic framework for spells
         defense = min(creature.fortitude, creature.mental, creature.reflex)
-        # critical success double damage
-        if attack_result >= defense + 10:
-            creature.take_damage(spell_damage * 2)
-        elif attack_result >= defense:
-            creature.take_damage(spell_damage)
+        attack_roll = self.attack_roll()
+        # critical success deal double damage
+        if attack_roll >= defense:
+            damage = self.roll_damage()
+            if attack_roll >= defense + 10:
+                damage == self.roll_damage()
+                # temp debug
+                self.critical_hits += 1
+            creature.take_damage(damage)
         else:
-            creature.take_damage(spell_damage // 2)
+            creature.take_damage(self.roll_damage() // 2)
 
     def is_alive(self):
         return self.alive
@@ -992,12 +946,14 @@ class Creature(CreatureStatistics):
             **sample_properties,
         )
 
+
 def base_class_combat_prowess_bonus(progression):
     return {
         'good': 2,
         'average': 2,
         'poor': 1,
     }[progression]
+
 
 def base_class_defense_bonus(progression):
     return {
@@ -1006,6 +962,7 @@ def base_class_defense_bonus(progression):
         'poor': 0,
     }[progression]
 
+
 def calculate_combat_prowess(progression, level):
     return {
         'good': level,
@@ -1013,8 +970,10 @@ def calculate_combat_prowess(progression, level):
         'poor': (level * 2) // 3,
     }[progression]
 
+
 def calculate_base_defense(progression, level):
     return level
+
 
 def default_land_speed(size):
     return {
@@ -1028,6 +987,7 @@ def default_land_speed(size):
         'gargantuan': 60,
         'colossal': 70,
     }[size]
+
 
 def initialize_argument_parser():
     parser = argparse.ArgumentParser(
@@ -1127,6 +1087,7 @@ def main():
             weapon=weapon,
         )
         print(creature)
+
 
 if __name__ == "__main__":
     main()

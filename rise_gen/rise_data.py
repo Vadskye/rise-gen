@@ -41,6 +41,7 @@ ATTRIBUTES = """
     willpower
 """.split()
 
+
 class RiseData(object):
     data = None
 
@@ -135,6 +136,7 @@ class MonsterType(RiseData):
             self.mental,
         )
 
+
 class RiseClass(RiseData):
 
     def __init__(self, name, combat_prowess, fortitude=None, reflex=None, mental=None, class_features=None):
@@ -160,6 +162,7 @@ class RiseClass(RiseData):
             self.reflex,
             self.mental,
         )
+
 
 class Armor(RiseData):
 
@@ -206,6 +209,7 @@ class Weapon(RiseData):
         with open('content/weapons.yaml', 'r') as weapons_file:
             return yaml.load(weapons_file)
 
+
 class Skill(RiseData):
 
     def __init__(self, name, attribute, sense=False, encumbrance_penalty=False):
@@ -236,7 +240,8 @@ def calculate_attribute_progression(progression, level):
         3: (level * 3) // 4 + 3,
         4: level + 3,
         5: level + 4
-    }.get(progression, progression) # if not in here, just use the given value
+    }.get(progression, progression)  # if not in here, just use the given value
+
 
 def calculate_skill_ranks(skill_points, level):
     """Calculate an skill's ranks based on level and skill points"""
@@ -248,6 +253,7 @@ def calculate_skill_ranks(skill_points, level):
         1: level // 2 + 2,
         2: level + 5,
     }[skill_points]
+
 
 def calculate_skill_modifier(skill_points, level, attribute):
     """Calculate total skill modifier based on level, attribute, and skill points"""

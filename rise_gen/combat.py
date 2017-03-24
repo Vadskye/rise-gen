@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 
 import argparse
+import csv
+# from rise_gen.ability import Ability
 from rise_gen.creature import Creature
-from rise_gen.ability import Ability
 import rise_gen.util as util
+import sys
 import cProfile
-from pprint import pprint
+from pprint import pprint, pformat
+
 
 class CreatureGroup(object):
     """A CreatureGroup is a group of creatures that acts like a single creature """
@@ -99,6 +102,9 @@ def run_combat(red, blue):
         blue (Creature): a creature that attacks second
     """
 
+    red.refresh_combat()
+    blue.refresh_combat()
+
     results = {
         'red is alive': 0,
         'red all alive': 0,
@@ -127,10 +133,8 @@ def run_combat(red, blue):
     if blue.all_alive():
         results['blue all alive'] += 1
 
-    red.refresh_combat()
-    blue.refresh_combat()
-
     return results
+
 
 def initialize_argument_parser():
     parser = argparse.ArgumentParser(
@@ -203,15 +207,17 @@ def initialize_argument_parser():
     )
     return vars(parser.parse_args())
 
+
 def custom_red_modifications(red):
     """Modify the CreatureGroup for random testing
 
     Args:
         red (CreatureGroup): Group of red creatures
     """
-    # for c in red.creatures:
-    #     c.add_ability(Ability.by_name('critical threshold'))
+    for c in red.creatures:
+        pass
     pass
+
 
 def custom_blue_modifications(blue):
     """Modify the CreatureGroup for random testing
@@ -222,6 +228,7 @@ def custom_blue_modifications(blue):
     # for c in blue.creatures:
     #     c.add_ability(Ability.by_name('mighty blows'))
     pass
+
 
 def generate_combat_results(red, blue, trials):
     raw_results = list()
@@ -252,6 +259,7 @@ def generate_combat_results(red, blue, trials):
     }
 
     return results
+
 
 def test_training_dummy(level, trials):
     sample_creature_names = util.import_yaml_file('content/sample_creatures.yaml').keys()
@@ -286,20 +294,119 @@ def test_training_dummy(level, trials):
 
     pprint(results)
 
+
 def generate_creature_groups(args):
     blue_creatures = [Creature.from_sample_creature(
         name,
-        level=args['blue level'] or args['level']
+        level=args.get('blue level', args['level'])
     ) for name in args['blue']]
     blue = CreatureGroup(blue_creatures)
 
     red_creatures = [Creature.from_sample_creature(
         name,
-        level=args['red level'] or args['level']
+        level=args.get('red level', args['level'])
     ) for name in args['red']]
     red = CreatureGroup(red_creatures)
 
     return blue, red
+
+
+def write_results_as_csv(results, output=None):
+    if output is None:
+        output = sys.stdout
+    headers = sorted(results[0].keys())
+
+    if 'level' in headers:
+        # move 'level' to the front
+        headers.pop(headers.index('level'))
+        headers.insert(0, 'level')
+    if 'avg rounds' in headers:
+        # move 'avg rounds' to the back
+        headers.pop(headers.index('avg rounds'))
+        headers.append('avg rounds')
+
+    writer = csv.DictWriter(sys.stdout, headers)
+    writer.writeheader()
+    writer.writerows(results)
+
+
+def run_test(test, args):
+    if test == 'dummy':
+        test_training_dummy(
+            level=args['level'],
+            trials=100
+        )
+    elif test == 'doubling':
+        args['trials'] //= 2
+        level_diff = 2
+        results = []
+        for i in range(1 + level_diff, 21):
+            args['red level'] = i
+            args['blue level'] = i - level_diff
+            print(str(i) + ": ", end="")
+            results.append(main(args))
+            results[-1]['level'] = i
+        write_results_as_csv(results)
+    elif test == 'levels':
+        args['trials'] //= 2
+        results = []
+        for i in range(1, 21):
+            args['level'] = i
+            results.append(main(args))
+            results[-1]['level'] = i
+        write_results_as_csv(results)
+    elif test == 'criticals':
+        args['trials'] //= 2
+        for i in range(1, 21):
+            args['level'] = i
+            blue, red = generate_creature_groups(args)
+            criticals = {'blue': 0, 'red': 0}
+            for t in range(args['trials']):
+                results = run_combat(red, blue)
+                criticals['blue'] += (
+                    sum([c.critical_hits for c in blue.creatures])
+                    / len(blue.creatures) / results['rounds']
+                )
+                criticals['red'] += (
+                    sum([c.critical_hits for c in red.creatures])
+                    / len(red.creatures) / results['rounds']
+                )
+            criticals['blue'] /= args['trials']
+            criticals['red'] /= args['trials']
+            formatted_criticals = pformat(criticals)
+            print(f"{i} crits/round: {formatted_criticals}")
+    elif test == 'accuracy':
+        results = []
+        for i in range(1, 21):
+            args['level'] = i
+            blue, red = generate_creature_groups(args)
+            results.append({
+                'level': i,
+                'blue accuracy': blue.get_accuracy(red, args['trials']),
+                'red accuracy': red.get_accuracy(blue, args['trials']),
+            })
+        write_results_as_csv(results)
+    elif test == 'doubling_accuracy':
+        level_diff = 2
+        results = []
+        for i in range(1 + level_diff, 21):
+            args['red level'] = i
+            args['blue level'] = i - level_diff
+            blue, red = generate_creature_groups(args)
+            results.append({
+                'level': i,
+                'blue accuracy': blue.get_accuracy(red, args['trials']),
+                'red accuracy': red.get_accuracy(blue, args['trials']),
+            })
+        write_results_as_csv(results)
+    elif test == 'level_diff':
+        args['trials'] //= 10
+        for i in range(3, 21):
+            args['blue level'] = i
+            args['red level'] = i-2
+            print(str(i) + ": ", end="")
+            main(args)
+
 
 def main(args):
 
@@ -319,57 +426,14 @@ def main(args):
     if len(red.creatures) == 1:
         filtered_results.pop('red all %')
 
-    pprint(filtered_results)
+    return filtered_results
+
 
 if __name__ == "__main__":
     cmd_args = initialize_argument_parser()
     if cmd_args.get('profile'):
         cProfile.run('main(cmd_args)', sort=cmd_args.get('profile'))
-    elif cmd_args.get('test') == 'dummy':
-        test_training_dummy(
-            level=cmd_args['level'],
-            trials=100
-        )
-    elif cmd_args.get('test') == 'doubling':
-        cmd_args['trials'] //= 2
-        level_diff = 2
-        for i in range(1 + level_diff, 21):
-            cmd_args['red level'] = i
-            cmd_args['blue level'] = i - level_diff
-            print(str(i) + ": ", end="")
-            main(cmd_args)
-    elif cmd_args.get('test') == 'levels':
-        cmd_args['trials'] //= 2
-        for i in range(1, 21):
-            cmd_args['level'] = i
-            print(str(i) + ": ", end="")
-            main(cmd_args)
-    elif cmd_args.get('test') == 'accuracy':
-        for i in range(1, 21):
-            cmd_args['level'] = i
-            blue, red = generate_creature_groups(cmd_args)
-            print("{i}: blue {blue_accuracy}, red {red_accuracy}".format(
-                i=i,
-                blue_accuracy=blue.get_accuracy(red, cmd_args['trials']),
-                red_accuracy=red.get_accuracy(blue, cmd_args['trials'])
-            ))
-    elif cmd_args.get('test') == 'doubling_accuracy':
-        level_diff = 2
-        for i in range(1 + level_diff, 21):
-            cmd_args['red level'] = i
-            cmd_args['blue level'] = i - level_diff
-            blue, red = generate_creature_groups(cmd_args)
-            print("{i}: blue {blue_accuracy}, red {red_accuracy}".format(
-                i=i,
-                blue_accuracy=blue.get_accuracy(red, cmd_args['trials']),
-                red_accuracy=red.get_accuracy(blue, cmd_args['trials'])
-            ))
-    elif cmd_args.get('test') == 'level_diff':
-        cmd_args['trials'] //= 10
-        for i in range(3, 21):
-            cmd_args['blue level'] = i
-            cmd_args['red level'] = i-2
-            print(str(i) + ": ", end="")
-            main(cmd_args)
+    elif cmd_args.get('test'):
+        run_test(cmd_args['test'], cmd_args)
     else:
-        main(cmd_args)
+        print(main(cmd_args))

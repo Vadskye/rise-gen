@@ -1,6 +1,7 @@
 import re
 from rise_gen.util import num_to_word, modifier_prefix
 
+
 def monster_latex(creature):
     """Generate LaTeX necessary to create a monster from the given creature"""
     # bracket doubling looks crazy within this string
@@ -48,9 +49,12 @@ def monster_latex(creature):
     text = re.sub(r'([^-])-(\d)', r'\1\minus\2', text)
     return text
 
+
 def abilities(creature):
     relevant_abilities = list(filter(
-        lambda ability: not ability.has_tag('monster_trait') and not ability.has_tag('sense') and not ability.has_tag('template'),
+        lambda ability: (not ability.has_tag('monster_trait')
+                         and not ability.has_tag('sense')
+                         and not ability.has_tag('template')),
         creature.visible_abilities
     ))
     if not relevant_abilities:
@@ -59,12 +63,16 @@ def abilities(creature):
         [str(ability) for ability in relevant_abilities]
     )).capitalize()
 
+
 _vowels = set(['a', 'e', 'i', 'u'])
+
+
 def adept_points(creature):
-    if not 'adept' in creature.levels:
+    if 'adept' not in creature.levels:
         return None
     count = max(creature.level, creature.intelligence // 2, creature.perception // 2, creature.willpower // 2)
-    return "\\parhead<Adept Points> {a_an} {name} has {count} adept {point}. {it_they} one hour after being spent.".format(
+    return ("\\parhead<Adept Points> {a_an} {name} has {count} adept {point}."
+            "{it_they} one hour after being spent.").format(
         a_an="An" if creature.name[0] in _vowels else "A",
         name=creature.name,
         count=num_to_word(count),
@@ -72,30 +80,38 @@ def adept_points(creature):
         it_they="It returns" if count == 1 else "They return",
     )
 
+
 def attacks(creature):
-    return "\\pari \\mb<Attacks> {weapon_name} +{accuracy} ({dice}+{damage_bonus}); \\mb<Strikes> {strikes}".format(
+    return "\\pari \\mb<Attacks> {weapon_name} +{accuracy} ({dice}+{damage_bonus})".format(
         weapon_name=creature.weapon.name.capitalize(), accuracy=creature.accuracy,
         dice=str(creature.damage_dice), damage_bonus=creature.damage_bonus)
 
+
 def attributes(creature):
     return "\\pari \\mb<Attributes> Str {}, Dex {}, Con {}, Int {}, Per {}, Wil {}".format(
-        creature.strength, creature.dexterity, creature.constitution, creature.intelligence, creature.perception, creature.willpower
+        creature.strength, creature.dexterity, creature.constitution,
+        creature.intelligence, creature.perception, creature.willpower
     )
+
 
 def defenses(creature):
     return "\\pari \\mb<HP> {hp}; \\mb<Defenses> AD {armor}, Fort {fortitude}, Ref {reflex}, Ment {mental}".format(
         hp=creature.hit_points, armor=creature.armor_defense, fortitude=creature.fortitude,
         reflex=creature.reflex, mental=creature.mental)
 
+
 def encounter(creature):
     return "\\pari \\mb<Encounter> {}".format(creature.encounter or "")
+
 
 def indent(spaces):
     return " " * spaces
 
+
 def indent_list(spaces, strings):
     return [indent(spaces) + s if s else None
             for s in strings]
+
 
 def languages(creature):
     if creature.languages is None:
@@ -104,11 +120,14 @@ def languages(creature):
         language.capitalize() for language in creature.languages
     ])
 
+
 def levels(creature):
     return "\\pari \\mb<Level> {monster_type} {level} [{templates}]".format(
         level=creature.level,
-        monster_type=creature.monster_type.name.capitalize(),
-        templates=", ".join([t.capitalize() for t in sorted(set(creature.templates))])
+        monster_type=(creature.monster_type.name.capitalize()
+                      if creature.monster_type
+                      else "nonmonster"),
+        templates=", ".join([t.capitalize() for t in sorted(set(creature.templates or []))])
     )
 
 
@@ -126,6 +145,7 @@ def movement(creature):
         speed_strings.insert(0, "{} ft.\\ land speed".format(creature.land_speed))
     return "\\pari \\mb<Movement> {}".format(", ".join(speed_strings))
 
+
 def creature_name(creature):
     if ',' in creature.name:
         parts = creature.name.split(', ')
@@ -134,6 +154,7 @@ def creature_name(creature):
         return "[{}]<{}>".format(parts[1].title(), parts[0].title())
     else:
         return "<{}>".format(creature.name.title())
+
 
 def senses(creature):
     # multi-layer join fixes capitalization issues
@@ -156,8 +177,12 @@ def senses(creature):
         ]))
     ]))
 
+
 def size(creature):
-    return "\\pari \\mb<Size> {size}; \\mb<Reach> {reach} ft.".format(size=creature.size.capitalize(), reach=creature.reach)
+    return "\\pari \\mb<Size> {size}; \\mb<Reach> {reach} ft.".format(
+        size=creature.size.capitalize(), reach=creature.reach
+    )
+
 
 def skills(creature):
     if creature.skills is None:
@@ -175,6 +200,7 @@ def skills(creature):
         ) for skill in relevant_skills
     ]))
 
+
 def traits(creature):
     return "\\parhead<Traits> " + ", ".join(
         [name.title() for name in sorted(
@@ -182,5 +208,5 @@ def traits(creature):
                 lambda ability: ability.has_tag('monster_trait'),
                 creature.visible_abilities
             )])
-        ]
+         ]
     ) + "."

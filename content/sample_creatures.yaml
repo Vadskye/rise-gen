@@ -1,3 +1,4 @@
+---
 EQUIPMENT:
   hidden: True
   standard_warrior_equipment: &STANDARD_WARRIOR_EQUIPMENT
@@ -22,8 +23,7 @@ barbarian: &BARBARIAN
   attributes:
     strength: 4
     constitution: 4
-  feats:
-    - mighty blows
+  feats: []
   traits:
     - magic items
 barbarian_greatsword:
@@ -56,7 +56,6 @@ barbarian_ranged:
     - longbow
   feats:
     - deadly aim
-    - mighty blows
 barbarian_studded:
   <<: *BARBARIAN
   armor: studded leather
@@ -68,8 +67,7 @@ cleric: &CLERIC
   attributes:
     strength: 4
     constitution: 4
-  feats:
-    - mighty blows
+  feats: []
   traits:
     - magic items
 cleric_spells:
@@ -84,8 +82,7 @@ druid: &DRUID
   attributes:
     strength: 4
     constitution: 4
-  feats:
-    - mighty blows
+  feats: []
   traits:
     - magic items
 druid_healing:
@@ -105,8 +102,7 @@ fighter: &FIGHTER
   attributes:
     strength: 4
     constitution: 4
-  feats:
-    - mighty blows
+  feats: []
   traits:
     - magic items
     - armor discipline (resilience)
@@ -147,7 +143,6 @@ fighter_dex: &FIGHTER_DEX
   armor: studded leather
   feats:
     - weapon finesse
-    - mighty blows
   traits:
     - magic items
     - armor discipline (agility)
@@ -164,8 +159,7 @@ ranger: &RANGER
   attributes:
     strength: 4
     constitution: 4
-  feats:
-    - mighty blows
+  feats: []
   traits:
     - magic items
 ranger_dex: &RANGER_DEX
@@ -176,7 +170,6 @@ ranger_dex: &RANGER_DEX
   armor: studded leather
   feats:
     - weapon finesse
-    - mighty blows
   traits:
     - magic items
 ranger_greatsword:
@@ -224,8 +217,7 @@ rogue_warrior: &ROGUE_WARRIOR
   attributes:
     strength: 4
     constitution: 4
-  feats:
-    - mighty blows
+  feats: []
   traits:
     - magic items
 rogue_warrior_heavy:
@@ -274,8 +266,7 @@ warrior: &WARRIOR
   attributes:
     strength: 4
     constitution: 4
-  feats:
-    - mighty blows
+  feats: []
   traits:
     - magic items
 warrior_featless:
@@ -316,7 +307,6 @@ warrior_speed:
 warrior_shield:
   <<: *WARRIOR
   feats:
-    - mighty blows
     - shielded fighting
 warrior_defensive_fighting:
   <<: *WARRIOR
@@ -336,7 +326,6 @@ warrior_dual:
   armor: studded leather
   feats:
     - two weapon fighting
-    - mighty blows
   weapons:
     - dual short swords
   shield: ~
@@ -346,7 +335,6 @@ warrior_heavy:
     - greatsword
   shield: ~
   feats:
-    - mighty blows
     - heavy weapon fighting
 warrior_dex:
   <<: *WARRIOR
@@ -379,8 +367,7 @@ warrior_str_dex:
     dexterity: 4
     constitution: 2
   armor: studded leather
-  feats:
-    - mighty blows
+  feats: []
   traits:
     - magic items
 warrior_int:
@@ -389,8 +376,7 @@ warrior_int:
     strength: 4
     constitution: 2
     intelligence: 4
-  feats:
-    - mighty blows
+  feats: []
   traits:
     - magic items
 wizard: &WIZARD
@@ -458,8 +444,91 @@ taito:
     strength: 3
     perception: 4
     willpower: 2
-  feats:
-    - mighty blows
+  feats: []
   traits:
     - magic items
     - armor discipline (resilience)
+g: &GENERIC
+  <<: *STANDARD_WARRIOR_EQUIPMENT
+  race: human
+  levels:
+    warrior: 1
+  attributes: &GENERIC_ATTRIBUTES
+    strength: 2
+    dexterity: 2
+    constitution: 2
+    intelligence: 2
+    perception: 2
+    willpower: 2
+  feats: []
+  traits:
+    - magic items
+g/str:
+  <<: *GENERIC
+  attributes:
+    <<: *GENERIC_ATTRIBUTES
+    strength: 4
+g/dex:
+  <<: *GENERIC
+  attributes:
+    <<: *GENERIC_ATTRIBUTES
+    dexterity: 4
+g/con:
+  <<: *GENERIC
+  attributes:
+    <<: *GENERIC_ATTRIBUTES
+    constitution: 4
+g/int:
+  <<: *GENERIC
+  attributes:
+    <<: *GENERIC_ATTRIBUTES
+    intelligence: 4
+g/per:
+  <<: *GENERIC
+  attributes:
+    <<: *GENERIC_ATTRIBUTES
+    perception: 4
+g/wil:
+  <<: *GENERIC
+  attributes:
+    <<: *GENERIC_ATTRIBUTES
+    willpower: 4
+g/full_plate:
+  <<: *GENERIC
+  armor: full plate
+g/zwei:
+  <<: *GENERIC
+  weapons:
+    - greatsword
+  shield: ~
+g/dual:
+  <<: *GENERIC
+  weapons:
+    - dual short swords
+  shield: ~
+g/studded:
+  <<: *GENERIC
+  armor: studded leather
+g/spells: &GENERIC_SPELLS
+  <<: *GENERIC
+  attack type: spell
+  special_attack_name: inflict wounds
+g/spells/int:
+  <<: *GENERIC_SPELLS
+  attributes:
+    <<: *GENERIC_ATTRIBUTES
+    intelligence: 4
+g/spells/wil:
+  <<: *GENERIC_SPELLS
+  attributes:
+    <<: *GENERIC_ATTRIBUTES
+    willpower: 4
+g/low:
+  <<: *GENERIC
+  attributes:
+    strength: 1
+    dexterity: 1
+    constitution: 1
+    intelligence: 1
+    perception: 1
+    willpower: 1
