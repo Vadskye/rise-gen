@@ -183,7 +183,7 @@ ranger_dual:
   <<: *RANGER
   attributes:
     strength: 4
-    dexterity: 2 # to get 2wf
+    dexterity: 2  # to get 2wf
     constitution: 4
   weapons:
     - dual short swords
@@ -321,7 +321,7 @@ warrior_dual:
   <<: *WARRIOR
   attributes:
     strength: 4
-    dexterity: 4 # to get 2wf
+    dexterity: 4  # to get 2wf
     constitution: 2
   armor: studded leather
   feats:
@@ -416,12 +416,13 @@ assassin:
     intelligence: 4
   feats:
     - weapon finesse
-  # description: Assassins are typically garbed in black or dark grey.
-  # combat_description: Assassins strike from the shadows and use concealment and cover to their advantage.
+    # description: Assassins are typically garbed in black or dark grey.
+    # combat_description: Assassins strike from the shadows and use concealment
+    # and cover to their advantage.
 dummy:
   monster type: humanoid
   levels:
-    adept: 1
+    warrior: 1
   attributes:
     strength: 0
     dexterity: 0
@@ -461,14 +462,22 @@ g: &GENERIC
     perception: 2
     willpower: 2
   feats: []
-  traits:
-    - magic items
 g/str:
   <<: *GENERIC
   attributes:
     <<: *GENERIC_ATTRIBUTES
     strength: 4
 g/dex:
+  <<: *GENERIC
+  weapons:
+    - short sword
+  attributes:
+    <<: *GENERIC_ATTRIBUTES
+    dexterity: 4
+g/dex/studded:
+  <<: *GENERIC
+  armor: studded leather
+g/dex/longsword:
   <<: *GENERIC
   attributes:
     <<: *GENERIC_ATTRIBUTES
@@ -493,6 +502,21 @@ g/wil:
   attributes:
     <<: *GENERIC_ATTRIBUTES
     willpower: 4
+g/nodex:
+  <<: *GENERIC
+  attributes:
+    <<: *GENERIC_ATTRIBUTES
+    dexterity: 0
+g/low:
+  <<: *GENERIC
+  attributes: &GENERIC_ATTRIBUTES_LOW
+    strength: 1
+    dexterity: 1
+    constitution: 1
+    intelligence: 1
+    perception: 1
+    willpower: 1
+  feats: []
 g/full_plate:
   <<: *GENERIC
   armor: full plate
@@ -523,12 +547,113 @@ g/spells/wil:
   attributes:
     <<: *GENERIC_ATTRIBUTES
     willpower: 4
-g/low:
+g/dr:
   <<: *GENERIC
+  feats:
+    - damage reduction
+g/dr2:
+  <<: *GENERIC
+  feats:
+    - damage reduction
+    - damage reduction
+e: &EXTREME
+  <<: *STANDARD_WARRIOR_EQUIPMENT
+  race: human
+  levels:
+    warrior: 1
+  attributes: &EXTREME_ATTRIBUTES
+    strength: 0
+    dexterity: 0
+    constitution: 0
+    intelligence: 0
+    perception: 0
+    willpower: 0
+  feats: []
+e/str:
+  <<: *EXTREME
   attributes:
-    strength: 1
-    dexterity: 1
-    constitution: 1
-    intelligence: 1
-    perception: 1
-    willpower: 1
+    <<: *EXTREME_ATTRIBUTES
+    strength: 5
+e/dex:
+  <<: *EXTREME
+  weapons:
+    - short sword
+  attributes:
+    <<: *EXTREME_ATTRIBUTES
+    dexterity: 5
+e/dex/longsword:
+  <<: *EXTREME
+  attributes:
+    <<: *EXTREME_ATTRIBUTES
+    dexterity: 5
+e/dex/studded:
+  <<: *EXTREME
+  armor: studded leather
+  attributes:
+    <<: *EXTREME_ATTRIBUTES
+    dexterity: 5
+e/con:
+  <<: *EXTREME
+  attributes:
+    <<: *EXTREME_ATTRIBUTES
+    constitution: 5
+e/int:
+  <<: *EXTREME
+  attributes:
+    <<: *EXTREME_ATTRIBUTES
+    intelligence: 5
+  attack type: spell
+  special_attack_name: inflict wounds
+e/per:
+  <<: *EXTREME
+  attributes:
+    <<: *EXTREME_ATTRIBUTES
+    perception: 5
+e/wil:
+  <<: *EXTREME
+  attributes:
+    <<: *EXTREME_ATTRIBUTES
+    willpower: 5
+  attack type: spell
+  special_attack_name: inflict wounds
+e/spells:
+  <<: *EXTREME
+  attack type: spell
+  special_attack_name: inflict wounds
+e/dr:
+  <<: *EXTREME
+  feats:
+    - damage reduction
+e/dr2:
+  <<: *EXTREME
+  feats:
+    - damage reduction
+    - damage reduction
+e/brb:
+  <<: *EXTREME
+  levels:
+    barbarian: 1
+e/clr:
+  <<: *EXTREME
+  levels:
+    cleric: 1
+e/drd:
+  <<: *EXTREME
+  levels:
+    druid: 1
+e/ftr:
+  <<: *EXTREME
+  levels:
+    fighter: 1
+e/pal:
+  <<: *EXTREME
+  levels:
+    paladin: 1
+e/rgr:
+  <<: *EXTREME
+  levels:
+    ranger: 1
+e/rog:
+  <<: *EXTREME
+  levels:
+    rogue: 1

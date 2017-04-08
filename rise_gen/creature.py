@@ -13,7 +13,10 @@ import random
 import rise_gen.latex as latex
 import rise_gen.util as util
 
-AUTOMATIC_ABILITIES = ['size modifiers', 'challenge rating', 'prowess weapon damage']
+AUTOMATIC_ABILITIES = [
+    'size modifiers', 'challenge rating', 'automatic damage scaling',
+    'strength', 'dexterity', 'constitution', 'intelligence', 'perception', 'willpower',
+]
 DEFENSE_BASE = 5
 
 
@@ -154,8 +157,8 @@ class CreatureStatistics(object):
         if self.monster_type and self.monster_type.abilities:
             for ability in self.monster_type.abilities:
                 self.add_ability(ability)
-        if self.race is not None:
-            self.add_ability(self.race.name)
+        # if self.race is not None:
+            # self.add_ability(self.race.name)
         for rise_class in self.classes.values():
             if rise_class.class_features:
                 for class_feature in rise_class.class_features:
@@ -312,27 +315,23 @@ class CreatureStatistics(object):
     def _calculate_accuracy(self):
         """The bonus the creature has with attacks (int)"""
 
+        accuracy = None
         if self.attack_type == 'physical':
-            accuracy = 4 + max(
+            accuracy = max(
                 self.combat_prowess,
                 self.strength,
                 self.dexterity if self.weapon_encumbrance == 'light' else 0
             )
-            # add the automatic modifier from Perception
-            if self.perception >= 0:
-                accuracy += self.perception // 5
-            else:
-                accuracy += self.perception // 2
-            for effect in self.active_effects_with_tag('accuracy'):
-                accuracy = effect(self, accuracy)
-            return accuracy
         elif self.attack_type == 'spell':
-            return self.spellpower
+            accuracy = max(self.spellpower, self.intelligence, self.willpower)
             # class_scaling = 2
             # feat_scaling = 0  # if self.level < 10 else 2
             # return self.level + class_scaling + feat_scaling
         else:
             raise Exception("Error: invalid attack type '{0}'".format(self.attack_type))
+        for effect in self.active_effects_with_tag('accuracy'):
+            accuracy = effect(self, accuracy)
+        return accuracy
 
     def _calculate_damage_bonus(self):
         """The bonus damage this creature deals with attacks. (int)
@@ -340,11 +339,6 @@ class CreatureStatistics(object):
 
         if self.attack_type == 'physical':
             damage_bonus = 0
-            # add the attribute bonus from strength
-            if self.strength >= 0:
-                damage_bonus += self.strength // 2
-            else:
-                damage_bonus += self.strength
 
             # add the +1 bonus for two-handed weapons
             if self.weapon and self.weapon_encumbrance == 'heavy' and not self.attack_range:
@@ -377,9 +371,10 @@ class CreatureStatistics(object):
             # TODO: make framework for named spells
             # we use cantrips instead of full spells until 4th level
             damage_dice = DieCollection(
-                Die(size=6, count=1)
+                Die(size=8, count=1)
             )
-            damage_dice.resize_dice(self.spellpower // 2)
+            for effect in self.active_effects_with_tag('magical damage dice'):
+                damage_dice = effect(self, damage_dice)
 
             if not (self.special_attack_name == 'scorching ray' or self.special_attack_name == 'inflict wounds'):
                 raise Exception("Error: Unrecognized spell '{}'".format(self.special_attack_name))
@@ -421,16 +416,11 @@ class CreatureStatistics(object):
         return max(0, penalty)
 
     def _calculate_armor_defense(self):
-        armor_defense = DEFENSE_BASE + max(
+        armor_defense = max(
             self.combat_prowess,
             self.dexterity,
             self.constitution
         )
-        # add the automatic modifier from Dexterity
-        if self.dexterity >= 0:
-            armor_defense += self.dexterity // 5
-        else:
-            armor_defense += self.dexterity // 2
         if self.armor:
             armor_defense += self.armor.bonus
         if self.shield:
@@ -469,18 +459,12 @@ class CreatureStatistics(object):
 
         )
         fortitude += base_class_defense_bonus(self.base_class.fortitude)
-        # add the automatic modifier from Con
-        if self.constitution >= 0:
-            fortitude += self.constitution // 2
-        else:
-            fortitude += self.constitution
         for effect in self.active_effects_with_tag('fortitude'):
             fortitude = effect(self, fortitude)
         return fortitude
 
     def _calculate_hit_points(self):
-        best_defense = max(self.fortitude, self.mental)
-        hit_points = best_defense + 5 * self.level
+        hit_points = self.fortitude + 5 * self.level
         for effect in self.active_effects_with_tag('hit points'):
             hit_points = effect(self, hit_points)
         return hit_points
@@ -493,11 +477,6 @@ class CreatureStatistics(object):
                  for class_name, rise_class in self.classes.items()])
         )
         mental += base_class_defense_bonus(self.base_class.mental)
-        # add the automatic modifier from Willpower
-        if self.willpower >= 0:
-            mental += self.willpower // 2
-        else:
-            mental += self.willpower
         for effect in self.active_effects_with_tag('mental'):
             mental = effect(self, mental)
         return mental
@@ -513,19 +492,12 @@ class CreatureStatistics(object):
         # add the modifier for shields
         if self.shield is not None:
             reflex += self.shield.bonus
-        # add the automatic modifier from Dexterity
-        if self.dexterity >= 0:
-            reflex += self.dexterity // 5
-        else:
-            reflex += self.dexterity // 2
         for effect in self.active_effects_with_tag('reflex'):
             reflex = effect(self, reflex)
         return reflex
 
     def _calculate_spellpower(self):
-        spellpower = max(self.level + 2, self.intelligence, self.perception, self.willpower)
-        # add 1/5 casting attribute to spellpower
-        spellpower += max(self.intelligence, self.perception, self.willpower) // 5
+        spellpower = self.level + 2
         for effect in self.active_effects_with_tag('spellpower'):
             spellpower = effect(self, spellpower)
         return spellpower

@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 
 import argparse
-import csv
+from prettytable import PrettyTable
 # from rise_gen.ability import Ability
 from rise_gen.creature import Creature
 import rise_gen.util as util
 import sys
 import cProfile
 from pprint import pprint, pformat
-
 
 class CreatureGroup(object):
     """A CreatureGroup is a group of creatures that acts like a single creature """
@@ -298,20 +297,20 @@ def test_training_dummy(level, trials):
 def generate_creature_groups(args):
     blue_creatures = [Creature.from_sample_creature(
         name,
-        level=args.get('blue level', args['level'])
+        level=args.get('blue level') or args.get('level')
     ) for name in args['blue']]
     blue = CreatureGroup(blue_creatures)
 
     red_creatures = [Creature.from_sample_creature(
         name,
-        level=args.get('red level', args['level'])
+        level=args.get('red level') or args.get('level')
     ) for name in args['red']]
     red = CreatureGroup(red_creatures)
 
     return blue, red
 
 
-def write_results_as_csv(results, output=None):
+def print_results(results, output=None):
     if output is None:
         output = sys.stdout
     headers = sorted(results[0].keys())
@@ -324,10 +323,13 @@ def write_results_as_csv(results, output=None):
         # move 'avg rounds' to the back
         headers.pop(headers.index('avg rounds'))
         headers.append('avg rounds')
-
-    writer = csv.DictWriter(sys.stdout, headers)
-    writer.writeheader()
-    writer.writerows(results)
+    table = PrettyTable(headers)
+    for result in results:
+        row = []
+        for header in headers:
+            row.append(result[header])
+        table.add_row(row)
+    print(table)
 
 
 def run_test(test, args):
@@ -343,10 +345,9 @@ def run_test(test, args):
         for i in range(1 + level_diff, 21):
             args['red level'] = i
             args['blue level'] = i - level_diff
-            print(str(i) + ": ", end="")
             results.append(main(args))
             results[-1]['level'] = i
-        write_results_as_csv(results)
+        print_results(results)
     elif test == 'levels':
         args['trials'] //= 2
         results = []
@@ -354,7 +355,7 @@ def run_test(test, args):
             args['level'] = i
             results.append(main(args))
             results[-1]['level'] = i
-        write_results_as_csv(results)
+        print_results(results)
     elif test == 'criticals':
         args['trials'] //= 2
         for i in range(1, 21):
@@ -385,7 +386,7 @@ def run_test(test, args):
                 'blue accuracy': blue.get_accuracy(red, args['trials']),
                 'red accuracy': red.get_accuracy(blue, args['trials']),
             })
-        write_results_as_csv(results)
+        print_results(results)
     elif test == 'doubling_accuracy':
         level_diff = 2
         results = []
@@ -398,7 +399,7 @@ def run_test(test, args):
                 'blue accuracy': blue.get_accuracy(red, args['trials']),
                 'red accuracy': red.get_accuracy(blue, args['trials']),
             })
-        write_results_as_csv(results)
+        print_results(results)
     elif test == 'level_diff':
         args['trials'] //= 10
         for i in range(3, 21):

@@ -53,32 +53,34 @@ class Die(object):
                 new_die.increase_size()
         return new_die
 
-    def increase_size(self):
-        if self.size <= 3:
-            self.size += 1
-        elif self.size < 10:
-            self.size += 2
-        elif self.size == 10:
-            if self.count >= 4:
-                self.count += 1
+    def increase_size(self, increments=1):
+        for i in range(increments):
+            if self.size <= 3:
+                self.size += 1
+            elif self.size < 10:
+                self.size += 2
+            elif self.size == 10:
+                if self.count >= 4:
+                    self.count += 1
+                else:
+                    self.size = 6
+                    self.count *= 2
             else:
-                self.size = 6
-                self.count *= 2
-        else:
-            raise Exception("Impossible die size")
+                raise Exception("Impossible die size")
 
-    def decrease_size(self):
-        if self.size <= 1:
-            pass
-        elif self.size <= 4 and self.count == 1:
-            self.size -= 1
-        elif self.size == 6 and self.count > 1:
-            self.size = 10
-            self.count /= 2
-        elif self.size <= 10:
-            self.size -= 2
-        else:
-            raise Exception("Impossible die size")
+    def decrease_size(self, increments=1):
+        for i in range(increments):
+            if self.size <= 1:
+                pass
+            elif self.size <= 4 and self.count == 1:
+                self.size -= 1
+            elif self.size == 6 and self.count > 1:
+                self.size = 10
+                self.count /= 2
+            elif self.size <= 10:
+                self.size -= 2
+            else:
+                raise Exception("Impossible die size")
 
     #read a single collection of dice, like '2d6'
     @classmethod
@@ -146,13 +148,13 @@ class DieCollection(object):
         for i, die in enumerate(self.dice):
             self.dice[i] += steps
 
-    def increase_size(self):
+    def increase_size(self, die_increments=1):
         for die in self.dice:
-            die.increase_size()
+            die.increase_size(die_increments)
 
-    def decrease_size(self):
+    def decrease_size(self, die_increments=1):
         for die in self.dice:
-            die.decrease_size()
+            die.decrease_size(die_increments)
 
     def __repr__(self):
         return 'DieCollection({0})'.format(
