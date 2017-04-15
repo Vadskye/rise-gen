@@ -15,8 +15,6 @@ POSSIBLE_EFFECT_TAGS = [
     'spell damage bonus',
     'weapon damage dice',
     'physical damage dice',
-    'spell damage dice',
-    'combat prowess',
     'critical multiplier',
     'critical threshold',
     'damage reduction',
@@ -491,7 +489,7 @@ def get_ability_definitions():
                 ),
                 Modifier(
                     ['reflex'],
-                    lambda creature, value: value + attribute_scale(creature.dexterity, False),
+                    lambda creature, value: value + attribute_scale(creature.dexterity),
                 ),
             ],
             'tags': set(['hidden']),
@@ -500,18 +498,13 @@ def get_ability_definitions():
             'effects': [
                 Modifier(
                     ['fortitude'],
-                    lambda creature, value: value + attribute_scale(creature.constitution, False),
+                    lambda creature, value: value + attribute_scale(creature.constitution),
                 ),
             ],
             'tags': set(['hidden']),
         },
         'intelligence': {
-            'effects': [
-                ModifierInPlace(
-                    ['magical damage dice'],
-                    lambda creature, damage_dice: damage_dice.resize_dice(attribute_scale(creature.intelligence)),
-                ),
-            ],
+            'effects': [],
             'tags': set(['hidden']),
         },
         'perception': {
@@ -527,7 +520,11 @@ def get_ability_definitions():
             'effects': [
                 Modifier(
                     ['mental'],
-                    lambda creature, value: value + attribute_scale(creature.willpower, False),
+                    lambda creature, value: value + attribute_scale(creature.willpower),
+                ),
+                ModifierInPlace(
+                    ['magical damage dice'],
+                    lambda creature, damage_dice: damage_dice.resize_dice(attribute_scale(creature.willpower))
                 ),
             ],
             'tags': set(['hidden']),
@@ -553,13 +550,14 @@ def get_ability_definitions():
                 ModifierInPlace(
                     ['weapon damage dice'],
                     lambda creature, damage_dice: damage_dice.resize_dice(
-                        creature.combat_prowess // 2
+                        creature.level // 2
                     ),
                 ),
                 ModifierInPlace(
                     ['magical damage dice'],
                     lambda creature, damage_dice: damage_dice.resize_dice(
-                        creature.spellpower // 2
+                        creature.spellpower // 2  # auto scaling from spellpower
+                        + creature.level // 6 # +1d for +2 spell level
                     ),
                 ),
             ],
@@ -713,15 +711,10 @@ def get_ability_definitions():
             ],
         },
         'slayer': {
-            'effects': [
-                Modifier(['combat prowess'],
-                         lambda creature, value: max(value, creature.level + 2)),
-            ],
+            'effects': [strike_damage_modifier(2)],
         },
         'summoned monster': {
             'effects': [
-                Modifier(['combat prowess'],
-                         lambda creature, value: creature.level),
                 Modifier(['armor defense', 'fortitude',
                           'reflex', 'mental'],
                          lambda creature, value: creature.level + 10),

@@ -187,7 +187,7 @@ def initialize_argument_parser():
     )
     parser.add_argument(
         '--trials',
-        default=2000,
+        default=1000,
         dest='trials',
         help='The number of trials to run',
         type=int,
@@ -238,23 +238,23 @@ def generate_combat_results(red, blue, trials):
     trials_modifier = float(trials) / 100
 
     results = {
-        'red win %': int([
+        'red win %': int(round([
             True if result['red is alive'] else False
             for result in raw_results
-        ].count(True) / trials_modifier),
-        'red all %': int([
+        ].count(True) / trials_modifier, -1)),
+        'red all %': int(round([
             True if result['red all alive'] else False
             for result in raw_results
-        ].count(True) / trials_modifier),
-        'blue win %': int([
+        ].count(True) / trials_modifier, -1)),
+        'blue win %': int(round([
             True if result['blue is alive'] else False
             for result in raw_results
-        ].count(True) / trials_modifier),
-        'blue all %': int([
+        ].count(True) / trials_modifier, -1)),
+        'blue all %': int(round([
             True if result['blue all alive'] else False
             for result in raw_results
-        ].count(True) / trials_modifier),
-        'avg rounds': sum([results['rounds'] for results in raw_results]) / float(trials)
+        ].count(True) / trials_modifier, -1)),
+        'rounds': round(sum([results['rounds'] for results in raw_results]) / float(trials), 1)
     }
 
     return results

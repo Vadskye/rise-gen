@@ -21,8 +21,8 @@ barbarian: &BARBARIAN
   levels:
     barbarian: 1
   attributes:
-    strength: 4
-    constitution: 4
+    strength: 3
+    constitution: 3
   feats: []
   traits:
     - magic items
@@ -39,9 +39,9 @@ barbarian_full_plate:
 barbarian_dual:
   <<: *BARBARIAN
   attributes:
-    strength: 4
-    dexterity: 2  # for the feat
-    constitution: 4
+    strength: 3
+    dexterity: 1  # for the feat
+    constitution: 3
   feats:
     - two weapon fighting
   weapons:
@@ -50,8 +50,8 @@ barbarian_dual:
 barbarian_ranged:
   <<: *BARBARIAN
   attributes:
-    constitution: 4
-    perception: 4
+    constitution: 3
+    perception: 3
   weapons:
     - longbow
   feats:
@@ -65,8 +65,8 @@ cleric: &CLERIC
   levels:
     cleric: 1
   attributes:
-    strength: 4
-    constitution: 4
+    strength: 3
+    constitution: 3
   feats: []
   traits:
     - magic items
@@ -80,8 +80,8 @@ druid: &DRUID
   levels:
     druid: 1
   attributes:
-    strength: 4
-    constitution: 4
+    strength: 3
+    constitution: 3
   feats: []
   traits:
     - magic items
@@ -100,8 +100,8 @@ fighter: &FIGHTER
   levels:
     fighter: 1
   attributes:
-    strength: 4
-    constitution: 4
+    strength: 3
+    constitution: 3
   feats: []
   traits:
     - magic items
@@ -110,9 +110,9 @@ fighter: &FIGHTER
 fighter_dual:
   <<: *FIGHTER
   attributes:
-    strength: 4
-    dexterity: 2  # for the feat
-    constitution: 4
+    strength: 3
+    dexterity: 1  # for the feat
+    constitution: 3
   feats:
     - two weapon fighting
   weapons:
@@ -138,8 +138,8 @@ fighter_halfling:
 fighter_dex: &FIGHTER_DEX
   <<: *FIGHTER
   attributes:
-    strength: 4
-    dexterity: 4
+    strength: 3
+    dexterity: 3
   armor: studded leather
   feats:
     - weapon finesse
@@ -157,16 +157,16 @@ ranger: &RANGER
   levels:
     ranger: 1
   attributes:
-    strength: 4
-    constitution: 4
+    strength: 3
+    constitution: 3
   feats: []
   traits:
     - magic items
 ranger_dex: &RANGER_DEX
   <<: *RANGER
   attributes:
-    strength: 4
-    dexterity: 4
+    strength: 3
+    dexterity: 3
   armor: studded leather
   feats:
     - weapon finesse
@@ -182,9 +182,9 @@ ranger_greatsword:
 ranger_dual:
   <<: *RANGER
   attributes:
-    strength: 4
+    strength: 3
     dexterity: 2  # to get 2wf
-    constitution: 4
+    constitution: 3
   weapons:
     - dual short swords
   feats:
@@ -196,8 +196,8 @@ rogue: &ROGUE
   levels:
     rogue: 1
   attributes:
-    strength: 4
-    dexterity: 4
+    strength: 3
+    dexterity: 3
   feats:
     - weapon finesse
   traits:
@@ -215,8 +215,8 @@ rogue_warrior: &ROGUE_WARRIOR
   levels:
     rogue: 1
   attributes:
-    strength: 4
-    constitution: 4
+    strength: 3
+    constitution: 3
   feats: []
   traits:
     - magic items
@@ -230,9 +230,9 @@ rogue_warrior_heavy:
 rogue_warrior_dual:
   <<: *ROGUE_WARRIOR
   attributes:
-    strength: 4
-    dexterity: 2
-    constitution: 4
+    strength: 3
+    dexterity: 1
+    constitution: 3
   weapons:
     - dual short swords
   shield: ~
@@ -254,8 +254,8 @@ sorcerer: &SORCERER
   attack type: spell
   special_attack_name: inflict wounds
   attributes:
-    constitution: 4
-    willpower: 4
+    constitution: 3
+    willpower: 3
   traits:
     - magic items
 warrior: &WARRIOR
@@ -264,8 +264,8 @@ warrior: &WARRIOR
   levels:
     warrior: 1
   attributes:
-    strength: 4
-    constitution: 4
+    strength: 3
+    constitution: 3
   feats: []
   traits:
     - magic items
@@ -320,8 +320,8 @@ warrior_dual_mighty:
 warrior_dual:
   <<: *WARRIOR
   attributes:
-    strength: 4
-    dexterity: 4  # to get 2wf
+    strength: 3
+    dexterity: 3  # to get 2wf
     constitution: 2
   armor: studded leather
   feats:
@@ -339,7 +339,7 @@ warrior_heavy:
 warrior_dex:
   <<: *WARRIOR
   attributes:
-    dexterity: 4
+    dexterity: 3
     constitution: 2
   armor: studded leather
   weapons:
@@ -351,7 +351,7 @@ warrior_dex:
 warrior_dex_counterattack:
   <<: *WARRIOR
   attributes:
-    dexterity: 4
+    dexterity: 3
     constitution: 2
   armor: studded leather
   weapons:
@@ -363,8 +363,8 @@ warrior_dex_counterattack:
 warrior_str_dex:
   <<: *WARRIOR
   attributes:
-    strength: 4
-    dexterity: 4
+    strength: 3
+    dexterity: 3
     constitution: 2
   armor: studded leather
   feats: []
@@ -373,9 +373,9 @@ warrior_str_dex:
 warrior_int:
   <<: *WARRIOR
   attributes:
-    strength: 4
-    constitution: 2
-    intelligence: 4
+    strength: 3
+    constitution: 1
+    intelligence: 3
   feats: []
   traits:
     - magic items
@@ -388,7 +388,7 @@ wizard: &WIZARD
   special_attack_name: inflict wounds
   attributes:
     constitution: 2
-    intelligence: 4
+    intelligence: 3
     willpower: 1
   feats:
     - devastating magic
@@ -397,8 +397,8 @@ wizard: &WIZARD
 wizard_perception:
   <<: *WIZARD
   attributes:
-    intelligence: 4
-    perception: 4
+    intelligence: 3
+    perception: 3
 wizard_itemless:
   <<: *WIZARD
   traits: ~
@@ -412,8 +412,8 @@ assassin:
     - dual short swords
   armor: studded leather
   attributes:
-    dexterity: 4
-    intelligence: 4
+    dexterity: 3
+    intelligence: 3
   feats:
     - weapon finesse
     # description: Assassins are typically garbed in black or dark grey.
@@ -442,8 +442,8 @@ taito:
   levels:
     fighter: 1
   attributes:
-    strength: 3
-    perception: 4
+    strength: 2
+    perception: 3
     willpower: 2
   feats: []
   traits:
@@ -455,61 +455,6 @@ g: &GENERIC
   levels:
     warrior: 1
   attributes: &GENERIC_ATTRIBUTES
-    strength: 2
-    dexterity: 2
-    constitution: 2
-    intelligence: 2
-    perception: 2
-    willpower: 2
-  feats: []
-g/str:
-  <<: *GENERIC
-  attributes:
-    <<: *GENERIC_ATTRIBUTES
-    strength: 4
-g/dex:
-  <<: *GENERIC
-  weapons:
-    - short sword
-  attributes:
-    <<: *GENERIC_ATTRIBUTES
-    dexterity: 4
-g/dex/studded:
-  <<: *GENERIC
-  armor: studded leather
-g/dex/longsword:
-  <<: *GENERIC
-  attributes:
-    <<: *GENERIC_ATTRIBUTES
-    dexterity: 4
-g/con:
-  <<: *GENERIC
-  attributes:
-    <<: *GENERIC_ATTRIBUTES
-    constitution: 4
-g/int:
-  <<: *GENERIC
-  attributes:
-    <<: *GENERIC_ATTRIBUTES
-    intelligence: 4
-g/per:
-  <<: *GENERIC
-  attributes:
-    <<: *GENERIC_ATTRIBUTES
-    perception: 4
-g/wil:
-  <<: *GENERIC
-  attributes:
-    <<: *GENERIC_ATTRIBUTES
-    willpower: 4
-g/nodex:
-  <<: *GENERIC
-  attributes:
-    <<: *GENERIC_ATTRIBUTES
-    dexterity: 0
-g/low:
-  <<: *GENERIC
-  attributes: &GENERIC_ATTRIBUTES_LOW
     strength: 1
     dexterity: 1
     constitution: 1
@@ -517,6 +462,51 @@ g/low:
     perception: 1
     willpower: 1
   feats: []
+g/str:
+  <<: *GENERIC
+  attributes:
+    <<: *GENERIC_ATTRIBUTES
+    strength: 3
+g/dex:
+  <<: *GENERIC
+  weapons:
+    - short sword
+  attributes:
+    <<: *GENERIC_ATTRIBUTES
+    dexterity: 3
+g/dex/studded:
+  <<: *GENERIC
+  armor: studded leather
+g/dex/longsword:
+  <<: *GENERIC
+  attributes:
+    <<: *GENERIC_ATTRIBUTES
+    dexterity: 3
+g/con:
+  <<: *GENERIC
+  attributes:
+    <<: *GENERIC_ATTRIBUTES
+    constitution: 3
+g/int:
+  <<: *GENERIC
+  attributes:
+    <<: *GENERIC_ATTRIBUTES
+    intelligence: 3
+g/per:
+  <<: *GENERIC
+  attributes:
+    <<: *GENERIC_ATTRIBUTES
+    perception: 3
+g/wil:
+  <<: *GENERIC
+  attributes:
+    <<: *GENERIC_ATTRIBUTES
+    willpower: 3
+g/nodex:
+  <<: *GENERIC
+  attributes:
+    <<: *GENERIC_ATTRIBUTES
+    dexterity: 0
 g/full_plate:
   <<: *GENERIC
   armor: full plate
@@ -541,12 +531,12 @@ g/spells/int:
   <<: *GENERIC_SPELLS
   attributes:
     <<: *GENERIC_ATTRIBUTES
-    intelligence: 4
+    intelligence: 3
 g/spells/wil:
   <<: *GENERIC_SPELLS
   attributes:
     <<: *GENERIC_ATTRIBUTES
-    willpower: 4
+    willpower: 3
 g/dr:
   <<: *GENERIC
   feats:
@@ -573,47 +563,47 @@ e/str:
   <<: *EXTREME
   attributes:
     <<: *EXTREME_ATTRIBUTES
-    strength: 5
+    strength: 4
 e/dex:
   <<: *EXTREME
   weapons:
     - short sword
   attributes:
     <<: *EXTREME_ATTRIBUTES
-    dexterity: 5
+    dexterity: 4
 e/dex/longsword:
   <<: *EXTREME
   attributes:
     <<: *EXTREME_ATTRIBUTES
-    dexterity: 5
+    dexterity: 4
 e/dex/studded:
   <<: *EXTREME
   armor: studded leather
   attributes:
     <<: *EXTREME_ATTRIBUTES
-    dexterity: 5
+    dexterity: 4
 e/con:
   <<: *EXTREME
   attributes:
     <<: *EXTREME_ATTRIBUTES
-    constitution: 5
+    constitution: 4
 e/int:
   <<: *EXTREME
   attributes:
     <<: *EXTREME_ATTRIBUTES
-    intelligence: 5
+    intelligence: 4
   attack type: spell
   special_attack_name: inflict wounds
 e/per:
   <<: *EXTREME
   attributes:
     <<: *EXTREME_ATTRIBUTES
-    perception: 5
+    perception: 4
 e/wil:
   <<: *EXTREME
   attributes:
     <<: *EXTREME_ATTRIBUTES
-    willpower: 5
+    willpower: 4
   attack type: spell
   special_attack_name: inflict wounds
 e/spells:
@@ -657,3 +647,20 @@ e/rog:
   <<: *EXTREME
   levels:
     rogue: 1
+u: &ULTIMATE
+  <<: *STANDARD_WARRIOR_EQUIPMENT
+  race: human
+  levels:
+    warrior: 1
+  attributes: &ULTIMATE_ATTRIBUTES
+    strength: 2
+    dexterity: 2
+    constitution: 2
+    intelligence: 2
+    perception: 2
+    willpower: 2
+  feats: []
+u/spells:
+  <<: *ULTIMATE
+  attack type: spell
+  special_attack_name: inflict wounds

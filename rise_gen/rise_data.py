@@ -235,12 +235,14 @@ def calculate_attribute_progression(progression, level):
     # key is by starting value
     return {
         None: 0,
-        1: level // 4 + 1,
-        2: level // 2 + 2,
-        3: (level * 3) // 4 + 3,
+        -2: -2,
+        -1: -1,
+        0: 0,
+        1: level // 2 + 1,
+        2: level + 1,
+        3: level + 2,
         4: level + 3,
-        5: level + 4
-    }.get(progression, progression)  # if not in here, just use the given value
+    }[progression]
 
 
 def calculate_skill_ranks(skill_points, level):
@@ -250,8 +252,8 @@ def calculate_skill_ranks(skill_points, level):
     return {
         None: 0,
         0: 0,
-        1: level // 2 + 2,
-        2: level + 5,
+        1: level // 2 + 1,
+        2: level + 2,
     }[skill_points]
 
 

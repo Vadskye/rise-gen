@@ -318,7 +318,7 @@ class CreatureStatistics(object):
         accuracy = None
         if self.attack_type == 'physical':
             accuracy = max(
-                self.combat_prowess,
+                self.level,
                 self.strength,
                 self.dexterity if self.weapon_encumbrance == 'light' else 0
             )
@@ -378,8 +378,6 @@ class CreatureStatistics(object):
 
             if not (self.special_attack_name == 'scorching ray' or self.special_attack_name == 'inflict wounds'):
                 raise Exception("Error: Unrecognized spell '{}'".format(self.special_attack_name))
-            for effect in self.active_effects_with_tag('spell damage dice'):
-                damage_dice = effect(self, damage_dice)
 
         else:
             raise Exception("Error: invalid attack type '{0}'".format(self.attack_type))
@@ -417,7 +415,7 @@ class CreatureStatistics(object):
 
     def _calculate_armor_defense(self):
         armor_defense = max(
-            self.combat_prowess,
+            self.level,
             self.dexterity,
             self.constitution
         )
@@ -428,15 +426,6 @@ class CreatureStatistics(object):
         for effect in self.active_effects_with_tag('armor defense'):
             armor_defense = effect(self, armor_defense)
         return armor_defense
-
-    def _calculate_combat_prowess(self):
-        prowess = base_class_combat_prowess_bonus(self.base_class.combat_prowess)
-        for class_name, rise_class in self.classes.items():
-            prowess += calculate_combat_prowess(
-                rise_class.combat_prowess, self.levels[class_name])
-        for effect in self.active_effects_with_tag('combat prowess'):
-            prowess = effect(self, prowess)
-        return prowess
 
     def _calculate_critical_threshold(self):
         threshold = 20
@@ -464,7 +453,7 @@ class CreatureStatistics(object):
         return fortitude
 
     def _calculate_hit_points(self):
-        hit_points = self.fortitude + 5 * self.level
+        hit_points = self.fortitude + (4 + (self.level) // 4) * self.level
         for effect in self.active_effects_with_tag('hit points'):
             hit_points = effect(self, hit_points)
         return hit_points
@@ -497,7 +486,7 @@ class CreatureStatistics(object):
         return reflex
 
     def _calculate_spellpower(self):
-        spellpower = self.level + 2
+        spellpower = self.level
         for effect in self.active_effects_with_tag('spellpower'):
             spellpower = effect(self, spellpower)
         return spellpower
@@ -661,7 +650,7 @@ class CreatureStatistics(object):
                 )
             ),
             "[Prowess] {0}".format(
-                self.combat_prowess,
+                self.level,
             ),
         ])
         return text
@@ -714,7 +703,6 @@ cached_properties = """
     armor
     encumbrance_penalty
     armor_defense
-    combat_prowess
     critical_threshold
     critical_multiplier
     damage_bonus
@@ -774,7 +762,6 @@ class Creature(CreatureStatistics):
             effect(self)
         self.alive = self.current_hit_points >= 0
         self.available_damage_reduction = self.damage_reduction
-        self.hit_once = False
         if self.current_hit_points <= 0:
             # apply the zero threshold
             if (self.zero_threshold
@@ -838,7 +825,6 @@ class Creature(CreatureStatistics):
             for effect in self.active_effects_with_tag('first hit'):
                 damage = effect(self, damage)
             creature.take_damage(damage)
-            self.hit_once = True
 
     def attack_with_spell(self, creature):
         """Attack the given creature with a spell"""
@@ -849,12 +835,13 @@ class Creature(CreatureStatistics):
         if attack_roll >= defense:
             damage = self.roll_damage()
             if attack_roll >= defense + 10:
-                damage == self.roll_damage()
+                damage += self.roll_damage()
                 # temp debug
                 self.critical_hits += 1
             creature.take_damage(damage)
         else:
-            creature.take_damage(self.roll_damage() // 2)
+            pass
+            # creature.take_damage(self.roll_damage() // 2)
 
     def is_alive(self):
         return self.alive
@@ -919,27 +906,11 @@ class Creature(CreatureStatistics):
         )
 
 
-def base_class_combat_prowess_bonus(progression):
-    return {
-        'good': 2,
-        'average': 2,
-        'poor': 1,
-    }[progression]
-
-
 def base_class_defense_bonus(progression):
     return {
         'good': 4,
         'average': 2,
         'poor': 0,
-    }[progression]
-
-
-def calculate_combat_prowess(progression, level):
-    return {
-        'good': level,
-        'average': (level * 4) // 5,
-        'poor': (level * 2) // 3,
     }[progression]
 
 
