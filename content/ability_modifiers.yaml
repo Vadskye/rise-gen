@@ -1,4 +1,5 @@
-area: # has special handling with 'knowledge' abilities
+---
+area:  # has special handling with 'knowledge' abilities
   cone:
     medium: 2
     large: 5
@@ -10,21 +11,21 @@ area: # has special handling with 'knowledge' abilities
   line:
     small: 1
     medium: 2
-    large: 4 # 50 x 10
-    huge: 5 # 100 x 10
-    gargantuan: 6 # 100 x 20
+    large: 4  # 50 x 10
+    huge: 5  # 100 x 10
+    gargantuan: 6  # 100 x 20
   radius:
     small: 2
     medium: 4
     large: 6
-    huge: 7 # 100' radius
-    gargantuan: 8 # 200' radius
-    colossal: 9 # 500' radius
+    huge: 7  # 100' radius
+    gargantuan: 8  # 200' radius
+    colossal: 9  # 500' radius
     mile: 10
   wall:
     medium: 2
     large: 3
-    huge: 4 # 100'
+    huge: 4  # 100'
 # different area types have special modifiers
 area type:
   burst: 0
@@ -33,21 +34,21 @@ area type:
   zone: -2
 battlefield effects:
   balance to move: 3
-  cover: 1 # usually by walls
+  cover: 1  # usually by walls
   damage: 4
   difficult terrain: 1
   fog: 1
-  impassable: 6 # for walls
+  impassable: 6  # for walls
   light: 1
   prismatic: 5
   underwater penalties: 3
   underwater: 5
-  weak damage: 1 # like wall of thorns
+  weak damage: 1  # like wall of thorns
 breakable:
-  combat: -2 # if you engage in combat against the target
-  easy damage reduction: -1 # like bludgeoning, piercing, slashing, fire
-  deal energy damage: -1 # like wall of fire
-  deal physical damage: -1 # like crushing hand
+  combat: -2  # if you engage in combat against the target
+  easy damage reduction: -1  # like bludgeoning, piercing, slashing, fire
+  deal energy damage: -1  # like wall of fire
+  deal physical damage: -1  # like crushing hand
   grapple: -1
   if attack: -5
   if attack per round: -2
@@ -56,7 +57,7 @@ breakable:
   standard skill check: -3
   standard action by any: -2
   standard action by target: -3
-  specific spell: -1 # remove curse, etc. Not for use on spells with less than one month of duration
+  specific spell: -1  # remove curse, etc. Not for use on spells with less than one month of duration
   violent action by any: -3
 buffs:
   all attributes:
@@ -64,8 +65,8 @@ buffs:
     plus4: 10
   all skills:
     mastery: 5
-    plus5: 6 # same cost as 5 skills
-    plus10: 9 # same cost as 5 skills
+    plus5: 6  # same cost as 5 skills
+    plus10: 9  # same cost as 5 skills
   attribute:
     plus2: 3
     plus4: 6
@@ -126,7 +127,7 @@ buffs:
   earthen blade: 1
   ethereal: 9
   extra attack: 8
-  extra attack with penalty: 4 # at -5 attack bonus
+  extra attack with penalty: 4  # at -5 attack bonus
   fast healing: 5
   feat:  # the cost depends on the minimum level the feat could be gained
     level1: 2
@@ -145,11 +146,11 @@ buffs:
   hide attack effects: 1
   ignore minor miss chance: 3
   increase overwhelm: 3
-  increase size: 5 # mix of upsides and downsides
-  increase effective size: 4 # as larger than life
+  increase size: 5  # mix of upsides and downsides
+  increase effective size: 4  # as larger than life
   increase weapon size: 2
   invisible: 10
-  ignore concealment: 2 # but not total concealment
+  ignore concealment: 2  # but not total concealment
   ignore damage reduction: 3  # equal to spellpower
   ignore hardness: 2  # equal to half spellpower
   ignore threatened terrain: 1
@@ -181,8 +182,8 @@ buffs:
   levitation: 5
   lifesight: 6
   low light vision: 1
-  mage armor: 2 # a bit low, but mage armor is special
-  maneuver accuracy: # plus5
+  mage armor: 2  # a bit low, but mage armor is special
+  maneuver accuracy:  # plus5
     all: 4  # plus5, all maneuvers
     one: 2
   maneuver defense: 3  # plus5
@@ -263,7 +264,7 @@ buffs:
     2: 5
 casting time:
   immediate: 4
-  personal move: 2 # only very few spells should be move - stuff like teleportation
+  personal move: 2  # only very few spells should be move - stuff like teleportation
   move: 2
   standard: 0
   swift: 4
@@ -282,7 +283,7 @@ conditions:
   # simple conditions with only minor downsides
   faerie fire: 1
   fatigued: 2
-  gender swap: 2 # this should only be accessible by high level, but doesn't do much
+  gender swap: 2  # this should only be accessible by high level, but doesn't do much
   half speed: 1
   lower max hp: 1
   reduce hardness: 1  # by spellpower
@@ -293,23 +294,23 @@ conditions:
   goaded: 2  # like impaired, but weaker
   crouching: 3
   deafened: 3
-  die from critical: 3 # die from taking critical damage at 0 HP
+  die from critical: 3  # die from taking critical damage at 0 HP
   dimension lock: 3
   forget: 3
   quarter speed: 3
-  ignited: 3 # implied removal mechanics
+  ignited: 3  # implied removal mechanics
   impaired: 3
   reduce damage reduction: 3  # by spellpower
   silenced: 3
   target reflex: 4  # attacks target lower of armor and reflex
-  partially blinded: 4 # +1 for removing special vision
+  partially blinded: 4  # +1 for removing special vision
   no zero threshold: 4
   # lose ability to take a subset of "real" actions
   dazed: 6
   die at zero: 6
   disoriented: 6
-  entangled: 5 # impaired + fatigued
-  exhausted: 5 # impaired + fatigued
+  entangled: 5  # impaired + fatigued
+  exhausted: 5  # impaired + fatigued
   fascinated: 6
   immobilized: 6
   slowed: 6
@@ -318,15 +319,15 @@ conditions:
   frightened: 8
   # significant reduction in ability to act
   # but can still try to do things normally, mostly
-  aversion: 8 # conditional severe impairment, but often better
-  charmed: 9 # weird - how does interact with combat?
-  command movement: 9 # like staggered, but worse
+  aversion: 8  # conditional severe impairment, but often better
+  charmed: 9  # weird - how does interact with combat?
+  command movement: 9  # like staggered, but worse
   no violence: 9
   out of battle: 9
-  petrified: 9 # like being out of battle
+  petrified: 9  # like being out of battle
   severely impaired: 9
   stasis: 9
-  suggestion: 9 # like aversion, but more flexible
+  suggestion: 9  # like aversion, but more flexible
   super silenced: 9
   take double physical damage: 9
   take double damage: 11
@@ -339,16 +340,16 @@ conditions:
   grappled: 12
   panicked: 13
   # can take no actions
-  command full movement: 16 # slightly better than no actions
+  command full movement: 16  # slightly better than no actions
   nauseated: 15
-  paralyzed: 15 # mental actions offset coup de grace
+  paralyzed: 15  # mental actions offset coup de grace
   stunned: 15
   # even worse than unable to act
-  asleep: 18 # if can be woken, use "breakable"
+  asleep: 18  # if can be woken, use "breakable"
   dominated: 18
 damage:
   critical overbleed: 5
-  double: 5 # only for use with critical effects
+  double: 5  # only for use with critical effects
   # "double" damage should STACK with "normal" damage; the total cost is 8
   physical attack: 1
   empowered: 7
@@ -367,18 +368,18 @@ duration:
   condition:
     round: -1
     concentration: 0
-    brief: 0 # 2 rounds
+    brief: 0  # 2 rounds
     until standard action: 1
     short fixed: 2
-    medium: 3 # x10
+    medium: 3  # x10
     disease: 3
-    long: 3.5 # x6
-    extreme: 4 # x12
-    week: 5 # x14
-    month: 5.5 # x4
-    year: 6 # x12
+    long: 3.5  # x6
+    extreme: 4  # x12
+    week: 5  # x14
+    month: 5.5  # x4
+    year: 6  # x12
     created: 6
-    permanent: 7 # x???
+    permanent: 7  # x???
   battlefield effect:
     round: -3
     concentration: -2
@@ -454,7 +455,7 @@ duration:
     passive ability: 3
 expended:
   single use: -3
-  five: -2 # or other values between single use and caster level
+  five: -2  # or other values between single use and caster level
   caster level: -1
 healing:
   normal: 3
@@ -466,16 +467,16 @@ healing:
     full: 8
 instant effect:
   banishment: 14
-  critical damage: 8 # one critical damage
+  critical damage: 8  # one critical damage
   death: 18
   dispel: 7
-  negative levels: 7 # one negative level per two spell levels
-  full negative levels: 14 # one negative level per spell level
-  maneuver: 3 # +spellpower
+  negative levels: 7  # one negative level per two spell levels
+  full negative levels: 14  # one negative level per spell level
+  maneuver: 3  # +spellpower
   petrified: 15
   resurrect: 9  # recently deceased only, for world continuity
   nothing: 0
-  shove: 1 # +spellpower; one of the weaker maneuvers
+  shove: 1  # +spellpower; one of the weaker maneuvers
   prismatic: 5
   prone: 2
   remove heal conditions: 4
@@ -497,9 +498,9 @@ limit affected:
     max size: -1
     mind affecting: -1
     nonalignment: 0
-    near ground: -1 # within 10 feet of the ground
+    near ground: -1  # within 10 feet of the ground
     on stone: -1
-    near plants: -2 # within 5 feet of plants
+    near plants: -2  # within 5 feet of plants
     touching metal: -2
     light vulnerable: -6
   buff:
@@ -509,7 +510,7 @@ limit affected:
     max size: 0
     mind affecting: 0
     nonalignment: -0.5
-    near ground: -0.5 # within 10 feet of the ground
+    near ground: -0.5  # within 10 feet of the ground
     on ground: -0.5
 range:
   normal:
@@ -537,14 +538,14 @@ repeatable:
     long: 2
     extreme: 3
     class feature: 3
-  immediate: # takes effect immediately, in addition to later repeats
+  immediate:  # takes effect immediately, in addition to later repeats
     true: 0  # not prebuffing makes this not significantly more powerful
       # because you're using a combat action for a lower-level effect
     false: 0
 retry failure:
   true: 1
   false: 0
-shadow: # subtle for spells that would normally have visual cues
+shadow:  # subtle for spells that would normally have visual cues
   true: 1
   false: 0
 shapeable:
@@ -558,15 +559,15 @@ targets:
     all: 0
     five: -1
     enemies: 1
-    allies: 0 # custom logic with buffs
-    automatically find one: ~ # custom logic
+    allies: 0  # custom logic with buffs
+    automatically find one: ~  # custom logic
   battlefield effect:
     all: 0
     enemies: 1
   normal:
     one: 0
     five: 3
-    automatically find one: ~ # custom logic
+    automatically find one: ~  # custom logic
 teleport:
   range:
     close: 0
@@ -581,10 +582,10 @@ teleport:
     false: 2
 trigger:
   condition:
-    battlefield effect: 4 # the effect triggers every round in the area, like a battlefield effect
-    every round: 4 # requires duration, assumes effects don't stack
-    every round stacking: 6 # requires duration
-    damage every round: 2 # cost shouldn't stack with damage, since damage is reduced
+    battlefield effect: 4  # the effect triggers every round in the area, like a battlefield effect
+    every round: 4  # requires duration, assumes effects don't stack
+    every round stacking: 6  # requires duration
+    damage every round: 2  # cost shouldn't stack with damage, since damage is reduced
     # damage every round has unique damage scaling; if inescapable, it's
     # spellpower. If AOE escapable, there is a -1 die size penalty.
     enter zone: 1
@@ -594,16 +595,16 @@ trigger:
     standard action by you: 2
     when attacked: 2  # takes effect when the target is attacked
   duration:
-    concentration: 0 # part of "standard action by you"
+    concentration: 0  # part of "standard action by you"
     short fixed: 0
     short: 0
-    medium: 1 # x10
-    long: 1.5 # x6
-    extreme: 2 # x12
-    week: 3 # x14
-    month: 3.5 # x4
-    year: 4 # x12
-    permanent: 6 # x???
+    medium: 1  # x10
+    long: 1.5  # x6
+    extreme: 2  # x12
+    week: 3  # x14
+    month: 3.5  # x4
+    year: 4  # x12
+    permanent: 6  # x???
     class feature: 4
 # damage die rules
 # base: d10 per 2 spellpower
