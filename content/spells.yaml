@@ -1,3 +1,4 @@
+---
 TEMPLATES:
   AVATAR:
     repeatable:
@@ -64,12 +65,12 @@ agony:
             - take double physical damage
           duration: brief
         - damage: normal
-          misc: 2 # this damage is doubled too
+          misc: 2  # this damage is doubled too
     failure:
       conditions:
         - sickened
       duration: brief
-      misc: 1 # ignore warnings...
+      misc: 1  # ignore warnings...
   range: medium
   limit affected: mind affecting
 aid:
@@ -82,7 +83,6 @@ air walk:
     - walking flight
   duration: short
   range: touch
-#align weapon:
 antilife shell:
   buffs:
     - unapproachable
@@ -95,7 +95,7 @@ antimagic field:
     - antimagic
   duration: short
   misc:
-    -2 # also affects the caster
+    -2  # also affects the caster
   area: small radius emanation
   targets: all
 aqueous blade:
@@ -136,7 +136,7 @@ avatar of wind:
   subeffects:
     - damage: normal
     - conditions:
-      - half speed
+        - half speed
       duration: brief
 assimilate:
   range: close
@@ -192,7 +192,7 @@ blade barrier:
     - damage
     - cover
   targets: all
-  misc: 1 # can also be radius
+  misc: 1  # can also be radius
   area: huge wall zone
   duration: short
 blasphemy:
@@ -223,14 +223,14 @@ burning hands:
   area: medium cone burst
   damage: normal
   targets: all
-call lightning: #-1 die size because of the 50' line
+call lightning:  # -1 die size because of the 50' line
   damage: normal
   range: medium
   expended: caster level
   trigger:
     condition: standard action by you
     duration: medium
-call lightning - repeatable: #-1 die size because of the 50' line
+call lightning - repeatable:  # -1 die size because of the 50' line
   damage: normal
   range: medium
   expended: caster level
@@ -238,7 +238,7 @@ call lightning - repeatable: #-1 die size because of the 50' line
     frequency: at will
     duration: medium
     immediate: true
-call lightning - single: #-1 die size because of the 50' line
+call lightning - single:  # -1 die size because of the 50' line
   damage: normal
   range: medium
 call lightning greater:
@@ -271,7 +271,7 @@ calm emotions:
   range: medium
   targets: all
   misc:
-    -3 # has to affect everyone to be really useful
+    -3  # has to affect everyone to be really useful
 certain blind:
   conditions:
     - blinded
@@ -287,7 +287,6 @@ chain lightning:
   area: medium radius burst
   range: medium
   targets: enemies
-#changestaff
 chaos hammer:
   limit affected: nonalignment
   range: medium
@@ -351,7 +350,7 @@ cloak of chaos:
   duration: short
   targets: five
   range: close
-#cloudkill:
+# cloudkill:
 cloud of bats:
   area: medium cone burst
   targets: enemies
@@ -364,7 +363,7 @@ color spray:
     - impaired
   duration: brief
   targets: all
-#combat transformation:
+# combat transformation:
 command:
   limit affected: language
   components: nosomatic
@@ -382,7 +381,7 @@ command:
         - impaired
       duration: brief
   range: medium
-#command greater:
+# command greater:
 command mass:
   $ref: command
   targets: five
@@ -407,9 +406,9 @@ confusion:
       duration: brief
   range: long
   targets: five
-#control water
-#create sound
-#creeping doom
+# control water
+# create sound
+# creeping doom
 cripple:
   attack subeffects:
     effect:
@@ -419,14 +418,14 @@ cripple:
         - paralyzed
       duration: brief
       misc:
-        -2 # damage matters less if the creature is paralyzed
-      # and this paralysis is marginally better than normal
+        -2  # damage matters less if the creature is paralyzed
+        # and this paralysis is marginally better than normal
     success:
       conditions:
         - staggered
       duration: brief
   range: medium
-#crushing despair:
+# crushing despair:
 cure light wounds:
   healing: normal
   range: medium
@@ -468,7 +467,7 @@ curse of the wayward mind:
       conditions:
         - disoriented
       duration: brief
-      # dispellable: false # this is too minor to matter
+      # dispellable: false  # this is too minor to matter
   range: close
 darkvision:
   buffs:
@@ -608,7 +607,7 @@ discern vulnerability:
   casting time: swift
   range: medium
   knowledge: vulnerabilities
-  duration: short fixed # unnecessary, but spell engine needs it - fix later
+  duration: short fixed  # unnecessary, but spell engine needs it - fix later
 discordant song:
   area: medium radius zone
   range: medium
@@ -628,7 +627,7 @@ discordant song:
 disintegrate:
   damage: kill at zero
   range: medium
-  misc: 1 #disintegrate objects
+  misc: 1  # disintegrate objects
 disjointed time:
   conditions:
     - impaired
@@ -645,7 +644,7 @@ dispel magic greater:
   $ref: dispel magic
   area: medium radius burst
   targets: all
-#disrupting weapon
+# disrupting weapon
 divine favor:
   buffs:
     - legend point: physical
@@ -687,13 +686,12 @@ earths pull:
   duration: brief
   limit affected: max size
   range: medium
-#earthen blade:
+# earthen blade:
 earth glide:
   buffs:
     - earth glide
   duration: short
 earthquake:
-  targets: all
   area: large radius burst
   attack subeffects:
     effect:
@@ -702,7 +700,7 @@ earthquake:
       conditions:
         - immobilized
       breakable: grapple
-      duration: short fixed # actually until it escapes
+      duration: short fixed  # actually until it escapes
       dispellable: false
     critical success:
       conditions:
@@ -739,7 +737,7 @@ earthspike mass:
   $ref: earthspike
   area: small radius burst
   targets: enemies
-#elemental swarm
+# elemental swarm
 enervation:
   instant effect: negative levels
   range: close
@@ -749,7 +747,7 @@ enervation greater:
       instant effect: full negative levels
     critical success:
       instant effect: death
-      misc: 1 # yes this is not powerful enough, go away
+      misc: 1  # yes this is not powerful enough, go away
     failure:
       instant effect: negative levels
   range: close
@@ -760,7 +758,7 @@ enlarge:
   range: close
   limit affected: max size
   misc:
-    -1 # in the specific case of enlarge, max size matters
+    -1  # in the specific case of enlarge, max size matters
 enlarge mass:
   $ref: enlarge
   range: medium
@@ -776,7 +774,8 @@ entangle greater:
   $ref: entangle
   duration: short fixed
   limit affected: ~
-  # this was present before, but wasn't worth a spell level because of the short duration
+  # this was present before, but wasn't worth a spell level
+  # because of the short duration
   breakable: grapple
 entropic shield:
   buffs:
@@ -811,9 +810,9 @@ eyebite - earbite:
   attack subeffects:
     effect:
       subeffects:
-       - damage: normal
-       - conditions:
-           - deafened
+        - damage: normal
+        - conditions:
+            - deafened
     success:
       conditions:
         - partially blinded
@@ -837,7 +836,7 @@ faerie fire - blinding:
   area: small radius burst
   range: medium
   targets: all
-#false reality
+# false reality
 fear:
   attack subeffects:
     critical success:
@@ -865,7 +864,7 @@ feather fall:
     - immune: falling damage
   duration: short
   misc:
-    -4 # only affects medium falling stuff
+    -4  # only affects medium falling stuff
   range: medium
 feeblemind:
   attack subeffects:
@@ -988,7 +987,7 @@ fog cloud - shielding:
   spell resistance: false
   targets: all
   area: medium radius emanation
-  misc: 3 # fog following you is significantly better
+  misc: 3  # fog following you is significantly better
 fog sea:
   $ref: fog cloud
   area: colossal radius zone
@@ -1032,7 +1031,6 @@ freedom mass:
 freedom personal:
   $ref: freedom
   range: ~
-  range: personal
   duration: long
 frost shield:
   buffs:
@@ -1044,7 +1042,7 @@ fungal growth:
   duration: created
   breakable: standard action by any
   range: close
-  misc: 1 # deals damage over time and if improperly removed
+  misc: 1  # deals damage over time and if improperly removed
 funny hats:
   area: large radius burst
   targets: all
@@ -1079,7 +1077,7 @@ ghoul touch:
       conditions:
         - impaired
       duration: brief
-#giant vermin
+# giant vermin
 glitterdust:
   attack subeffects:
     effect:
@@ -1150,7 +1148,7 @@ heat metal:
       duration: brief
     critical success:
       subeffects:
-        - damage: double # in addition to the base effect damage
+        - damage: double  # in addition to the base effect damage
           misc:
             -1  # can remove metal to end effect
         - conditions:
@@ -1219,12 +1217,12 @@ hypnotic pattern:
   battlefield effects:
     - fascinated
   limit affected: mind affecting
-  breakable: violent action by any # inherent in fascinated
+  breakable: violent action by any  # inherent in fascinated
 hypnotic pattern greater:
   $ref: hypnotic pattern
   duration: medium
   range: extreme
-  misc: 1 # make the lights mobile
+  misc: 1  # make the lights mobile
 ice storm:
   range: long
   area: medium cylinder zone
@@ -1326,7 +1324,7 @@ irresistible dance:
         - dazed
         - impaired
       duration: brief
-#knock:
+# knock:
 levitate:
   range: medium
   duration: short
@@ -1379,7 +1377,7 @@ mages disjunction:
   instant effect: dispel
   spell resistance: false
   targets: all
-#magic fang:
+# magic fang:
 magic missile:
   damage: normal
   range: medium
@@ -1387,7 +1385,7 @@ mark of tracking:
   knowledge: creature or object location
   duration: long
   misc:
-    -4 # for targeting restrictions? maybe need to fix knowledge duration handling
+    -4  # for targeting restrictions? maybe need to fix knowledge duration
   range: medium
 mask of the deceiver:
   buffs:
@@ -1400,9 +1398,9 @@ mask of the deceiver:
 mask of the deceiver - persistent:
   $ref: mask of the deceiver
   duration: long
-#magic vestment:
-##magic weapon
-#major image
+# magic vestment:
+# # magic weapon
+# major image
 maze:
   range: long
   conditions:
@@ -1410,7 +1408,7 @@ maze:
   duration: medium
   breakable: maze
   limit affected: max size
-#manipulate probability:
+# manipulate probability:
 meteor swarm:
   range: medium
   area: large cylinder burst
@@ -1425,7 +1423,7 @@ mirror image:
   duration: short
   range: personal
   misc:
-    -1 # vulnerability to multi-attacks
+    -1  # vulnerability to multi-attacks
 mirror image greater:
   buffs:
     - half miss all
@@ -1486,8 +1484,8 @@ phantasmal killer mass:
   $ref: phantasmal killer
   range: medium
   targets: five
-#phantasmal maze
-#phantasmal wound:
+# phantasmal maze
+# phantasmal wound:
 planar disruption:
   range: medium
   attack subeffects:
@@ -1496,11 +1494,11 @@ planar disruption:
     critical success:
       instant effect: banishment
       limit affected: creature type
-  misc: 1 # conjuration damage and crit success effect
+  misc: 1  # conjuration damage and crit success effect
 planar disruption mass:
   $ref: planar disruption
   targets: five
-#poison
+# poison
 polar ray:
   range: close
   subeffects:
@@ -1666,11 +1664,11 @@ prismatic yellow:
       duration: brief
 prohibition:
   area: large radius zone
-  misc: 1 # for the trigger shenanigans and damage increase
+  misc: 1  # for the trigger shenanigans and damage increase
   battlefield effects:
     - damage
   duration: short
-  targets: enemies # because a well chosen trigger should only hit foes
+  targets: enemies  # because a well chosen trigger should only hit foes
 protection from alignment:
   buffs:
     - damage reduction: alignment
@@ -1696,7 +1694,7 @@ shrink:
   duration: short
   limit affected: max size
   misc:
-    -1 # in the specific case of reduce, min size actually matters
+    -1  # in the specific case of reduce, min size actually matters
   range: close
 shrink mass:
   $ref: shrink
@@ -1729,7 +1727,7 @@ repulsion:
             - impassable
           duration: short
         - instant effect: shove
-          misc: 4 # this is a weak critical effect and that is okay
+          misc: 4  # this is a weak critical effect and that is okay
   area: huge radius emanation
   targets: enemies
 resist energy:
@@ -1750,7 +1748,7 @@ reverse gravity:
   battlefield effects:
     - immobilized
   duration: short
-  misc: 2 # better than regular immobilization
+  misc: 2  # better than regular immobilization
   targets: all
   range: medium
 divine might:
@@ -1841,7 +1839,7 @@ shocking grasp:
       conditions:
         - staggered
       duration: short fixed
-  misc: 2 # for the bonus against metallic targets
+  misc: 2  # for the bonus against metallic targets
 shout:
   components: nosomatic
   area: medium cone burst
@@ -1871,7 +1869,7 @@ silence:
         - super silenced
       duration: short fixed
   range: medium
-  misc: 2 # for utility as a buff and true "short" duration
+  misc: 2  # for utility as a buff and true "short" duration
 silence mass:
   $ref: silence
   targets: five
@@ -1890,12 +1888,12 @@ sleep:
       conditions:
         - exhausted
       duration: medium
-      misc: 3 # for the compulsion to sleep and inability to wake up
+      misc: 3  # for the compulsion to sleep and inability to wake up
     success:
       conditions:
         - fatigued
       duration: medium
-      misc: 1 # for the compulsion to sleep
+      misc: 1  # for the compulsion to sleep
 sleep mass:
   $ref: sleep
   targets: five
@@ -1928,7 +1926,7 @@ resist magic:
   buffs:
     - spell resistance
   dispellable: false
-#spell turning
+# spell turning
 spider climb:
   buffs:
     - climb speed
@@ -1986,13 +1984,13 @@ strip the flesh:
       duration: month
       dispellable: false
       misc:
-        -1 # Heal helps remove this
+        -1  # Heal helps remove this
 suggestion:
   components: nosomatic
   range: close
   limit affected: mind affecting
   misc:
-    -1 # penalty against threatened targets
+    -1  # penalty against threatened targets
   attack subeffects:
     critical success:
       conditions:
@@ -2060,7 +2058,7 @@ totemic mind mass:
   range: medium
   targets: five
   misc:
-    -0.5 # giving the same attribute to everyone is less useful
+    -0.5  # giving the same attribute to everyone is less useful
 totemic mind greater:
   buffs:
     - attribute: plus4
@@ -2077,7 +2075,7 @@ totemic power greater:
   $ref: totemic mind greater
 totemic power mass:
   $ref: totemic mind mass
-#touch of idiocy:
+# touch of idiocy:
 transmute flesh and stone:
   range: close
   attack subeffects:
@@ -2136,14 +2134,14 @@ unliving heart:
     - undead
   duration: long
   misc:
-    -2 # temporary hit points don't scale well with long duration
+    -2  # temporary hit points don't scale well with long duration
   range: personal
 unliving touch:
   damage: normal
   trigger:
     condition: standard action by you
     duration: long
-  misc: 1.5 # the duration scaling should be as a personal buff
+  misc: 1.5  # the duration scaling should be as a personal buff
 wail of the banshee:
   area: large radius burst
   components: nosomatic
@@ -2161,7 +2159,7 @@ wall of fire:
 wall of fire greater:
   $ref: wall of fire
   area: huge wall zone
-  misc: 1 # multiple shapes
+  misc: 1  # multiple shapes
 wall of force:
   area: large wall zone
   battlefield effects:
@@ -2173,7 +2171,7 @@ wall of thorns:
   area: large wall zone
   range: medium
   targets: all
-  breakable: deal physical damage # can be hacked through / burned
+  breakable: deal physical damage  # can be hacked through / burned
   battlefield effects:
     - weak damage
     - quarter speed
@@ -2221,7 +2219,7 @@ web:
           breakable: grapple
         critical success: ~
   misc:
-    -1 # between two opposing sides
+    -1  # between two opposing sides
   breakable: deal physical damage
   range: medium
 windstrike:
@@ -2234,7 +2232,7 @@ windstrike greater:
   subeffects:
     - damage: normal
     - instant effect: shove
-      misc: 1 # extra bonus to shoving
+      misc: 1  # extra bonus to shoving
 zephyr blade:
   buffs:
     - weapon reach
@@ -2255,7 +2253,7 @@ cone of nauseated:
     - nauseated
   duration: brief
   area: medium cone burst
-  targets:  all
+  targets: all
 excrete slime:
   buffs:
     - retributive damage: melee
@@ -2296,7 +2294,7 @@ gender swap:
         - severely impaired
         - gender swap
       duration: short fixed
-      misc: 8 # because the gender swap is permanent
+      misc: 8  # because the gender swap is permanent
       dispellable: false
       breakable: specific spell
     failure:
@@ -2311,10 +2309,10 @@ living missile:
     - range: medium
       damage: normal
     - teleport:
-        range: medium # throwing the ally
+        range: medium  # throwing the ally
         type: line of effect
         willing: true
-  misc: 1 # ally damage reduction
+  misc: 1  # ally damage reduction
   # ally must be adjacent
   # round down for size limitation on ally
   # ally can charge
@@ -2326,14 +2324,14 @@ bleed:
       instant effect: critical damage
     critical success:
       instant effect: critical damage
-      misc: 6 # it's a lot of critical damage
+      misc: 6  # it's a lot of critical damage
   range: close
 telekinetic blast:
   area: medium radius burst
   targets: enemies
   subeffects:
     - damage: normal
-    - instant effect: shove # sort of - it's not literally a shove, but this works
+    - instant effect: shove  # sort of - it's not literally a shove
 boon of mastery:
   buffs:
     - all skills: mastery
@@ -2346,7 +2344,7 @@ boon of mastery greater:
   duration: short
   range: close
   misc:
-    -2 # synergy between effects
+    -2  # synergy between effects
 boon of perception:
   buffs:
     - skill: mastery
@@ -2371,7 +2369,7 @@ boon of precision:
   duration: short
   range: close
   misc:
-    -1 # expend spell to avoid scaling with other crit chance bonuses
+    -1  # expend spell to avoid scaling with other crit chance bonuses
 create ballista:
   damage: normal
   range: long
@@ -2413,7 +2411,7 @@ shadow wall:
   targets: enemies
   duration: short fixed
 shadowstep:
-  misc: 2 # the illusory double
+  misc: 2  # the illusory double
   subeffects:
     - teleport:
         range: medium
@@ -2425,7 +2423,7 @@ shadowstep:
       duration: short fixed
       breakable: if attack
       range: personal
-      misc: 1 # don't double-count the personal range modifier
+      misc: 1  # don't double-count the personal range modifier
 spellsight:
   buffs:
     - spellsight
@@ -2460,7 +2458,7 @@ avatar of shielding:
   buffs:
     - damage reduction: all
   duration: short fixed
-  misc: 3 # +1 complicated duration, +1 can't be overcome, +1 swift to grant
+  misc: 3  # +1 complicated duration, +1 can't be overcome, +1 swift to grant
 aura of immunity:
   buffs:
     - damage immunity: single choice
@@ -2597,7 +2595,7 @@ aquatic sphere:
       duration: short
       targets: enemies
     - buffs:
-      - immune: underwater
+        - immune: underwater
       duration: short
       range: personal
   spell resistance: false
