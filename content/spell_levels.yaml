@@ -14,7 +14,7 @@ assimilate: 11
 aura of immunity: 5.5
 avatar of blades: 9
 avatar of death: 8
-avatar of good: 9
+avatar of good: 10
 avatar of growth: 5
 avatar of healing: 4
 avatar of life: 9
@@ -31,7 +31,7 @@ barkskin: 2
 black tentacles: 5
 blade barrier: 4
 bladestorm: 8
-blasphemy: 8
+blasphemy: 9
 bleed: 5
 bless: 1
 bless mass: 4
@@ -54,7 +54,7 @@ calm emotions: 3
 certain blind: 8
 certain daze: 3
 chain lightning: 6
-chaos hammer: 3
+chaos hammer: 4
 charm monster: 5
 charm monster mass: 8
 charm person: 3
@@ -68,7 +68,7 @@ cloud of bats: 2
 color spray: 1
 command: 3
 command mass: 6
-cone of cold: 2
+cone of cold: 5
 cone of nauseated: 13
 confusion: 4
 conjure projectile: -1
@@ -88,7 +88,7 @@ delay poison: 0
 delayed blast fireball: 7
 destruction: 6
 detect alignment: 1.0
-dictum: 8
+dictum: 9
 dimension door: 4
 dimension door mass: 7
 dimension slide: 2
@@ -156,7 +156,7 @@ foresee probability: -0.5
 forget: 1
 freedom: 2
 freedom mass: 5.5
-freedom personal: 3
+freedom personal: 7
 frost shield: 1
 fungal growth: 3
 funny hats: 2
@@ -183,17 +183,17 @@ hold monster mass: 7
 hold person: 1
 hold person mass: 5
 holy aura: 9
-holy smite: 2
-holy word: 5
+holy smite: 3
+holy word: 6
 horrid wilting: 9
 hypnotic pattern: 4
 hypnotic pattern greater: 8
-ice spike: 5
+ice spike: 3
 ice spike - freezing: 7
 ice storm: 7
 immolation: 7
 implosion: 9
-imprisonment: 9
+imprisonment: 8
 inertial shield: 2
 inflict critical wounds: 3
 inflict critical wounds mass: 6
@@ -220,10 +220,10 @@ mage armor: 1
 mages disjunction: 10
 magic missile: 1
 mark of tracking: 2
-martyrs gift: 7.5
+martyrs gift: 8
 mask of the deceiver: 1
 mask of the deceiver - persistent: 4
-maze: 8
+maze: 9
 meteor swarm: 9
 mighty throw: 3
 mirror image: 3
@@ -233,12 +233,14 @@ missile storm greater: 8
 moment of prescience: 3
 neutral ground: 13
 nondetection: 4
-orders wrath: 3
+orders wrath: 4
 overland flight: 8
+overland speed: 5
+petrifying gaze: 3
 phantasmal killer: 6
 phantasmal killer mass: 10
-planar disruption: 1
-planar disruption mass: 4
+planar disruption: 2
+planar disruption mass: 5
 polar ray: 6
 power word blind: 6
 power word fear: 2
@@ -312,7 +314,7 @@ slow mass: 7
 solid fog: 5
 sound burst: 2
 spellsight: 6
-spider climb: 3
+spider climb: 0
 spiritual weapon: 4.5
 spore cloud: 1
 stinking cloud: 3
@@ -341,7 +343,7 @@ transmute flesh and stone: 5
 tremorsense: 1
 true seeing: 6
 true strike: 0.5
-unholy blight: 3
+unholy blight: 4
 unliving eyes: 4
 unliving heart: 1
 unliving touch: 4.0
