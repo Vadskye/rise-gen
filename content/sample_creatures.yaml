@@ -492,16 +492,27 @@ g/int:
   attributes:
     <<: *GENERIC_ATTRIBUTES
     intelligence: 3
+  attack type: spell
+  special_attack_name: inflict wounds
 g/per:
   <<: *GENERIC
   attributes:
     <<: *GENERIC_ATTRIBUTES
     perception: 3
+g/per/spells:
+  <<: *GENERIC
+  attributes:
+    <<: *GENERIC_ATTRIBUTES
+    perception: 3
+  attack type: spell
+  special_attack_name: inflict wounds
 g/wil:
   <<: *GENERIC
   attributes:
     <<: *GENERIC_ATTRIBUTES
     willpower: 3
+  attack type: spell
+  special_attack_name: inflict wounds
 g/nodex:
   <<: *GENERIC
   attributes:
@@ -546,6 +557,18 @@ g/dr2:
   feats:
     - damage reduction
     - damage reduction
+g/buff/dmg:
+  <<: *GENERIC
+  feats:
+    - buff/damage
+g/buff/acc:
+  <<: *GENERIC
+  feats:
+    - buff/accuracy
+g/buff/def:
+  <<: *GENERIC
+  feats:
+    - buff/defenses
 e: &EXTREME
   <<: *STANDARD_WARRIOR_EQUIPMENT
   race: human
@@ -647,6 +670,18 @@ e/rog:
   <<: *EXTREME
   levels:
     rogue: 1
+e/buff/dmg:
+  <<: *EXTREME
+  feats:
+    - buff/damage
+e/buff/def:
+  <<: *EXTREME
+  feats:
+    - buff/defenses
+e/buff/acc:
+  <<: *EXTREME
+  feats:
+    - buff/accuracy
 u: &ULTIMATE
   <<: *STANDARD_WARRIOR_EQUIPMENT
   race: human
@@ -664,3 +699,15 @@ u/spells:
   <<: *ULTIMATE
   attack type: spell
   special_attack_name: inflict wounds
+u/buff/dmg:
+  <<: *ULTIMATE
+  feats:
+    - buff/damage
+u/buff/acc:
+  <<: *ULTIMATE
+  feats:
+    - buff/accuracy
+u/buff/def:
+  <<: *ULTIMATE
+  feats:
+    - buff/defenses

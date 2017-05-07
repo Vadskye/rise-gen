@@ -2,6 +2,7 @@
 
 import yaml
 
+
 class Leveler:
 
     default_properties = list()
@@ -27,7 +28,6 @@ class Leveler:
 
         for property_name in cls.possible_properties:
             create_leveler_property(property_name)
-
 
     def __init__(self, name, properties):
         self.name = name

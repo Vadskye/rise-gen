@@ -1,27 +1,28 @@
 ---
 area:  # has special handling with 'knowledge' abilities
   cone:
-    medium: 2
-    large: 5
+    medium: 1
+    large: 3
+    huge: 5
     detection: 1  # standard 50' detection cone is cheap (SR offset)
   cylinder:
-    small: 2
-    medium: 4
-    large: 6
-  line:
     small: 1
-    medium: 2
-    large: 4  # 50 x 10
+    medium: 3
+    large: 5
+  line:
+    small: 0
+    medium: 1
+    large: 3  # 50 x 10
     huge: 5  # 100 x 10
     gargantuan: 6  # 100 x 20
   radius:
-    small: 2
-    medium: 4
-    large: 6
+    small: 1
+    medium: 3
+    large: 5
     huge: 7  # 100' radius
-    gargantuan: 8  # 200' radius
-    colossal: 9  # 500' radius
-    mile: 10
+    gargantuan: 9  # 200' radius
+    colossal: 11  # 500' radius
+    mile: 13
   wall:
     medium: 2
     large: 3
@@ -57,7 +58,8 @@ breakable:
   standard skill check: -3
   standard action by any: -2
   standard action by target: -3
-  specific spell: -1  # remove curse, etc. Not for use on spells with less than one month of duration
+  # remove curse, etc. Not for use on spells with less than one month of duration
+  specific spell: -1
   violent action by any: -3
 buffs:
   all attributes:
@@ -195,7 +197,7 @@ buffs:
   natural weapon: 1
   nondetection: 2
   one attack misses: 8  # per round; as Reflexive Dodge
-  radiate light: 0
+  radiate light: x 0
   rage bonus plus2: 8
   ranged melee weapon:
     close: 2
@@ -306,6 +308,7 @@ conditions:
   partially blinded: 4  # +1 for removing special vision
   no zero threshold: 4
   # lose ability to take a subset of "real" actions
+  minus2: 6
   dazed: 6
   die at zero: 6
   disoriented: 6
@@ -350,12 +353,11 @@ conditions:
 damage:
   critical overbleed: 5
   double: 5  # only for use with critical effects
-  # "double" damage should STACK with "normal" damage; the total cost is 8
+  # "double" damage should STACK with "normal" damage; the total cost is 10
   physical attack: 1
-  empowered: 7
-  healing: 3
-  normal: 3
-  kill at zero: 7
+  healing: 5
+  normal: 5
+  kill at zero: 8
   # do not confuse DOT effects with battlefield effect: damage
   over time: 3
   cantrip: 1

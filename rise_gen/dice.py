@@ -9,30 +9,35 @@ def quick_roll(count, size):
         total += random.randint(1, size)
     return total
 
-class Die(object):
+class DicePool(object):
     def __init__(self, size, count=1):
         self.count = count
         self.size = size
 
     def average(self):
         total = 0
-        for i in range(self.count):
-            total += (1 + self.size) / 2.0
-        return total
+        return self.count * (1 + self.size) / 2
 
     def maximum(self):
         return self.size * self.count
 
-    def roll(self):
+    def roll(self, explode=False):
         total = 0
         for i in range(self.count):
-            total += random.randint(1, self.size)
+            roll = random.randint(1, self.size)
+            total += roll
+            while explode and roll == self.size:
+                roll = random.randint(1, self.size)
+                total += roll
         return total
 
-    # adding and subtracting from a Die increases the die size
+    def copy(self):
+        return DicePool(size=self.size, count=self.count)
+
+    # adding and subtracting from a DicePool increases the die size
     # this includes wrapping at d10 into 2d6
     def __add__(self, value):
-        new_die = Die(size=self.size, count=self.count)
+        new_die = DicePool(size=self.size, count=self.count)
         # value is the number of size changes
         if value >= 0:
             for i in range(value):
@@ -43,7 +48,7 @@ class Die(object):
         return new_die
 
     def __sub__(self, value):
-        new_die = Die(size=self.size, count=self.count)
+        new_die = DicePool(size=self.size, count=self.count)
         # value is the number of size decreases
         if value >= 0:
             for i in range(value):
@@ -82,23 +87,28 @@ class Die(object):
             else:
                 raise Exception("Impossible die size")
 
-    #read a single collection of dice, like '2d6'
+    def resize(self, increments):
+        new = self + increments
+        self.count = new.count
+        self.size = new.size
+
+    # Read a single collection of dice, like '2d6'
     @classmethod
     def from_string(cls, die_name):
         # First check the number of dice
         # http://stackoverflow.com/questions/3845423/remove-empty-strings-from-a-list-of-strings
         die_split = list(filter(bool, re.split('d', die_name)))
-        if len(die_split)>1:
+        if len(die_split) > 1:
             count = int(die_split[0])
             size = int(die_split[1])
         else:
             count = 1
             size = int(die_split[0])
-        #Extract the die size
+        # Extract the die size
         return cls(size=size, count=count)
 
     def __repr__(self):
-        text = 'Die({0}d{1})'.format(self.count, self.size)
+        text = 'DicePool({0}d{1})'.format(self.count, self.size)
         return text
 
     def __str__(self):
@@ -108,68 +118,6 @@ class Die(object):
     def __eq__(self, die):
         return self.size == die.size and self.count == die.count
 
-class DieCollection(object):
-    def __init__(self, *args):
-        self.dice = list(args)
 
-    def roll(self):
-        total = 0
-        for die in self.dice:
-            total += die.roll()
-        return total
-
-    def average(self):
-        total = 0
-        for die in self.dice:
-            total += die.average()
-        return total
-
-    def maximum(self):
-        total = 0
-        for die in self.dice:
-            total += die.maximum()
-        return total
-
-    def add_die(self, die):
-        self.dice.append(die)
-
-    def remove_die(self, die):
-        try:
-            self.dice.pop(self.dice.index(die))
-        except IndexError:
-            # no matching die found
-            pass
-
-    def resize_die(self, i, steps):
-        self.dice[i] += steps
-
-    def resize_dice(self, steps):
-        """Resize all dice in this collection"""
-        for i, die in enumerate(self.dice):
-            self.dice[i] += steps
-
-    def increase_size(self, die_increments=1):
-        for die in self.dice:
-            die.increase_size(die_increments)
-
-    def decrease_size(self, die_increments=1):
-        for die in self.dice:
-            die.decrease_size(die_increments)
-
-    def __repr__(self):
-        return 'DieCollection({0})'.format(
-            ', '.join([str(die) for die in self.dice])
-        )
-
-    def __str__(self):
-        return '+'.join([str(die) for die in self.dice])
-
-    def __eq__(self, die_collection):
-        # for now, compare in order, even though that's not technically correct
-        for i in range(len(self.dice)):
-            if self.dice[i] != die_collection.dice[i]:
-                return False
-        return True
-
-d20 = Die(20)
-d10 = Die(10)
+d20 = DicePool(size=20, count=1)
+d10 = DicePool(size=10, count=1)

@@ -1,364 +1,391 @@
-ablative shield: 2
+Warning: Leveler('blasphemy') has critical success with incorrect level 19 instead of 17
+Warning: Leveler('charm monster') has critical success with incorrect level 16 instead of 18
+Warning: Leveler('charm monster mass') has critical success with incorrect level 16 instead of 18
+Warning: Leveler('charm person') has critical success with incorrect level 16 instead of 18
+Warning: Leveler('charm person persistent') has critical success with incorrect level 16 instead of 20.5
+Warning: Leveler('charm person mass') has critical success with incorrect level 16 instead of 18
+Warning: Leveler('curse of the wayward mind') has critical success with incorrect level 14 instead of 17
+Warning: Leveler('death knell') has critical success with incorrect level 15.5 instead of 17
+Warning: Leveler('death knell') Should not have subeffects under success
+Warning: Leveler('dictum') has critical success with incorrect level 19 instead of 17
+Warning: Leveler('forget') has critical success with incorrect level 10 instead of 12
+Warning: Leveler('funny hats') has nonpositive property 'instant effect'
+Warning: Leveler('imprisonment') has critical success with incorrect level 17 instead of 22
+Warning: Leveler('orders wrath') has critical success with incorrect level 19 instead of 17
+Warning: Leveler('planar disruption') has critical success with incorrect level 12 instead of 14
+Warning: Leveler('planar disruption mass') has critical success with incorrect level 12 instead of 14
+Warning: Leveler('power word stun') has critical success with incorrect level 18 instead of 15
+Warning: Leveler('unholy blight') has critical success with incorrect level 19 instead of 17
+Warning: Leveler('sever magic') has failure with incorrect level 3 instead of 6
+Warning: Leveler('flare') has nonpositive property 'attack subeffects'
+Warning: Leveler('flare') has unexpected key 'conditions' in attack_subeffects
+Warning: Leveler('flare') has unexpected key 'duration' in attack_subeffects
+Warning: Leveler('flare') is missing critical success
+ablative shield: 0
 acid arrow: 3
 acid arrow greater: 6
-acid fog: 6
+acid fog: 3
 acid splash: 1
-agony: 3
-aid: 1
-air walk: 4
-antilife shell: 7
-antimagic field: 7
-aquatic sphere: 5
-aqueous blade: 3
-assimilate: 11
-aura of immunity: 5.5
+agony: 1
+aid: -1
+air walk: 2
+antilife shell: 4
+antimagic field: 4
+aquatic sphere: 2
+aqueous blade: 1
+assimilate: 10
+aura of immunity: 3.0
 avatar of blades: 9
-avatar of death: 8
+avatar of death: 7
 avatar of good: 10
-avatar of growth: 5
-avatar of healing: 4
-avatar of life: 9
-avatar of might: 8
-avatar of shielding: 7
-avatar of suffering: 8
-avatar of translocation: 7
+avatar of growth: 3
+avatar of healing: 2
+avatar of life: 7
+avatar of might: 7
+avatar of shielding: 5
+avatar of suffering: 6
+avatar of translocation: 5
 avatar of wind: 7
-aversion: 2
-babble: 2
-bane: 1
-bane mass: 4
-barkskin: 2
-black tentacles: 5
-blade barrier: 4
+aversion: 0
+babble: -1
+bane: -1
+bane mass: 2
+barkskin: 0
+black tentacles: 2
+blade barrier: 2
 bladestorm: 8
-blasphemy: 9
+blasphemy: 8
 bleed: 5
-bless: 1
-bless mass: 4
-blessed blade: 6
-blink: 6
-blur: 2
-boon of many eyes: 4
-boon of mastery: 3
-boon of mastery greater: 7
-boon of perception: 1
-boon of perception mass: 4.5
-boon of precision: 5
-boulder drop: 4
-burning hands: 1
+bless: -1
+bless mass: 2
+blessed blade: 4
+blink: 4
+blur: 0
+boon of many eyes: 2
+boon of mastery: 1
+boon of mastery greater: 5
+boon of perception: -1
+boon of perception mass: 2.5
+boon of precision: 3
+boulder drop: 3
+burning hands: 0
+burning hands, widened: 0
 call lightning: 3
 call lightning - repeatable: 2
 call lightning - single: 1
 call lightning greater: 6
-calm emotions: 3
-certain blind: 8
-certain daze: 3
-chain lightning: 6
+calm emotions: 0
+certain blind: 6
+certain daze: 1
+chain lightning: 5
 chaos hammer: 4
-charm monster: 5
-charm monster mass: 8
-charm person: 3
-charm person mass: 6
-charm person persistent: 5.5
-circle of death: 5
-circle of healing: 4.5
-cloak of chaos: 9
-cloak of single chaos: 6
-cloud of bats: 2
-color spray: 1
-command: 3
-command mass: 6
-cone of cold: 5
-cone of nauseated: 13
-confusion: 4
-conjure projectile: -1
+charm monster: 3
+charm monster mass: 6
+charm person: 1
+charm person mass: 4
+charm person persistent: 3.5
+circle of death: 2
+circle of healing: 2.0
+cloak of chaos: 7
+cloak of single chaos: 4
+cloud of bats: -1
+color spray: -2
+command: 1
+command mass: 4
+cone of cold: 3
+cone of nauseated: 10
+confusion: 2
+conjure projectile: -3
 create ballista: 3
 cripple: 4
-cure light wounds: 1
-cure light wounds mass: 4
+cure light wounds: -1
+cure light wounds mass: 2
 curse of blood and bone: 2
-curse of the wayward mind: 5
-darkvision: 1
+curse of the wayward mind: 3
+darkvision: -1
 death knell: 3
-death ward: 4.5
-deep slumber: 5
-deflection: 5
-delay damage: 3
-delay poison: 0
-delayed blast fireball: 7
+death ward: 2.5
+deep slumber: 3
+deflection: 3
+delay damage: 1
+delay poison: -2
+delayed blast fireball: 6
 destruction: 6
-detect alignment: 1.0
-dictum: 9
-dimension door: 4
-dimension door mass: 7
-dimension slide: 2
-dimensional anchor: 2
-dimensional army: 9
-discern lies: 2.0
-discern vulnerability: 3
-discordant song: 7
-disintegrate: 6
-disjointed time: 3
-dispel magic: 3
-dispel magic greater: 7
-divine favor: 3
-divine might: 5
-divine shield: 7
-dominate monster: 8
-dominate person: 6
+detect alignment: -1.0
+dictum: 8
+dimension door: 2
+dimension door mass: 5
+dimension slide: 0
+dimensional anchor: 0
+dimensional army: 7
+discern lies: 0.0
+discern vulnerability: 1
+discordant song: 4
+disintegrate: 5
+disjointed time: 1
+dispel magic: 1
+dispel magic greater: 4
+divine favor: 1
+divine might: 3
+divine shield: 5
+dominate monster: 6
+dominate person: 4
 drain life: 3
-drown: 8
-earth glide: 4
-earthen blade: 1
-earthquake: 9
-earths pull: 3
+drown: 6
+earth glide: 2
+earthen blade: -1
+earthquake: 6
+earths pull: 1
 earthspike: 2
 earthspike - impaling: 4
-earthspike mass: 5
-enervation: 4
-enervation greater: 8
-enlarge: 2
-enlarge mass: 5.5
-entangle: 1
-entangle greater: 4
-entropic shield: 2
-ethereal jaunt: 5
-etherealness: 9
-excrete slime: 1
+earthspike mass: 4
+enervation: 2
+enervation greater: 6
+enlarge: 0
+enlarge mass: 3.5
+entangle: -1
+entangle greater: 2
+entropic shield: 0
+ethereal jaunt: 3
+etherealness: 7
+excrete slime: -1
 execution: 4
-execution - alt: 3
+execution - alt: 2
 eyebite: 2
 eyebite - earbite: 5
-faerie fire: 1
-faerie fire - blinding: 5
-fear: 2
-fear mass: 5
-feather fall: 0.5
-feeblemind: 7
+faerie fire: -2
+faerie fire - blinding: 2
+fear: 0
+fear mass: 3
+feather fall: -1.5
+feeblemind: 5
 finger of death: 6
-fire seeds: 5
-fire shield: 4
-fire shield long: 5
-fire storm: 8
-fireball: 3
-fireball - immolating: 5
+fire seeds: 4
+fire shield: 2
+fire shield long: 3
+fire storm: 7
+fireball: 2
+fireball - immolating: 4
+fireball, alt: 4
 firebolt: 2
+fireburst: 2
 fissure: 6
-flame blade: 2
-flame strike: 5
-flare: -2
-fly: 4
-fog cloud: 2
-fog cloud - shielding: 4
+flame blade: 0
+flame strike: 4
+flare: -4
+fly: 2
+fog cloud: -1
+fog cloud - shielding: 1
 fog sea: 7
-forcecage: 8
-foresee probability: -0.5
-forget: 1
-freedom: 2
-freedom mass: 5.5
-freedom personal: 7
-frost shield: 1
-fungal growth: 3
-funny hats: 2
-gaseous form: 3
-gender swap: 6
-gentle descent: 1
-gentle descent mass: 4.5
-ghoul touch: 4
-glitterdust: 2
-glitterdust greater: 6
-golem heart: 7
-grease: 1
-gust of wind: 1
-harm: 6
-haste: 2
-haste - empowered: 6
-haste mass: 5.5
-heal: 5
+forcecage: 6
+foresee probability: -2.5
+forget: -1
+freedom: 0
+freedom mass: 3.5
+freedom personal: 5
+frost shield: -1
+fungal growth: 1
+funny hats: -1
+gaseous form: 1
+gender swap: 4
+gentle descent: -1
+gentle descent mass: 2.5
+ghoul touch: 2
+glitterdust: -1
+glitterdust greater: 3
+golem heart: 5
+grease: -2
+gust of wind: -2
+harm: 4
+haste: 0
+haste - empowered: 4
+haste mass: 3.5
+heal: 3
 heat metal: 1
-heroism: 3
-heroism mass: 6.5
-hold monster: 3
-hold monster mass: 7
-hold person: 1
-hold person mass: 5
-holy aura: 9
-holy smite: 3
-holy word: 6
-horrid wilting: 9
-hypnotic pattern: 4
-hypnotic pattern greater: 8
+heroism: 1
+heroism mass: 4.5
+hold monster: 1
+hold monster mass: 5
+hold person: -1
+hold person mass: 3
+holy aura: 7
+holy smite: 2
+holy word: 5
+horrid wilting: 8
+hypnotic pattern: 1
+hypnotic pattern greater: 5
 ice spike: 3
 ice spike - freezing: 7
-ice storm: 7
-immolation: 7
+ice storm: 6
+immolation: 6
 implosion: 9
 imprisonment: 8
-inertial shield: 2
-inflict critical wounds: 3
-inflict critical wounds mass: 6
+inertial shield: 1
+inflict critical wounds: 1
+inflict critical wounds mass: 4
 inflict light wounds: 1
 inflict light wounds mass: 4
-invisibility: 3
-invisibility greater: 6
-invisibility mass: 6.5
-invulnerability: 4
-invulnerability - spellshield: 9
-irresistible dance: 9
-levitate: 3.5
-lifebound: 8
-lifegiving roots: 5.5
-lifeseeking missile: 3.0
-lightning bolt: 3
-lightning bolt - staggering: 6
+invisibility: 1
+invisibility greater: 4
+invisibility mass: 4.5
+invulnerability: 2
+invulnerability - spellshield: 7
+irresistible dance: 7
+levitate: 1.5
+lifebound: 6
+lifegiving roots: 3.5
+lifeseeking missile: 2.5
+lightning bolt: 2
+lightning bolt - staggering: 5
 living missile: 5
-locate creature: 3
-locate entity: 4
-locate object: 2
-longstrider: 1
-mage armor: 1
-mages disjunction: 10
+locate creature: 1
+locate entity: 2
+locate object: 0
+longstrider: -1
+mage armor: -1
+mages disjunction: 7
 magic missile: 1
-mark of tracking: 2
-martyrs gift: 8
-mask of the deceiver: 1
-mask of the deceiver - persistent: 4
-maze: 9
-meteor swarm: 9
+mark of tracking: 0
+martyrs gift: 5
+mask of the deceiver: -1
+mask of the deceiver - persistent: 2
+maze: 7
+meteor swarm: 8
 mighty throw: 3
-mirror image: 3
-mirror image greater: 6
+mirror image: 1
+mirror image greater: 4
 missile storm: 4
-missile storm greater: 8
-moment of prescience: 3
-neutral ground: 13
-nondetection: 4
+missile storm greater: 9
+moment of prescience: 1
+neutral ground: 10
+nondetection: 2
 orders wrath: 4
-overland flight: 8
-overland speed: 5
-petrifying gaze: 3
-phantasmal killer: 6
-phantasmal killer mass: 10
+overland flight: 6
+overland speed: 3
+petrifying gaze: 1
+phantasmal killer: 4
+phantasmal killer mass: 8
 planar disruption: 2
 planar disruption mass: 5
 polar ray: 6
-power word blind: 6
-power word fear: 2
-power word impair: 4
-power word stagger: 1
-power word stun: 3
-precognition: 1
-precognition - empowered: 4
-prismatic beam: 3
+power word blind: 4
+power word fear: 0
+power word impair: 2
+power word stagger: -1
+power word stun: 1
+precognition: -1
+precognition - empowered: 2
+prismatic beam: 1
 prismatic blue: 4
-prismatic green: 4
-prismatic indigo: 4
-prismatic orange: 3
+prismatic green: 2
+prismatic indigo: 2
+prismatic orange: 1
 prismatic red: 4
-prismatic spray: 6
-prismatic storm: 9
-prismatic wall: 5
+prismatic spray: 2
+prismatic storm: 6
+prismatic wall: 3
 prismatic yellow: 5
-prohibition: 6
-protection from alignment: 1
+prohibition: 3
+protection from alignment: -1
 radiant lance: 1
-read mind: 2
-read mind greater: 6
-read mind mass: 5
-regeneration: 1
-regeneration - empowered: 6
-regeneration alt: 1
-regeneration mass: 5
-repulsion: 6
-resilient sphere: 5
-resist energy: 1
-resist magic: 3
-restoration: 1
-revelation of destruction: 6
-revelation of prowess: 4
-reverse gravity: 8
-revivify: 5
-rock blast: 2
-rotburst: 3
-rotburst greater: 7
-rotting grasp: 1
+read mind: 0
+read mind greater: 4
+read mind mass: 3
+regeneration: -1
+regeneration - empowered: 4
+regeneration alt: -1
+regeneration mass: 3
+repulsion: 4
+resilient sphere: 3
+resist energy: -1
+resist magic: 1
+restoration: -1
+revelation of destruction: 4
+revelation of prowess: 2
+reverse gravity: 5
+revivify: 3
+rock blast: 1
+rotburst: 0
+rotburst greater: 4
+rotting grasp: -1
 scorching ray: 3
 scrybolt: 5
-sea of flame: 5
+sea of flame: 2
 searing light: 1
-see invisibility: 1
-see invisibility mass: 4
+see invisibility: -1
+see invisibility mass: 2
 seismic slam: 8
-sever magic: 8
-shadow duplicate: 8
-shadow wall: 6
+sever magic: 6
+shadow duplicate: 6
+shadow wall: 4
 shadowbolt: 2
-shadowshield: 9
-shadowstep: 5
-shadowstorm: 7
-share pain: 2
-shield of faith: 1
-shining beacon: 3
+shadowshield: 7
+shadowstep: 3
+shadowstorm: 4
+share pain: 0
+shield of faith: -1
+shining beacon: 1
 shocking grasp: 1
-shout: 4
-shout greater: 7
-shrink: 1
-shrink mass: 4.5
-silence: 2
-silence mass: 5
+shout: 3
+shout greater: 5
+shrink: -1
+shrink mass: 2.5
+silence: 0
+silence mass: 3
 skysmite: 6
-sleep: 1
-sleep mass: 4
-slow: 3
-slow mass: 7
-solid fog: 5
-sound burst: 2
-spellsight: 6
-spider climb: 0
+sleep: -1
+sleep mass: 2
+slow: 1
+slow mass: 5
+solid fog: 2
+sound burst: 1
+spellsight: 4
+spider climb: -2
 spiritual weapon: 4.5
-spore cloud: 1
-stinking cloud: 3
-storm of vengeance: 11
-stormlord: 5
+spore cloud: -2
+stinking cloud: 0
+storm of vengeance: 13
+stormlord: 3
 strip the flesh: 7
-suggestion: 4
-suggestion mass: 8
-sunbeam: 4
-sunburst: 7
-telekinetic blast: 5
-telekinetic shove: 2
-telepathy: 5
-temporal stasis: 6
-third eye: 8
-time stop: 9
-timestream: 1
-totemic mind: 2
-totemic mind greater: 5
-totemic mind greater alt: 4
-totemic mind mass: 4.0
-totemic power: 2
-totemic power greater: 5
-totemic power mass: 4.0
+suggestion: 2
+suggestion mass: 6
+sunbeam: 3
+sunburst: 6
+telekinetic blast: 4
+telekinetic shove: 0
+telepathy: 3
+temporal stasis: 4
+third eye: 6
+time stop: 7
+timestream: -2
+totemic mind: 0
+totemic mind greater: 3
+totemic mind greater alt: 2
+totemic mind mass: 2.0
+totemic power: 0
+totemic power greater: 3
+totemic power mass: 2.0
 transmute flesh and stone: 5
-tremorsense: 1
-true seeing: 6
-true strike: 0.5
+tremorsense: -1
+true seeing: 4
+true strike: -1.5
 unholy blight: 4
-unliving eyes: 4
-unliving heart: 1
+unliving eyes: 2
+unliving heart: -1
 unliving touch: 4.0
-wail of the banshee: 10
-wall of fire: 2
-wall of fire greater: 5
-wall of force: 5
-wall of thorns: 2
-wall of thorns greater: 6
-water walk: 0.5
-water walk - persistent: 2.5
-waves of exhaustion: 6
-waves of fatigue: 3
-weapon of power: 2
-web: 5
+wail of the banshee: 8
+wall of fire: 0
+wall of fire greater: 3
+wall of force: 3
+wall of thorns: 0
+wall of thorns greater: 4
+water walk: -1.5
+water walk - persistent: 0.5
+waves of exhaustion: 2
+waves of fatigue: -1
+weapon of power: 0
+web: 2
+windblast: 2
 windstrike: 2
 windstrike greater: 5
-zephyr blade: 2
+zephyr blade: 0

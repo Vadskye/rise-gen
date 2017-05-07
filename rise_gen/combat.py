@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 
 import argparse
-from prettytable import PrettyTable
 # from rise_gen.ability import Ability
 from rise_gen.creature import Creature
+from rise_gen.output import format_results
 import rise_gen.util as util
-import sys
 import cProfile
 from pprint import pprint, pformat
+
 
 class CreatureGroup(object):
     """A CreatureGroup is a group of creatures that acts like a single creature """
@@ -15,6 +15,29 @@ class CreatureGroup(object):
 
     def __init__(self, creatures):
         self.creatures = creatures
+
+    def take_extra_round(self, round_number, group):
+        """For each creature in this group who can act during extra rounds, have them act for the given round.
+
+        Args:
+            round_number (int): Round to act for
+            group (CreatureGroup): Creatures to attack
+
+        Yields:
+            bool: True if any creatures in this group acted, False otherwise
+        """
+        any_creatures_acted = False
+        for c in self.creatures:
+            if round_number < c.extra_rounds and c.is_alive():
+                any_creatures_acted = True
+                for i in range(c.action_count):
+                    target = group.get_living_creature()
+                    # if all targets are dead, stop attacking
+                    if target is None:
+                        return
+                    else:
+                        c.standard_attack(target)
+        return any_creatures_acted
 
     def standard_attack(self, group):
         """Attack the given group of creatures
@@ -120,6 +143,13 @@ def run_combat(red, blue):
         blue.refresh_round()
         results['rounds'] += 1
 
+    i = 0
+    any_creatures_acted = True
+    while any_creatures_acted:
+        any_creatures_acted = any_creatures_acted and red.take_extra_round(i, blue)
+        any_creatures_acted = any_creatures_acted and blue.take_extra_round(i, red)
+        i += 1
+
     while (red.is_alive() and blue.is_alive() and results['rounds'] <= 100):
         run_combat_round()
 
@@ -174,7 +204,14 @@ def initialize_argument_parser():
     parser.add_argument(
         '--profile',
         dest='profile',
-        help='if true, profile performance',
+        help='if provided, profile performance',
+        action='store_true',
+    )
+    parser.add_argument(
+        '--profilesort',
+        dest='profilesort',
+        default='tottime',
+        help='Sort function for profiling data',
         nargs='?',
         type=str,
     )
@@ -214,8 +251,10 @@ def custom_red_modifications(red):
         red (CreatureGroup): Group of red creatures
     """
     for c in red.creatures:
+        # c.add_ability('overwhelmed')
+        # c.add_ability('buff/damage')
+        # c.add_ability('extra round')
         pass
-    pass
 
 
 def custom_blue_modifications(blue):
@@ -224,9 +263,11 @@ def custom_blue_modifications(blue):
     Args:
         blue (CreatureGroup): Group of blue creatures
     """
-    # for c in blue.creatures:
-    #     c.add_ability(Ability.by_name('mighty blows'))
-    pass
+    for c in blue.creatures:
+        # c.add_ability('overwhelmed')
+        # c.add_ability('buff/accuracy')
+        # c.add_ability('extra round')
+        pass
 
 
 def generate_combat_results(red, blue, trials):
@@ -275,13 +316,16 @@ def test_training_dummy(level, trials):
             sample_creatures.append(Creature.from_sample_creature(name, level=level))
         except Exception as e:
             print(e)
-    training_dummy = Creature.from_sample_creature('dummy', level=level)
+    training_dummy = CreatureGroup([Creature.from_sample_creature('dummy', level=level)])
 
     results = dict()
 
     for creature in sample_creatures:
         for i in range(trials):
-            rounds_to_defeat_dummy = run_combat(creature, training_dummy)['rounds']
+            rounds_to_defeat_dummy = run_combat(
+                CreatureGroup([creature]),
+                training_dummy
+            )['rounds']
             try:
                 results[creature.name] += rounds_to_defeat_dummy
             except KeyError:
@@ -307,29 +351,10 @@ def generate_creature_groups(args):
     ) for name in args['red']]
     red = CreatureGroup(red_creatures)
 
+    custom_blue_modifications(blue)
+    custom_red_modifications(red)
+
     return blue, red
-
-
-def print_results(results, output=None):
-    if output is None:
-        output = sys.stdout
-    headers = sorted(results[0].keys())
-
-    if 'level' in headers:
-        # move 'level' to the front
-        headers.pop(headers.index('level'))
-        headers.insert(0, 'level')
-    if 'avg rounds' in headers:
-        # move 'avg rounds' to the back
-        headers.pop(headers.index('avg rounds'))
-        headers.append('avg rounds')
-    table = PrettyTable(headers)
-    for result in results:
-        row = []
-        for header in headers:
-            row.append(result[header])
-        table.add_row(row)
-    print(table)
 
 
 def run_test(test, args):
@@ -347,7 +372,7 @@ def run_test(test, args):
             args['blue level'] = i - level_diff
             results.append(main(args))
             results[-1]['level'] = i
-        print_results(results)
+        print(format_results(results))
     elif test == 'levels':
         args['trials'] //= 2
         results = []
@@ -355,7 +380,7 @@ def run_test(test, args):
             args['level'] = i
             results.append(main(args))
             results[-1]['level'] = i
-        print_results(results)
+        print(format_results(results))
     elif test == 'criticals':
         args['trials'] //= 2
         for i in range(1, 21):
@@ -386,7 +411,7 @@ def run_test(test, args):
                 'blue accuracy': blue.get_accuracy(red, args['trials']),
                 'red accuracy': red.get_accuracy(blue, args['trials']),
             })
-        print_results(results)
+        print(format_results(results))
     elif test == 'doubling_accuracy':
         level_diff = 2
         results = []
@@ -399,7 +424,7 @@ def run_test(test, args):
                 'blue accuracy': blue.get_accuracy(red, args['trials']),
                 'red accuracy': red.get_accuracy(blue, args['trials']),
             })
-        print_results(results)
+        print(format_results(results))
     elif test == 'level_diff':
         args['trials'] //= 10
         for i in range(3, 21):
@@ -412,9 +437,6 @@ def run_test(test, args):
 def main(args):
 
     blue, red = generate_creature_groups(args)
-
-    custom_blue_modifications(blue)
-    custom_red_modifications(red)
 
     if args.get('verbose'):
         print("RED:\n{}\nBLUE:\n{}".format(red, blue))
@@ -433,7 +455,10 @@ def main(args):
 if __name__ == "__main__":
     cmd_args = initialize_argument_parser()
     if cmd_args.get('profile'):
-        cProfile.run('main(cmd_args)', sort=cmd_args.get('profile'))
+        if (cmd_args.get('profilesort')):
+            cProfile.run('main(cmd_args)', sort=cmd_args.get('profilesort'))
+        else:
+            cProfile.run('main(cmd_args)')
     elif cmd_args.get('test'):
         run_test(cmd_args['test'], cmd_args)
     else:

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-from rise_gen.dice import quick_roll
 from rise_gen.rise_data import ATTRIBUTES, SKILLS
 import re
 
@@ -11,6 +10,7 @@ POSSIBLE_EFFECT_TAGS = [
     'armor defense',
     'attack count',
     'critical damage',
+    'extra rounds',
     'physical damage bonus',
     'spell damage bonus',
     'weapon damage dice',
@@ -416,7 +416,7 @@ def get_ability_definitions():
             'effects': [
                 ModifierInPlace(
                     ['weapon damage dice'],
-                    lambda creature, damage_dice: damage_dice.resize_dice(
+                    lambda creature, damage_dice: damage_dice.resize(
                         min(4, 1 + (creature.level + 1) // 4)
                     )
                 ),
@@ -473,34 +473,15 @@ def get_ability_definitions():
     # MISC
     misc = {
         'strength': {
-            'effects': [
-                ModifierInPlace(
-                    ['physical damage dice'],
-                    lambda creature, damage_dice: damage_dice.resize_dice(attribute_scale(creature.strength))
-                ),
-            ],
+            'effects': [],
             'tags': set(['hidden']),
         },
         'dexterity': {
-            'effects': [
-                Modifier(
-                    ['armor defense'],
-                    lambda creature, value: value + attribute_scale(creature.dexterity),
-                ),
-                Modifier(
-                    ['reflex'],
-                    lambda creature, value: value + attribute_scale(creature.dexterity),
-                ),
-            ],
+            'effects': [],
             'tags': set(['hidden']),
         },
         'constitution': {
-            'effects': [
-                Modifier(
-                    ['fortitude'],
-                    lambda creature, value: value + attribute_scale(creature.constitution),
-                ),
-            ],
+            'effects': [],
             'tags': set(['hidden']),
         },
         'intelligence': {
@@ -508,25 +489,11 @@ def get_ability_definitions():
             'tags': set(['hidden']),
         },
         'perception': {
-            'effects': [
-                Modifier(
-                    ['accuracy'],
-                    lambda creature, value: value + attribute_scale(creature.perception),
-                ),
-            ],
+            'effects': [],
             'tags': set(['hidden']),
         },
         'willpower': {
-            'effects': [
-                Modifier(
-                    ['mental'],
-                    lambda creature, value: value + attribute_scale(creature.willpower),
-                ),
-                ModifierInPlace(
-                    ['magical damage dice'],
-                    lambda creature, damage_dice: damage_dice.resize_dice(attribute_scale(creature.willpower))
-                ),
-            ],
+            'effects': [],
             'tags': set(['hidden']),
         },
         'challenge rating': {
@@ -549,15 +516,15 @@ def get_ability_definitions():
             'effects': [
                 ModifierInPlace(
                     ['weapon damage dice'],
-                    lambda creature, damage_dice: damage_dice.resize_dice(
-                        creature.level // 2
+                    lambda creature, damage_dice: damage_dice.resize(
+                        max(creature.level, creature.strength) // 2
                     ),
                 ),
                 ModifierInPlace(
                     ['magical damage dice'],
-                    lambda creature, damage_dice: damage_dice.resize_dice(
-                        creature.spellpower // 2  # auto scaling from spellpower
-                        + creature.level // 6 # +1d for +2 spell level
+                    lambda creature, damage_dice: damage_dice.resize(
+                        max(creature.spellpower, creature.willpower) // 2  # auto scaling from spellpower
+                        + creature.level // 6  # +1d for +3 spell levels
                     ),
                 ),
             ],
@@ -594,7 +561,7 @@ def get_ability_definitions():
                              }[creature.size]
                          )),
                 ModifierInPlace(['weapon damage dice'],
-                                lambda creature, damage_dice: damage_dice.resize_dice(
+                                lambda creature, damage_dice: damage_dice.resize(
                                     {
                                         'fine': -4,
                                         'diminuitive': -3,
@@ -674,6 +641,43 @@ def get_ability_definitions():
                 ),
             ],
         },
+        'buff/damage': {
+            'effects': [
+                strike_damage_modifier(2)
+            ],
+        },
+        'buff/accuracy': {
+            'effects': [
+                Modifier(
+                    ['accuracy'],
+                    lambda creature, value: value + 2,
+                ),
+            ],
+        },
+        'buff/defenses': {
+            'effects': [
+                Modifier(
+                    ['armor defense', 'fortitude', 'reflex', 'mental'],
+                    lambda creature, value: value + 2,
+                ),
+            ],
+        },
+        'extra round': {
+            'effects': [
+                Modifier(
+                    ['extra rounds'],
+                    lambda creature, value: value + 1,
+                ),
+            ],
+        },
+        'overwhelmed': {
+            'effects': [
+                Modifier(
+                    ['armor defense', 'reflex'],
+                    lambda creature, value: value - 2,
+                ),
+            ],
+        },
     }
     for ability in misc.values():
         if 'tags' in ability:
@@ -725,11 +729,11 @@ def get_ability_definitions():
                 Modifier(['hit points'],
                          lambda creature, value: 500),
                 Modifier(['armor defense'],
-                         lambda creature, value: creature.level + 8),
+                         lambda creature, value: creature.level + 5),
                 Modifier(['fortitude', 'mental'],
-                         lambda creature, value: creature.level + 10),
+                         lambda creature, value: creature.level + 5),
                 Modifier(['reflex'],
-                         lambda creature, value: creature.level + 8),
+                         lambda creature, value: creature.level + 5),
                 Modifier(['accuracy'],
                          lambda creature, value: -50),
             ],
@@ -762,7 +766,7 @@ def get_ability_definitions():
             # this should only be applied to creatures with a single touch attack
             'effects': [
                 ModifierInPlace(['weapon damage dice'],
-                                lambda creature, damage_dice: damage_dice.resize_dice(2)),
+                                lambda creature, damage_dice: damage_dice.resize(2)),
                 Modifier(
                     ['physical damage bonus'],
                     lambda creature, value: creature.power // 2

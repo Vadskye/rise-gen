@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from rise_gen.dice import Die, DieCollection
+from rise_gen.dice import DicePool
 import yaml
 
 SKILLS = """
@@ -193,10 +193,7 @@ class Weapon(RiseData):
     def __init__(self, **kwargs):
         super(Weapon, self).__init__(**kwargs)
         # convert the die to a Die object
-        if hasattr(self, 'die'):
-            self.dice = DieCollection(Die.from_string(self.die))
-        else:
-            self.dice = DieCollection()
+        self.dice = DicePool.from_string(self.die)
         # set default values of None
         self.range = getattr(self, 'range', None)
         self.dual_wielding = getattr(self, 'dual_wielding', None)

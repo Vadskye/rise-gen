@@ -11,6 +11,7 @@ Usage:
     ability_leveler items [options]
     ability_leveler rituals [options]
     ability_leveler spells [options]
+    ability_leveler ns [options]
     ability_leveler (-h | --help)
 
 Options:
@@ -20,6 +21,7 @@ Options:
 """
 
 RAW_MODIFIERS = util.import_yaml_file('content/ability_modifiers.yaml')
+
 
 def is_close(x, y, threshold=1):
     """Test whether x is within <threshold> of y
@@ -268,9 +270,9 @@ class AbilityLeveler(Leveler):
         If ability_type is not None, modify the level to its in-game value for the given type"""
         try:
             level_modifier = {
-                'class feature': -4,
-                'magic item': -4,
-                'spell': -4,
+                'class feature': -6,
+                'magic item': -6,
+                'spell': -6,
                 None: 0,
             }[ability_type]
         except KeyError:
@@ -522,7 +524,10 @@ class AbilityLeveler(Leveler):
             self.trigger['duration']
         ]
         return modifier
+
+
 AbilityLeveler.import_config('content/ability_leveler_config.yaml')
+
 
 def calculate_ability_levels(abilities, ability_type):
     levels = dict()
@@ -531,6 +536,7 @@ def calculate_ability_levels(abilities, ability_type):
         ability.validate()
         levels[name] = ability.level(ability_type)
     return levels
+
 
 def main(args):
     if args['items']:
@@ -541,6 +547,9 @@ def main(args):
         ability_type = 'spell'
     elif args['spells']:
         abilities = util.import_yaml_file('content/spells.yaml')
+        ability_type = 'spell'
+    elif args['ns']:
+        abilities = util.import_yaml_file('content/new_spells.yaml')
         ability_type = 'spell'
     elif args['class']:
         abilities = util.import_yaml_file('content/class_features.yaml')

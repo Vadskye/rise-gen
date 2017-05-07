@@ -223,6 +223,10 @@ burning hands:
   area: medium cone burst
   damage: normal
   targets: all
+burning hands, widened:
+  area: medium cone burst
+  damage: normal
+  targets: all
 call lightning:  # -1 die size because of the 50' line
   damage: normal
   range: medium
@@ -941,6 +945,10 @@ fireball - immolating:
       conditions:
         - ignited
       duration: short fixed
+fireball, alt:
+  range: medium
+  damage: normal
+  targets: five
 fissure:
   range: medium
   spell resistance: false
@@ -1266,6 +1274,7 @@ imprisonment:
       dispellable: false
   limit affected: max size
 inertial shield:
+  range: close
   duration: short
   buffs:
     - damage reduction: all
@@ -2696,3 +2705,11 @@ overland speed:
   buffs: [double speed]
   duration: extreme
   noncombat: true
+fireburst:
+  damage: normal
+  area: medium radius burst
+  targets: all
+windblast:
+  damage: normal
+  area: large line burst
+  targets: all

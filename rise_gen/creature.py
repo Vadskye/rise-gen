@@ -3,7 +3,7 @@
 import argparse
 import copy
 from rise_gen.ability import Ability
-from rise_gen.dice import Die, DieCollection, d10
+from rise_gen.dice import DicePool, d10
 from rise_gen.rise_data import (
     ATTRIBUTES, SKILLS,
     Armor, MonsterType, Race, RiseClass, Shield, Skill, Weapon,
@@ -243,8 +243,12 @@ class CreatureStatistics(object):
         else:
             return False
 
-    def roll_damage(self):
-        return self.damage_dice.roll() + self.damage_bonus
+    def roll_damage(self, bonus_increments=None):
+        if bonus_increments:
+            temp = self.damage_dice.copy() + bonus_increments
+            return temp.roll() + self.damage_bonus
+        else:
+            return self.damage_dice.roll() + self.damage_bonus
 
     @property
     def active_abilities(self):
@@ -319,11 +323,11 @@ class CreatureStatistics(object):
         if self.attack_type == 'physical':
             accuracy = max(
                 self.level,
-                self.strength,
+                self.perception,
                 self.dexterity if self.weapon_encumbrance == 'light' else 0
             )
         elif self.attack_type == 'spell':
-            accuracy = max(self.spellpower, self.intelligence, self.willpower)
+            accuracy = max(self.spellpower, self.intelligence, self.perception, self.willpower)
             # class_scaling = 2
             # feat_scaling = 0  # if self.level < 10 else 2
             # return self.level + class_scaling + feat_scaling
@@ -355,7 +359,7 @@ class CreatureStatistics(object):
             raise Exception("Error: invalid attack type '{0}'".format(self.attack_type))
 
     def _calculate_damage_dice(self):
-        """The dice this creature rolls for damage with its attacks (DieCollection)"""
+        """The dice this creature rolls for damage with its attacks (DicePool)"""
 
         damage_dice = None
         if self.attack_type == 'physical':
@@ -370,9 +374,7 @@ class CreatureStatistics(object):
         elif self.attack_type == 'spell':
             # TODO: make framework for named spells
             # we use cantrips instead of full spells until 4th level
-            damage_dice = DieCollection(
-                Die(size=8, count=1)
-            )
+            damage_dice = DicePool(size=8, count=1)
             for effect in self.active_effects_with_tag('magical damage dice'):
                 damage_dice = effect(self, damage_dice)
 
@@ -383,6 +385,12 @@ class CreatureStatistics(object):
             raise Exception("Error: invalid attack type '{0}'".format(self.attack_type))
 
         return damage_dice
+
+    def _calculate_extra_rounds(self):
+        extra_rounds = 0
+        for effect in self.active_effects_with_tag('extra rounds'):
+            extra_rounds = effect(self, extra_rounds)
+        return extra_rounds
 
     def _calculate_attribute(self, attribute_name):
         """Any of the creature's main attributes:
@@ -442,10 +450,7 @@ class CreatureStatistics(object):
     def _calculate_fortitude(self):
         fortitude = DEFENSE_BASE + max(
             self.constitution,
-            self.strength,
-            sum([calculate_base_defense(rise_class.fortitude, self.levels[class_name])
-                 for class_name, rise_class in self.classes.items()])
-
+            self.level,
         )
         fortitude += base_class_defense_bonus(self.base_class.fortitude)
         for effect in self.active_effects_with_tag('fortitude'):
@@ -461,9 +466,7 @@ class CreatureStatistics(object):
     def _calculate_mental(self):
         mental = DEFENSE_BASE + max(
             self.willpower,
-            self.intelligence,
-            sum([calculate_base_defense(rise_class.mental, self.levels[class_name])
-                 for class_name, rise_class in self.classes.items()])
+            self.level,
         )
         mental += base_class_defense_bonus(self.base_class.mental)
         for effect in self.active_effects_with_tag('mental'):
@@ -473,9 +476,7 @@ class CreatureStatistics(object):
     def _calculate_reflex(self):
         reflex = DEFENSE_BASE + max(
             self.dexterity,
-            self.perception,
-            sum([calculate_base_defense(rise_class.reflex, self.levels[class_name])
-                 for class_name, rise_class in self.classes.items()])
+            self.level,
         )
         reflex += base_class_defense_bonus(self.base_class.reflex)
         # add the modifier for shields
@@ -707,6 +708,7 @@ cached_properties = """
     critical_multiplier
     damage_bonus
     damage_dice
+    extra_rounds
     fortitude
     hit_points
     land_speed
@@ -790,16 +792,19 @@ class Creature(CreatureStatistics):
         else:
             raise Exception("Error: invalid attack type '{0}'".format(self.attack_type))
 
-    def attack_roll(self):
-        attack_result = self.accuracy
-        roll = d10.roll()
-        if self.weapon.dual_wielding:
-            roll = max(roll, d10.roll())
-        attack_result += roll
-        while roll == 10:
-            roll = d10.roll()
-            attack_result += roll
-        return attack_result
+    # It can be useful to return both dual strike rolls,
+    # but most of the time we just want the better of the two, as if it was a
+    # normal attack roll.
+    def attack_roll(self, return_both_dual_strikes=False):
+        roll = d10.roll(explode=True)
+        alternate_roll = None
+        if (self.weapon.dual_wielding):
+            alternate_roll = d10.roll(explode=True)
+            if return_both_dual_strikes:
+                return max(roll, alternate_roll) + self.accuracy, min(roll, alternate_roll) + self.accuracy
+            else:
+                return max(roll, alternate_roll) + self.accuracy
+        return roll + self.accuracy
 
     def check_hit(self, creature, attack_type=None):
         """Test if a single strike hits against the given creature"""
@@ -814,14 +819,28 @@ class Creature(CreatureStatistics):
     def strike(self, creature):
         """Execute a single strike against the given creature"""
 
-        attack_roll = self.attack_roll()
-        if attack_roll >= creature.armor_defense:
-            damage = self.roll_damage()
-            # critical success deals double damage
-            if attack_roll >= creature.armor_defense + 10:
-                damage += self.roll_damage()
-                # temp debug
-                self.critical_hits += 1
+        damage = None
+        if self.weapon.dual_wielding:
+            better, worse = self.attack_roll(return_both_dual_strikes=True)
+            if better >= creature.armor_defense:
+                bonus = None
+                # This is too strong - should be for the feat
+                # bonus = 1 if better >= creature.armor_defense else None
+                damage = self.roll_damage(bonus)
+                # Critical success deals damage with the other weapon,
+                # but we don't differentiate the weapons yet
+                if better >= creature.armor_defense + 10:
+                    damage += self.roll_damage(bonus)
+        else:
+            attack_roll = self.attack_roll()
+            if attack_roll >= creature.armor_defense:
+                damage = self.roll_damage()
+                # critical success deals double damage
+                if attack_roll >= creature.armor_defense + 10:
+                    damage += self.roll_damage()
+                    # temp debug
+                    self.critical_hits += 1
+        if damage is not None:
             for effect in self.active_effects_with_tag('first hit'):
                 damage = effect(self, damage)
             creature.take_damage(damage)
