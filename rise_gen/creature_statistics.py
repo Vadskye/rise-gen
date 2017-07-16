@@ -139,12 +139,14 @@ class CreatureStatistics(object):
         if self.monster_type and self.monster_type.abilities:
             for ability in self.monster_type.abilities:
                 self.add_ability(ability)
-        # if self.race is not None:
-            # self.add_ability(self.race.name)
+
+        # Each race has an associated ability
+        self.add_ability(self.race.name)
+
         for rise_class in self.classes.values():
-            if rise_class.class_features:
-                for class_feature in rise_class.class_features:
-                    self.add_ability(class_feature)
+            for ability in Ability.all_with_tag(rise_class.name):
+                self.add_ability(ability)
+
         if self.feats is not None:
             for feat in self.feats:
                 self.add_ability(feat)
@@ -159,9 +161,6 @@ class CreatureStatistics(object):
         if self.traits is not None:
             for trait in self.traits:
                 self.add_ability(trait)
-
-        # Each race has an associated ability
-        self.add_ability(self.race.name)
 
         for ability_name in AUTOMATIC_ABILITIES:
             self.add_ability(ability_name)
@@ -409,10 +408,7 @@ class CreatureStatistics(object):
         return multiplier
 
     def _calculate_fortitude(self):
-        fortitude = max(
-            self.constitution,
-            self.level,
-        )
+        fortitude = 0
         for effect in self.active_effects_with_tag('fortitude'):
             fortitude = effect(self, fortitude)
         return fortitude
@@ -424,22 +420,13 @@ class CreatureStatistics(object):
         return hit_points
 
     def _calculate_mental(self):
-        mental = max(
-            self.willpower,
-            self.level,
-        )
+        mental = 0
         for effect in self.active_effects_with_tag('mental'):
             mental = effect(self, mental)
         return mental
 
     def _calculate_reflex(self):
-        reflex = max(
-            self.dexterity,
-            self.level,
-        )
-        # add the modifier for shields
-        if self.shield is not None:
-            reflex += self.shield.bonus
+        reflex = 0
         for effect in self.active_effects_with_tag('reflex'):
             reflex = effect(self, reflex)
         return reflex

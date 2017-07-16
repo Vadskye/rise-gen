@@ -105,7 +105,6 @@ fighter: &FIGHTER
   feats: []
   traits:
     - magic items
-    - armor discipline (resilience)
 
 fighter_dual:
   <<: *FIGHTER
@@ -122,7 +121,6 @@ fighter_healing:
   <<: *FIGHTER
   traits:
     - magic items
-    - armor discipline (resilience)
     - fast healing
 
 fighter_heavy:
@@ -145,12 +143,6 @@ fighter_dex: &FIGHTER_DEX
     - weapon finesse
   traits:
     - magic items
-    - armor discipline (agility)
-fighter_dex_resilience:
-  <<: *FIGHTER_DEX
-  traits:
-    - magic items
-    - armor discipline (resilience)
 ranger: &RANGER
   <<: *STANDARD_WARRIOR_EQUIPMENT
   race: human
@@ -448,7 +440,7 @@ taito:
   feats: []
   traits:
     - magic items
-    - armor discipline (resilience)
+
 g: &GENERIC
   <<: *STANDARD_WARRIOR_EQUIPMENT
   race: human
@@ -569,6 +561,38 @@ g/buff/def:
   <<: *GENERIC
   feats:
     - buff/defenses
+
+# Classes
+g/brb:
+  <<: *GENERIC
+  levels:
+    barbarian: 1
+g/clr:
+  <<: *GENERIC
+  levels:
+    cleric: 1
+g/drd:
+  <<: *GENERIC
+  levels:
+    druid: 1
+g/ftr:
+  <<: *GENERIC
+  levels:
+    fighter: 1
+g/pal:
+  <<: *GENERIC
+  levels:
+    paladin: 1
+g/rgr:
+  <<: *GENERIC
+  levels:
+    ranger: 1
+g/rog:
+  <<: *GENERIC
+  levels:
+    rogue: 1
+
+
 e: &EXTREME
   <<: *STANDARD_WARRIOR_EQUIPMENT
   race: human

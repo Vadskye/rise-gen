@@ -60,6 +60,11 @@ def min_level(level, class_name=None, template=None):
     else:
         return lambda creature: creature.level >= level
 
+def add_tag(tag, abilities):
+    for ability in abilities.values():
+        ability['tags'] = ability.get('tags', set()) | set([tag])
+    return abilities
+
 
 def base_calculations():
     def accuracy_effect(c, value):
@@ -83,6 +88,26 @@ def base_calculations():
                 Modifier(['accuracy'], accuracy_effect),
             ],
         },
+        'base fortitude': {
+            'effects': [
+                Modifier(['fortitude'], lambda c, value: value + max(c.level, c.strength, c.constitution)),
+                Modifier(
+                    ['fortitude'],
+                    lambda c, value: value + c.starting_attributes.get('constitution', 0)
+                ),
+            ],
+        },
+        'base reflex': {
+            'effects': [
+                Modifier(['reflex'], lambda c, value: value + max(c.level, c.dexterity, c.perception)),
+                Modifier(['reflex'], lambda c, value: value + c.starting_attributes.get('dexterity', 0)),
+                # Shield modifier
+                Modifier(
+                    ['reflex'],
+                    lambda c, value: value + (c.shield.bonus if c.shield is not None else 0),
+                ),
+            ],
+        },
         'base spellpower': {
             'effects': [
                 Modifier(
@@ -92,16 +117,21 @@ def base_calculations():
             ],
             'prerequisite': lambda c: c.attack_type == 'spell'
         },
+        'base mental': {
+            'effects': [
+                Modifier(['mental'], lambda c, value: value + max(c.level, c.intelligence, c.willpower)),
+                Modifier(['mental'], lambda c, value: value + c.starting_attributes.get('willpower', 0)),
+            ],
+        },
     }
-    for ability in abilities.values():
-        ability['tags'] = ability.get('tags', set()) | set(['hidden'])
+    add_tag('hidden', abilities)
     return abilities
 
 
 def class_abilities():
-    return {
+    by_class = dict()
 
-        # BARBARIAN
+    by_class['barbarian'] = {
         'fast movement': {
             'effects': [
                 Modifier(['speed'], plus(10)),
@@ -142,37 +172,14 @@ def class_abilities():
             'effects': [strike_damage_modifier(1)],
             'prerequisite': min_level(17, 'barbarian'),
         },
+    }
 
-        # FIGHTER
-        'martial excellence': {
-            'effects': [
-                Modifier(['accuracy', 'armor defense', 'reflex', 'physical damage bonus'],
-                         lambda creature, value: value + 1),
-            ],
-            'prerequisite': lambda creature: creature.class_name == 'fighter'
+    by_class['fighter'] = {
+        'consummate warrior': {
+            'effects': [strike_damage_modifier(1)],
+            'prerequisite': min_level(1, 'fighter'),
         },
-        'greater weapon discipline': {
-            'effects': [
-                Modifier(['critical threshold'],
-                         lambda creature, value: value - 1),
-            ],
-            'prerequisite': min_level(14, 'fighter')
-        },
-        'improved weapon discipline': {
-            'effects': [
-                Modifier(['critical multiplier'],
-                         lambda creature, value: value + 1),
-            ],
-            'prerequisite': min_level(8, 'fighter')
-        },
-        'weapon discipline': {
-            'effects': [
-                Modifier(['physical damage bonus'],
-                         lambda creature, value: value + 1),
-            ],
-            'prerequisite': min_level(4, 'fighter')
-        },
-        'armor discipline (agility)': {
+        'armored agility': {
             'effects': [
                 Modifier(['armor check penalty'],
                          lambda creature, value: max(0, value - 2)),
@@ -185,43 +192,40 @@ def class_abilities():
                     # this can be approximated by simply increasing armor
                     # defense
                     lambda creature, value: value + (
-                        5 if creature.levels['fighter'] >= 20 else (
-                            4 if creature.levels['fighter'] >= 12 else 2
-                        )
-                    )
-                ),
-                Modifier(
-                    ['reflex'],
-                    lambda creature, value: value + (
-                        5 if creature.levels['fighter'] >= 19 else (
-                            4 if creature.levels['fighter'] >= 17 else 0
-                        )
+                        # Only heavy armor halves dexterity now
+                        2 if creature.levels['fighter'] >= 8 else 0
                     )
                 ),
             ],
-            'prerequisite': min_level(6, 'fighter')
+            'prerequisite': min_level(2, 'fighter')
         },
-        'armor discipline (resilience)': {
-            'effects': [
-                Modifier(
-                    ['damage reduction'],
-                    lambda creature, value: value + creature.levels['fighter'] * (
-                        2 if creature.levels['fighter'] >= 20 else 1
-                    )
-                ),
-                Modifier(['armor defense'],
-                         lambda creature, value: value + (1 if creature.levels['fighter'] >= 12 else 0)),
-                Modifier(
-                    ['fortitude'],
-                    lambda creature, value: value + (
-                        4 if creature.levels['fighter'] >= 18 else 0
-                    )
-                ),
-            ],
-            'prerequisite': min_level(6, 'fighter')
+        'weapon focus': {
+            'effects': [Modifier(['accuracy'], plus(1))],
+            'prerequisite': min_level(5, 'fighter'),
         },
+        'superior strike': {
+            'effects': [strike_damage_modifier(1)],
+            'prerequisite': min_level(7, 'fighter'),
+        },
+        'weapon master': {
+            'effects': [strike_damage_modifier(1)],
+            'prerequisite': min_level(11, 'fighter'),
+        },
+        'armor expertise': {
+            'effects': [Modifier(['armor defense'], plus(1))],
+            'prerequisite': min_level(14, 'fighter'),
+        },
+        'greater weapon focus': {
+            'effects': [Modifier(['accuracy'], plus(1))],
+            'prerequisite': min_level(17, 'fighter'),
+        },
+        'warrior of legend': {
+            'effects': [strike_damage_modifier(1)],
+            'prerequisite': min_level(19, 'fighter'),
+        },
+    }
 
-        # RANGER
+    by_class['ranger'] = {
         'quarry': {
             'effects': [
                 Modifier(
@@ -240,7 +244,9 @@ def class_abilities():
             ],
             'prerequisite': min_level(1, 'ranger')
         },
+    }
 
+    by_class['rogue'] = {
         # ROGUE
         'sneak attack': {
             'effects': [
@@ -259,6 +265,14 @@ def class_abilities():
         },
     }
 
+    abilities = dict()
+    for class_name in by_class:
+        add_tag(class_name, by_class[class_name])
+        abilities.update(by_class[class_name])
+
+    return abilities
+
+
 def class_defenses():
     abilities = {
         'base barbarian defenses': {
@@ -268,6 +282,7 @@ def class_defenses():
                 Modifier(['mental'], plus(1)),
             ],
             'prerequisite': min_level(1, 'barbarian'),
+            'tags': set(['barbarian']),
         },
         'base cleric defenses': {
             'effects': [
@@ -276,6 +291,7 @@ def class_defenses():
                 Modifier(['reflex'], plus(1)),
             ],
             'prerequisite': min_level(1, 'cleric'),
+            'tags': set(['cleric']),
         },
         'base druid defenses': {
             'effects': [
@@ -284,6 +300,7 @@ def class_defenses():
                 Modifier(['reflex'], plus(1)),
             ],
             'prerequisite': min_level(1, 'druid'),
+            'tags': set(['druid']),
         },
         'base fighter defenses': {
             'effects': [
@@ -292,6 +309,7 @@ def class_defenses():
                 Modifier(['reflex'], plus(1)),
             ],
             'prerequisite': min_level(1, 'fighter'),
+            'tags': set(['fighter']),
         },
         'base mage defenses': {
             'effects': [
@@ -300,6 +318,7 @@ def class_defenses():
                 Modifier(['fortitude'], plus(1)),
             ],
             'prerequisite': min_level(1, 'mage'),
+            'tags': set(['mage']),
         },
         'base monk defenses': {
             'effects': [
@@ -308,6 +327,7 @@ def class_defenses():
                 Modifier(['fortitude'], plus(1)),
             ],
             'prerequisite': min_level(1, 'monk'),
+            'tags': set(['monk']),
         },
         'base paladin defenses': {
             'effects': [
@@ -316,6 +336,7 @@ def class_defenses():
                 Modifier(['reflex'], plus(1)),
             ],
             'prerequisite': min_level(1, 'paladin'),
+            'tags': set(['paladin']),
         },
         'base ranger defenses': {
             'effects': [
@@ -324,6 +345,7 @@ def class_defenses():
                 Modifier(['mental'], plus(1)),
             ],
             'prerequisite': min_level(1, 'ranger'),
+            'tags': set(['ranger']),
         },
         'base rogue defenses': {
             'effects': [
@@ -332,6 +354,7 @@ def class_defenses():
                 Modifier(['fortitude'], plus(1)),
             ],
             'prerequisite': min_level(1, 'rogue'),
+            'tags': set(['rogue']),
         },
 
         # NPC classes
@@ -342,11 +365,11 @@ def class_defenses():
                 Modifier(['mental'], plus(1)),
             ],
             'prerequisite': min_level(1, 'warrior'),
+            'tags': set(['warrior']),
         },
     }
 
-    for ability in abilities.values():
-        ability['tags'] = ability.get('tags', set()) | set(['hidden'])
+    add_tag('hidden', abilities)
     return abilities
 
 def feats():
@@ -488,7 +511,9 @@ def misc():
         else:
             return cr - 2
 
-    misc_abilities = {
+    return {
+        # TODO: should some effects of attributes go here? They are currently
+        # spread around in other places
         'strength': {
             'effects': [],
             'tags': set(['hidden']),
@@ -702,12 +727,10 @@ def misc():
             ],
         },
     }
-    for ability in misc_abilities.values():
-        ability['tags'] = ability.get('tags', set()) | set(['misc'])
-    return misc_abilities
 
 
 def races():
+    # TODO: add non-human races
     abilities = {
         'human': {
             'effects': [
@@ -731,11 +754,7 @@ def senses():
                    'scent', 'tremorsense', 'tremorsight', 'truesight']
     for name in sense_names:
         sense_abilities[name] = dict()
-    for sense in sense_abilities.values():
-        if 'tags' in sense:
-            sense['tags'].add('sense')
-        else:
-            sense['tags'] = set(['sense'])
+    add_tag('sense', sense_abilities)
     return sense_abilities
 
 
@@ -778,11 +797,7 @@ def templates():
             ],
         },
     }
-    for template in template_abilities.values():
-        if 'tags' in template:
-            template['tags'].add('template')
-        else:
-            template['tags'] = set(['template'])
+    add_tag('template', template_abilities)
     return template_abilities
 
 
@@ -898,11 +913,7 @@ def traits():
         'spit web': {},
         'superior senses': {},
     }
-    for trait in trait_abilities.values():
-        if 'tags' in trait:
-            trait['tags'].add(['monster_trait'])
-        else:
-            trait['tags'] = set(['monster_trait'])
+    add_tag('monster_trait', trait_abilities)
     return trait_abilities
 
 

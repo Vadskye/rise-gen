@@ -46,6 +46,22 @@ class Ability:
                 "Error: unable to recognize ability '{}'".format(ability_name)
             )
 
+    @classmethod
+    def all_with_tag(cls, tag):
+        """Get all abilities with a given tag"""
+        if Ability.ability_definitions is None:
+            Ability.ability_definitions = get_ability_definitions()
+        abilities = list()
+        for ability_name in filter(
+                lambda ability_name: tag in Ability.ability_definitions[ability_name].get('tags', set()),
+                Ability.ability_definitions.keys()
+        ):
+            abilities.append(Ability(
+                name=ability_name,
+                **Ability.ability_definitions[ability_name],
+            ))
+        return abilities
+
     def __repr__(self):
         return "{}({}, {}, {})".format(
             self.__class__.__name__,

@@ -4,14 +4,6 @@ barbarian:
   fortitude: good
   reflex: average
   mental: poor
-  class features:
-    - durable
-    - primal resilience
-    - rage
-    - fast movement
-    - larger than life
-    - larger than belief
-    - titan of battle
 cleric:
   combat prowess: average
   fortitude: average
@@ -27,20 +19,11 @@ fighter:
   fortitude: good
   reflex: poor
   mental: average
-  class features:
-    # skip armor discipline because it's a choice
-    # assume specialist for weapon discipline for simplicity
-    - martial excellence
-    - weapon discipline
-    - improved weapon discipline
-    - greater weapon discipline
 monk:
   combat prowess: good
   fortitude: average
   reflex: good
   mental: good
-  class features:
-    - unarmed warrior
 paladin:
   combat prowess: good
   fortitude: good
@@ -51,15 +34,11 @@ ranger:
   fortitude: good
   reflex: good
   mental: average
-  class features:
-    - quarry
 rogue:
   combat prowess: average
   fortitude: poor
   reflex: good
   mental: average
-  class features:
-    - sneak attack
 sorcerer:
   combat prowess: poor
   fortitude: poor
