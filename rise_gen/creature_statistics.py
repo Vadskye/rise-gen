@@ -172,6 +172,9 @@ class CreatureStatistics(object):
             for trait in self.traits:
                 self.add_ability(trait)
 
+        # Each race has an associated ability
+        self.add_ability(self.race.name)
+
         for ability_name in AUTOMATIC_ABILITIES:
             self.add_ability(ability_name)
 
