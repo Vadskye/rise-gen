@@ -7,7 +7,7 @@ def format_results(results):
     results (dict[]): An array of results. Most results have a 'level' key.
 
     Yields:
-        str: Streing representation of the results
+        str: String representation of the results
     """
     headers = sorted(results[0].keys())
 
