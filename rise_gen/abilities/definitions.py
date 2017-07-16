@@ -157,39 +157,47 @@ def get_ability_definitions():
             'effects': [
                 Modifier(['armor check penalty'],
                          lambda creature, value: max(0, value - 2)),
-                Modifier(['armor defense'],
-                         # technically, this should be implemented by decreasing the
-                         # armor encumbrance
-                         # but that also should go with increasing the category of
-                         # armor used, since you would upgrade armor categories
-                         # this can be approximated by simply increasing armor
-                         # defense
-                         lambda creature, value: value + (
-                             5 if creature.levels['fighter'] >= 20 else (
-                                 4 if creature.levels['fighter'] >= 12 else 2
-                             )
-                         )),
-                Modifier(['reflex'],
-                         lambda creature, value: value + (
-                             5 if creature.levels['fighter'] >= 19 else (
-                                 4 if creature.levels['fighter'] >= 17 else 0
-                             )
-                         )),
+                Modifier(
+                    ['armor defense'],
+                    # technically, this should be implemented by decreasing the
+                    # armor encumbrance
+                    # but that also should go with increasing the category of
+                    # armor used, since you would upgrade armor categories
+                    # this can be approximated by simply increasing armor
+                    # defense
+                    lambda creature, value: value + (
+                        5 if creature.levels['fighter'] >= 20 else (
+                            4 if creature.levels['fighter'] >= 12 else 2
+                        )
+                    )
+                ),
+                Modifier(
+                    ['reflex'],
+                    lambda creature, value: value + (
+                        5 if creature.levels['fighter'] >= 19 else (
+                            4 if creature.levels['fighter'] >= 17 else 0
+                        )
+                    )
+                ),
             ],
             'prerequisite': min_level(6, 'fighter')
         },
         'armor discipline (resilience)': {
             'effects': [
-                Modifier(['damage reduction'],
-                         lambda creature, value: value + creature.levels['fighter'] * (
-                             2 if creature.levels['fighter'] >= 20 else 1
-                         )),
+                Modifier(
+                    ['damage reduction'],
+                    lambda creature, value: value + creature.levels['fighter'] * (
+                        2 if creature.levels['fighter'] >= 20 else 1
+                    )
+                ),
                 Modifier(['armor defense'],
                          lambda creature, value: value + (1 if creature.levels['fighter'] >= 12 else 0)),
-                Modifier(['fortitude'],
-                         lambda creature, value: value + (
-                             4 if creature.levels['fighter'] >= 18 else 0
-                         )),
+                Modifier(
+                    ['fortitude'],
+                    lambda creature, value: value + (
+                        4 if creature.levels['fighter'] >= 18 else 0
+                    )
+                ),
             ],
             'prerequisite': min_level(6, 'fighter')
         },
@@ -255,10 +263,12 @@ def get_ability_definitions():
         # this is an incredibly rough approximation
         'counterattack': {
             'effects': [
-                Modifier(['attack count'],
-                         lambda creature, value: value + (
-                             2 if creature.level >= 15 else 1
-                         )),
+                Modifier(
+                    ['attack count'],
+                    lambda creature, value: value + (
+                        2 if creature.level >= 15 else 1
+                    )
+                ),
             ],
             'prerequisite': lambda creature: (
                 creature.level >= 5
@@ -420,8 +430,8 @@ def get_ability_definitions():
                 ModifierInPlace(
                     ['magical damage dice'],
                     lambda creature, damage_dice: damage_dice.resize(
-                        max(creature.spellpower, creature.willpower) // 2  # auto scaling from spellpower
-                        + creature.level // 6  # +1d for +3 spell levels
+                        creature.spellpower // 2  # auto scaling from spellpower
+                        + (creature.level - 2) // 6  # +1d for +3 spell levels
                     ),
                 ),
             ],
@@ -429,48 +439,54 @@ def get_ability_definitions():
         },
         'size modifiers': {
             'effects': [
-                Modifier(['reflex'],
-                         lambda creature, value: (
-                             value + {
-                                 'fine': 8,
-                                 'diminuitive': 6,
-                                 'tiny': 4,
-                                 'small': 2,
-                                 'medium': 0,
-                                 'large': -2,
-                                 'huge': -4,
-                                 'gargantuan': -6,
-                                 'colossal': -8,
-                             }[creature.size]
-                         )),
-                Modifier(['fortitude'],
-                         lambda creature, value: (
-                             value + {
-                                 'fine': -8,
-                                 'diminuitive': -6,
-                                 'tiny': -4,
-                                 'small': -2,
-                                 'medium': 0,
-                                 'large': 2,
-                                 'huge': 4,
-                                 'gargantuan': 6,
-                                 'colossal': 8,
-                             }[creature.size]
-                         )),
-                ModifierInPlace(['weapon damage dice'],
-                                lambda creature, damage_dice: damage_dice.resize(
-                                    {
-                                        'fine': -4,
-                                        'diminuitive': -3,
-                                        'tiny': -2,
-                                        'small': -1,
-                                        'medium': 0,
-                                        'large': 2,
-                                        'huge': 4,
-                                        'gargantuan': 6,
-                                        'colossal': 8,
-                                    }[creature.size]
-                                )),
+                Modifier(
+                    ['reflex'],
+                    lambda creature, value: (
+                        value + {
+                            'fine': 8,
+                            'diminuitive': 6,
+                            'tiny': 4,
+                            'small': 2,
+                            'medium': 0,
+                            'large': -2,
+                            'huge': -4,
+                            'gargantuan': -6,
+                            'colossal': -8,
+                        }[creature.size]
+                    )
+                ),
+                Modifier(
+                    ['fortitude'],
+                    lambda creature, value: (
+                        value + {
+                            'fine': -8,
+                            'diminuitive': -6,
+                            'tiny': -4,
+                            'small': -2,
+                            'medium': 0,
+                            'large': 2,
+                            'huge': 4,
+                            'gargantuan': 6,
+                            'colossal': 8,
+                        }[creature.size]
+                    )
+                ),
+                ModifierInPlace(
+                    ['weapon damage dice'],
+                    lambda creature, damage_dice: damage_dice.resize(
+                        {
+                            'fine': -4,
+                            'diminuitive': -3,
+                            'tiny': -2,
+                            'small': -1,
+                            'medium': 0,
+                            'large': 2,
+                            'huge': 4,
+                            'gargantuan': 6,
+                            'colossal': 8,
+                        }[creature.size]
+                    )
+                ),
             ],
             'tags': set(['hidden']),
         },
@@ -703,15 +719,17 @@ def get_ability_definitions():
         },
         'increased size': {
             'effects': [
-                Modifier(['size'],
-                         # find the current size in the list and go to the next
-                         # larger one
-                         # this fails for colossal; for now, that is a feature
-                         lambda creature, value: SIZES[
-                             SIZES.index(value)
-                             + (creature.level + 4) // 8
-                             + max(0, (creature.level - 4) // 8 if 'behemoth' in creature.templates else 0)
-                         ]),
+                Modifier(
+                    ['size'],
+                    # find the current size in the list and go to the next
+                    # larger one
+                    # this fails for colossal; for now, that is a feature
+                    lambda creature, value: SIZES[
+                        SIZES.index(value)
+                        + (creature.level + 4) // 8
+                        + max(0, (creature.level - 4) // 8 if 'behemoth' in creature.templates else 0)
+                    ]
+                ),
             ],
             'prerequisite': lambda creature: creature.level >= 4,
         },
