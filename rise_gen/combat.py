@@ -429,7 +429,7 @@ def run_test(test, args):
         args['trials'] //= 10
         for i in range(3, 21):
             args['blue level'] = i
-            args['red level'] = i-2
+            args['red level'] = i - 2
             print(str(i) + ": ", end="")
             main(args)
 
