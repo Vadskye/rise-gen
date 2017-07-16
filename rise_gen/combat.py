@@ -255,7 +255,8 @@ def run_test(test, args):
     if test == 'dummy':
         test_training_dummy(
             level=args['level'],
-            trials=100
+            # TODO: use a different default instead of dividing here
+            trials=args['trials'] // 10,
         )
     elif test == 'doubling':
         args['trials'] //= 2
