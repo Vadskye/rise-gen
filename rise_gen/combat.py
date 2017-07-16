@@ -271,14 +271,14 @@ def run_test(test, args):
     elif test == 'levels':
         args['trials'] //= 2
         results = []
-        for i in range(1, 21):
+        for i in range(1, 21, 2):
             args['level'] = i
             results.append(main(args))
             results[-1]['level'] = i
         print(format_results(results))
     elif test == 'criticals':
         args['trials'] //= 2
-        for i in range(1, 21):
+        for i in range(1, 21, 2):
             args['level'] = i
             blue, red = generate_creature_groups(args)
             criticals = {'blue': 0, 'red': 0}
@@ -298,7 +298,7 @@ def run_test(test, args):
             print(f"{i} crits/round: {formatted_criticals}")
     elif test == 'accuracy':
         results = []
-        for i in range(1, 21):
+        for i in range(1, 21, 2):
             args['level'] = i
             blue, red = generate_creature_groups(args)
             results.append({
