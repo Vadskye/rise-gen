@@ -235,7 +235,7 @@ def calculate_attribute_progression(progression, level):
         -2: -2,
         -1: -1,
         0: 0,
-        1: level // 2 + 1,
+        1: level,
         2: level + 1,
         3: level + 2,
         4: level + 3,
@@ -262,7 +262,7 @@ def calculate_skill_modifier(skill_points, level, attribute):
         {
             None: attribute // 2,
             0: attribute // 2,
-            1: attribute,
-            2: attribute + 5,
+            1: max(attribute, level // 2 + 1),
+            2: 3 + max(attribute, level),
         }[skill_points] if attribute is not None else 0
     )
