@@ -197,7 +197,7 @@ buffs:
   natural weapon: 1
   nondetection: 2
   one attack misses: 8  # per round; as Reflexive Dodge
-  radiate light: x 0
+  radiate light: 0
   rage bonus plus2: 8
   ranged melee weapon:
     close: 2
