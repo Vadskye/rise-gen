@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import re
 
-from rise_gen.ability import get_ability_definitions
+from rise_gen.abilities.definitions import get_ability_definitions
 
 
 class Ability:
