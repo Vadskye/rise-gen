@@ -60,27 +60,8 @@ def min_level(level, class_name=None, template=None):
     else:
         return lambda creature: creature.level >= level
 
-
-def get_ability_definitions():
-    """This defines the set of all possible abilities. The Ability class uses
-    this to create abilities on the fly as needed.
-    The dictionary is constructed from multiple separate kinds of abilities:
-    class features, feats, and monster traits
-
-    Yields:
-    {
-        <ability name>: {
-            'effects': [
-                AbilityEffect(<effect args>),
-                ...
-            ],
-            'prerequisite': lambda creature: <true if prerequisites met>
-        },
-        ...
-    }
-    """
-
-    class_features = {
+def class_abilities():
+    return {
 
         # BARBARIAN
         'fast movement': {
@@ -240,8 +221,9 @@ def get_ability_definitions():
         },
     }
 
-    # FEATS
-    feats = {
+
+def feats():
+    return {
         'deadly aim': {
             'effects': [
                 Modifier(['physical damage bonus'],
@@ -369,6 +351,8 @@ def get_ability_definitions():
         },
     }
 
+
+def misc():
     def challenge_rating_hp_multiplier(cr):
         if cr <= 1:
             return 0
@@ -377,8 +361,7 @@ def get_ability_definitions():
         else:
             return cr - 2
 
-    # MISC
-    misc = {
+    misc_abilities = {
         'strength': {
             'effects': [],
             'tags': set(['hidden']),
@@ -592,29 +575,33 @@ def get_ability_definitions():
             ],
         },
     }
-    for ability in misc.values():
+    for ability in misc_abilities.values():
         if 'tags' in ability:
             ability['tags'].add('misc')
         else:
             ability['tags'] = set(['misc'])
+    return misc_abilities
 
-    # SENSES
+
+def senses():
     # pretty much all senses have no effects
     # but this makes it easy to add senses with effects later
-    senses = dict()
+    sense_abilities = dict()
     sense_names = ['darkvision', 'lifesense', 'lifesight', 'low-light vision',
                    'blindsense', 'blindsight',
                    'scent', 'tremorsense', 'tremorsight', 'truesight']
     for name in sense_names:
-        senses[name] = dict()
-    for sense in senses.values():
+        sense_abilities[name] = dict()
+    for sense in sense_abilities.values():
         if 'tags' in sense:
             sense['tags'].add('sense')
         else:
             sense['tags'] = set(['sense'])
+    return sense_abilities
 
-    # TEMPLATES
-    templates = {
+
+def templates():
+    template_abilities = {
         'adept': {
             'effects': [
                 Modifier(['power'],
@@ -652,14 +639,16 @@ def get_ability_definitions():
             ],
         },
     }
-    for template in templates.values():
+    for template in template_abilities.values():
         if 'tags' in template:
             template['tags'].add('template')
         else:
             template['tags'] = set(['template'])
+    return template_abilities
 
-    # TRAITS
-    traits = {
+
+def traits():
+    trait_abilities = {
         'brute force': {
             'effects': [
                 Modifier(
@@ -770,17 +759,40 @@ def get_ability_definitions():
         'spit web': {},
         'superior senses': {},
     }
-    for trait in traits.values():
+    for trait in trait_abilities.values():
         if 'tags' in trait:
             trait['tags'].add(['monster_trait'])
         else:
             trait['tags'] = set(['monster_trait'])
+    return trait_abilities
+
+
+def get_ability_definitions():
+    """This defines the set of all possible abilities. The Ability class uses
+    this to create abilities on the fly as needed.
+    The dictionary is constructed from multiple separate kinds of abilities:
+    class features, feats, and monster traits
+
+    Yields:
+    {
+        <ability name>: {
+            'effects': [
+                AbilityEffect(<effect args>),
+                ...
+            ],
+            'prerequisite': lambda creature: <true if prerequisites met>
+        },
+        ...
+    }
+    """
+
+    # TRAITS
 
     all_abilities = dict()
-    all_abilities.update(class_features)
-    all_abilities.update(feats)
-    all_abilities.update(misc)
-    all_abilities.update(senses)
-    all_abilities.update(templates)
-    all_abilities.update(traits)
+    all_abilities.update(class_abilities())
+    all_abilities.update(feats())
+    all_abilities.update(misc())
+    all_abilities.update(senses())
+    all_abilities.update(templates())
+    all_abilities.update(traits())
     return all_abilities
