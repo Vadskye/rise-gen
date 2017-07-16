@@ -1,5 +1,6 @@
 import copy
 from rise_gen.abilities.ability import Ability
+from rise_gen.abilities.definitions import base_calculations
 from rise_gen.dice import DicePool
 from rise_gen.rise_data import (
     ATTRIBUTES, SKILLS,
@@ -11,8 +12,8 @@ import random
 DEFENSE_BASE = 5
 AUTOMATIC_ABILITIES = [
     'size modifiers', 'challenge rating', 'automatic damage scaling',
-    'strength', 'dexterity', 'constitution', 'intelligence', 'perception', 'willpower',
-]
+    'strength', 'dexterity', 'constitution', 'intelligence', 'perception', 'willpower', 'overwhelmed',
+] + list(base_calculations().keys())
 
 class CreatureStatistics(object):
     def __init__(
@@ -320,7 +321,7 @@ class CreatureStatistics(object):
                 self.dexterity if self.weapon_encumbrance == 'light' else 0
             )
         elif self.attack_type == 'spell':
-            accuracy = max(self.spellpower, self.intelligence, self.perception, self.willpower)
+            accuracy = self.spellpower
             # class_scaling = 2
             # feat_scaling = 0  # if self.level < 10 else 2
             # return self.level + class_scaling + feat_scaling
@@ -477,7 +478,7 @@ class CreatureStatistics(object):
         return reflex
 
     def _calculate_spellpower(self):
-        spellpower = self.level
+        spellpower = 0
         for effect in self.active_effects_with_tag('spellpower'):
             spellpower = effect(self, spellpower)
         return spellpower

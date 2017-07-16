@@ -60,6 +60,27 @@ def min_level(level, class_name=None, template=None):
     else:
         return lambda creature: creature.level >= level
 
+
+def base_calculations():
+    abilities = {
+        'spellpower': {
+            'effects': [
+                Modifier(
+                    ['spellpower'],
+                    lambda c, value: value + max(c.level, c.intelligence, c.perception, c.willpower)
+                )
+            ],
+            'prerequisite': lambda c: c.attack_type == 'spell'
+        },
+    }
+    for ability in abilities.values():
+        if 'tags' in ability:
+            ability['tags'].add('hidden')
+        else:
+            ability['tags'] = set(['hidden'])
+    return abilities
+
+
 def class_abilities():
     return {
 
@@ -789,6 +810,7 @@ def get_ability_definitions():
     # TRAITS
 
     all_abilities = dict()
+    all_abilities.update(base_calculations())
     all_abilities.update(class_abilities())
     all_abilities.update(feats())
     all_abilities.update(misc())
