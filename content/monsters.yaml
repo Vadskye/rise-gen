@@ -1,3 +1,4 @@
+---
 aboleth: &ABOLETH
   monster type: aberration
   levels:
@@ -152,7 +153,7 @@ arrowhawk, juvenile: &ARROWHAWK
     willpower: 1
   speeds:
     land: ~
-    fly: 60 # perfect
+    fly: 60  # perfect
   subtraits:
     - natural armor: 2
   traits:
@@ -275,7 +276,6 @@ azer, elite guard:
     - damaging aura
     - brute force
     - 'breath weapon: cone'
-    - mighty will
 
 barghest:
   monster type: outsider
@@ -312,7 +312,7 @@ basilisk:
     monster: 6
   templates:
     - adept
-  encounter: warm deserts; solitary or colony (3--6) 
+  encounter: warm deserts; solitary or colony (3--6)
   weapons:
     - bite
   attributes:
@@ -330,7 +330,6 @@ basilisk:
     - natural armor: 4
   traits:
     - petrifying gaze
-    - ability focus
 
 bear, brown: &BROWN_BEAR
   monster type: animal
@@ -409,7 +408,6 @@ cultist:
     - common
   traits:
     - magical ability
-    - mighty will
 
 demon, bebelith:
   monster type: outsider

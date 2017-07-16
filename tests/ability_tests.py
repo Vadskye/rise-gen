@@ -1,5 +1,6 @@
-from nose.tools import *
-from rise_gen.ability import Ability
+from nose.tools import assert_equals
+from rise_gen.abilities.ability import Ability
+
 
 class SampleCreature:
     def __init__(self):
@@ -7,11 +8,14 @@ class SampleCreature:
         self.level = 0
         self.levels = dict()
 
+
 def setup():
     pass
 
+
 def teardown():
     pass
+
 
 def test_ability_prerequisites():
     sc = SampleCreature()
@@ -21,7 +25,7 @@ def test_ability_prerequisites():
     speed = 20
     if a.prerequisite(sc):
         # apply the effects of the fast movement ability
-        speed = a.effects[0](sc, value)
+        speed = a.effects[0](sc, speed)
     assert_equals(speed, 20)
 
     # check when prerequisites are met

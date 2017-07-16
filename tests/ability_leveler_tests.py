@@ -1,19 +1,23 @@
-from nose.tools import *
+from nose.tools import assert_equal
 from rise_gen.ability_leveler import AbilityLeveler
 import rise_gen.util as util
+
 
 def setup():
     pass
 
+
 def teardown():
     pass
+
 
 def test_ability_simple():
     ability = AbilityLeveler('simple', {
         'damage': 'normal',
         'range': 'close',
     })
-    assert_equal(ability.level(), 4)
+    assert_equal(ability.level(), 6)
+
 
 def test_spell_levels():
     true_spell_levels = util.import_yaml_file('content/spell_levels.yaml')
