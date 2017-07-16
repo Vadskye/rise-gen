@@ -62,8 +62,31 @@ def min_level(level, class_name=None, template=None):
 
 
 def base_calculations():
+    def accuracy_modifier(c, value):
+        if c.attack_type == 'physical':
+            return value + max(
+                c.level,
+                c.perception,
+                c.dexterity if c.weapon_encumbrance == 'light' else 0
+            )
+        elif c.attack_type == 'spell':
+            return value + c.spellpower
+            # class_scaling = 2
+            # feat_scaling = 0  # if c.level < 10 else 2
+            # return c.level + class_scaling + feat_scaling
+        else:
+            raise Exception("Error: invalid attack type '{0}'".format(c.attack_type))
+
     abilities = {
-        'spellpower': {
+        'base accuracy': {
+            'effects': [
+                Modifier(
+                    ['accuracy'],
+                    accuracy_modifier,
+                ),
+            ],
+        },
+        'base spellpower': {
             'effects': [
                 Modifier(
                     ['spellpower'],

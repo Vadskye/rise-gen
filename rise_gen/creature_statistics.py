@@ -312,21 +312,7 @@ class CreatureStatistics(object):
 
     def _calculate_accuracy(self):
         """The bonus the creature has with attacks (int)"""
-
-        accuracy = None
-        if self.attack_type == 'physical':
-            accuracy = max(
-                self.level,
-                self.perception,
-                self.dexterity if self.weapon_encumbrance == 'light' else 0
-            )
-        elif self.attack_type == 'spell':
-            accuracy = self.spellpower
-            # class_scaling = 2
-            # feat_scaling = 0  # if self.level < 10 else 2
-            # return self.level + class_scaling + feat_scaling
-        else:
-            raise Exception("Error: invalid attack type '{0}'".format(self.attack_type))
+        accuracy = 0
         for effect in self.active_effects_with_tag('accuracy'):
             accuracy = effect(self, accuracy)
         return accuracy
