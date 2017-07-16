@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
 from rise_gen.rise_data import ATTRIBUTES, SKILLS
-import re
+from rise_gen.abilities.ability_effect import AbilityEffect
+from rise_gen.abilities.modifiers import Modifier, ModifierInPlace, VariableModifier
 
 POSSIBLE_EFFECT_TAGS = [
     'accuracy',
@@ -40,110 +41,6 @@ def attribute_scale(attribute, per_five=True):
         return attribute // 5 if attribute >= 0 else attribute // 2
     else:
         return attribute // 2 if attribute >= 0 else attribute
-
-
-class Ability:
-
-    ability_definitions = None
-
-    def __init__(
-        self,
-        name,
-        effects=None,
-        prerequisite=None,
-        effect_strength=None,
-        tags=None,
-    ):
-        self.name = name
-        self.effects = effects
-        self.prerequisite = prerequisite or (lambda creature: True)
-        self.effect_strength = effect_strength
-        self.tags = tags
-
-        if self.effect_strength is not None and self.effects is not None:
-            for effect in self.effects:
-                effect.effect_strength = self.effect_strength
-
-    def has_tag(self, tag):
-        return self.tags is not None and tag in self.tags
-
-    @classmethod
-    def by_name(cls, ability_name, effect_strength=None):
-        if Ability.ability_definitions is None:
-            Ability.ability_definitions = get_ability_definitions()
-        try:
-            ability_definition = Ability.ability_definitions[ability_name]
-            return Ability(
-                name=ability_name,
-                effect_strength=effect_strength,
-                **ability_definition
-            )
-        except KeyError:
-            raise Exception(
-                "Error: unable to recognize ability '{}'".format(ability_name)
-            )
-
-    def __repr__(self):
-        return "{}({}, {}, {})".format(
-            self.__class__.__name__,
-            self.name,
-            self.effects,
-            "pre" if self.prerequisite is not None else None,
-        )
-
-    def __str__(self):
-        if self.effect_strength is None:
-            return self.name
-        elif isinstance(self.effect_strength, int) or re.match(r'\d+$', self.effect_strength):
-            # raw numbers should be treated as modifiers
-            return "{} {}{}".format(self.name, "+" if self.effect_strength >= 0 else "-", self.effect_strength)
-        else:
-            return "{} {}".format(self.name, self.effect_strength)
-
-
-class AbilityEffect:
-    def __init__(
-        self,
-        effect_tags,
-        effect,
-    ):
-        for tag in effect_tags:
-            if tag not in POSSIBLE_EFFECT_TAGS:
-                raise Exception(
-                    "Error: Unable to recognize effect tag '{}'".format(tag)
-                )
-        self.effect_tags = effect_tags
-        self.effect = effect
-
-    def __call__(self, creature):
-        return self.effect(creature)
-
-
-class Modifier(AbilityEffect):
-    def __call__(self, creature, value):
-        return self.effect(creature, value)
-
-    def __repr__(self):
-        return "{}({})".format(self.__class__.__name__, self.effect_tags)
-
-
-class VariableModifier(AbilityEffect):
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.effect_strength = 0
-
-    def __call__(self, creature, value):
-        return self.effect(creature, value, self.effect_strength)
-
-    def __repr__(self):
-        return "{}({})".format(self.__class__.__name__, self.effect_tags)
-
-
-class ModifierInPlace(AbilityEffect):
-    def __call__(self, creature, value):
-        self.effect(creature, value)
-        return value
 
 
 def plus(modifier):

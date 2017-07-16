@@ -2,7 +2,7 @@
 
 import argparse
 import copy
-from rise_gen.ability import Ability
+from rise_gen.abilities.ability import Ability
 from rise_gen.dice import DicePool, d10
 from rise_gen.rise_data import (
     ATTRIBUTES, SKILLS,
@@ -197,8 +197,7 @@ class CreatureStatistics(object):
                 raise Exception("Invalid dictionary ability '{}'".format(ability))
             ability_name = next(iter(ability))
             ability = Ability.by_name(ability_name, ability[ability_name])
-        elif not isinstance(ability, Ability):
-            raise Exception("Unable to recognize type of ability '{}'".format(ability))
+
         self.abilities.append(ability)
         self.clear_cache()
 
@@ -344,9 +343,6 @@ class CreatureStatistics(object):
         if self.attack_type == 'physical':
             damage_bonus = 0
 
-            # add the +1 bonus for two-handed weapons
-            if self.weapon and self.weapon_encumbrance == 'heavy' and not self.attack_range:
-                damage_bonus += 1
             for effect in self.active_effects_with_tag('physical damage bonus'):
                 damage_bonus = effect(self, damage_bonus)
             return damage_bonus

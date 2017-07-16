@@ -1,0 +1,49 @@
+---
+curse:
+  attack subeffects:
+    success:
+      conditions: [minus2]
+      duration: long
+    critical success:
+      conditions:
+        - minus2
+        - minus2
+      duration: brief
+    failure:
+      conditions: [minus2]
+      duration: brief
+  range: close
+curse of the wayward mind:
+  conditions:
+    - disoriented
+  duration: brief
+  # dispellable: false  # this is too minor to matter
+  range: close
+fireball:
+  damage: normal
+  area: small radius burst
+  range: close
+  targets: all
+fireball, burning hands:
+  damage: normal
+  area: large cone burst
+  targets: all
+windstrike:
+  damage: normal
+  range: medium
+windstrike, gust of wind:
+  damage: normal
+  area: large line burst
+  targets: all
+sound burst:
+  damage: normal
+  area: medium radius burst
+  targets: all
+cone of cold:
+  damage: normal
+  area: medium radius burst
+  targets: all
+lightning bolt:
+  damage: normal
+  area: large line burst
+  targets: all
