@@ -1,31 +1,223 @@
-Warning: Leveler('performance, taunting') is missing critical success
-abjurer, base: 2
-abjurer, three: 7
-abjurer, two: 5
-accelerate rage, three: 7
-accelerated rage, base: 1
-accelerated rage, two: 3
-all energy becomes one: 2
-arcane resilience, base: 1
-arcane resilience, three: 6
-arcane resilience, two: 2
-blindsense: 2
-celestial apotheosis, holy judgment: 4
-celestial heritage, holy protection, permanent: 2
-celestial heritage, holy retribution, permanent: 4
-climb mastery, base: 2
-fearsome, base: 3
-fearsome, two: 9
-inescapable, base: 6
-infuriating, base: 3
-infuriating, two: 8
-iron will, two: 5
-mental fortress: 5
-performance, inspire resilience: 3.5
-performance, mocking: 1
-performance, taunting: 2
-pierce defenses: 5
-rapid recovery: 6
-rapid recovery, two: 5
-reflexive dodge: 7
-supreme speed: 7
+armor discipline, resilience: 1
+aura - accelerating: 1
+aura - baleful: 3
+aura - disorienting: 6
+aura - freedom: 3
+aura - healing aura: 4
+aura - immobilizing: 6
+aura - inhibition: 1
+aura - lifebound: 11
+aura - martyrs: 6
+aura - mindshielding: 5
+aura - worthy foe: 2
+battlemaster: 1
+combat supremacy: 2
+discernment - thoughts: 7.0
+divine invocation, bless: -1
+divine invocation, converting smite: 8
+divine invocation, dazing smite: 5
+divine invocation, dispelling smite: 3
+divine invocation, divine might: 3
+divine invocation, executing smite: 4
+divine invocation, exhausting smite: 1
+divine invocation, freedom: 0
+divine invocation, goading smite: 1
+divine invocation, immobilizing smite: 7
+divine invocation, lay on hands: -1
+divine invocation, penetrating smite: 3
+divine invocation, resounding smite: 1
+divine invocation, seeking smite: 1
+divine invocation, spellreaving smite: 5
+divine invocation, terrifying smite: 4
+domain aspect - air: 1
+domain aspect - chaos: 2.5
+domain aspect - death: 2
+domain aspect - destruction: 1
+domain aspect - earth: 2
+domain aspect - evil: 2.5
+domain aspect - fire: 2
+domain aspect - good: 2.5
+domain aspect - knowledge: 2
+domain aspect - law: 2.5
+domain aspect - magic: 2
+domain aspect - travel: 2
+domain aspect - trickery: 3
+domain aspect - vitality: 1
+domain aspect - war: 2
+domain aspect - water: 4
+domain gift - air: -1
+domain gift - chaos: 0
+domain gift - death: 0
+domain gift - destruction: 1
+domain gift - earth: 0
+domain gift - evil: -1
+domain gift - fire: -1
+domain gift - good: -1
+domain gift - knowledge: 0
+domain gift - law: -2
+domain gift - protection: 1
+domain gift - strength: 0
+domain gift - travel: 0
+domain gift - trickery: 0
+domain gift - vitality: 0
+domain gift - war: -1
+domain gift - water: 0
+domain gift - wild: 0
+domain invocation - good: 2
+domain invocation - normal: 1
+domain invocation greater - air: 4
+domain invocation greater - chaos: 5
+domain invocation greater - death: 4
+domain invocation greater - earth: 4
+domain invocation greater - evil: 5
+domain invocation greater - fire: 5
+domain invocation greater - good: 5
+domain invocation greater - knowledge: 4
+domain invocation greater - law: 4
+domain invocation greater - magic: 5
+domain invocation greater - protection: 2.5
+domain invocation greater - strength: 4
+domain invocation greater - trickery: 4
+domain invocation greater - vitality: 5
+domain invocation greater - water: 4
+domain invocation greater - wild: 5
+domain mastery - deathfeeder: 3.0
+fast movement: -1
+hunting lore, impaired quarry: 2
+hunting lore, no escape: 0
+hunting lore, super impaired quarry: 8
+infuriating strike: 3
+ki - all energy becomes one: -1
+ki - awaken the pacifist heart: 5
+ki - burst of blinding speed: 1
+ki - empty body: 7
+ki - empty step: 5
+ki - fists of distant force: 0
+ki - flash burst: 6
+ki - flash step: 2
+ki - focus the wayward mind: 2
+ki - heal the broken body: -4
+ki - ki-disrupting strike: 2
+ki - ki-shattering strike: 8
+ki - leap of the heavens: -1
+ki - see the flow of life: 2
+ki - stunning fist: 4
+ki flow: 2
+larger than life: 1
+perfect mind: 3
+perfect motion: 1
+perfect soul: 2
+perform, fascinating performance: -2
+perform, inspire competence: -1.5
+perform, inspire courage: -0.5
+perform, inspire legends: 4.5
+perform, inspire resilience: 3.5
+perform, inspire serenity: 2.5
+perform, mind clearing performance: 2.5
+perform, mocking performance: -3
+perform, suggestive performance: 2
+perform, taunting performance: 1
+perform, terrifying performance: 2
+rage - accelerated rage: 1
+rage - athletic rage: 1
+rage - critical rage: 3
+rage - destructive rage: -1
+rage - invulnerable rage: 3
+rage - mindless rage: 3
+rage - overpowering rage: 0
+rage - overwhelming rage: 0
+rage - savage rage: -1
+rage - spellbreaker rage: 2
+rage - taunting rage: 4
+rage - terrifying rage: 3
+rage - wary rage: -1
+ranger, anchored quarry: 2
+ranger, blindsense: 0
+ranger, blindsight: 3
+ranger, energy adaptation: 0
+ranger, impaired quarry: 2
+ranger, keen senses: -1
+ranger, merciless quarry: 2
+ranger, no escape: 0
+ranger, perfect stride: 1
+ranger, scent: 0
+rogue, agonizing ambush: 3
+rogue, confusing ambush: 0
+rogue, deadly ambush: 6
+rogue, dispelling ambush: 1
+rogue, hamstring: 0
+rogue, immobilizing ambush: 3
+rogue, spellreaving ambush: 4
+rogue, staggering ambush: 3
+strike feat - basic: 0
+strike feat - bonus damage: 4
+strike feat - driving assault: 1
+strike feat - intimidating strike: 3
+supreme battlemaster: 7
+sw, alter size: 2
+sw, alter size alt: 2
+sw, alteration, flight: 1
+sw, alteration, healing transformation: 1
+sw, alteration, shrink: -1
+sw, alteration, sturdy body: -1
+sw, alteration, surge of power: 2
+sw, amorphous body: -4
+sw, bludgeon the horde: 3
+sw, body bludgeon: 1
+sw, damage reduction: 1
+sw, fast healing: 3
+sw, fast movement: 2
+sw, immolate: 0
+sw, pyromancy, conflagration: 2
+sw, pyromancy, energy resistance: 0
+sw, pyromancy, fiery protection: 0
+sw, pyromancy, flame shield: 1
+sw, pyromancy, flight of the phoenix: 1
+sw, pyromancy, ignite: 3
+sw, pyromancy, surge of power: 1
+sw, retributive flames: 1
+sw, seeking flame: 5
+sw, telekinesis, immobilize: 2
+sw, telekinesis, sickening crush: 1
+sw, telekinesis, tactile telekinesis: 0
+sw, temporal, accelerate attack: 5
+sw, temporal, accelerate mind: 0
+sw, temporal, decelerate: -1
+sw, temporal, disjointed time: 0
+sw, temporal, flash step: -1
+sw, temporal, inhuman speed: 1
+sw, temporal, slow: 0
+sw, temporal, timestream: 2
+sw, temporal, timetheft: -1
+vital flow: 2
+wild aspect 10 - elemental retribution: 2.5
+wild aspect 10 - fluid motion: 3
+wild aspect 10 - grow: 3
+wild aspect 10 - natural renewal: 3
+wild aspect 10 - wolfpack: 3
+wild aspect 12 - flight: 4
+wild aspect 12 - swiftstrike: 4
+wild aspect 14 - earth glide: 5
+wild aspect 14 - mantle of air: 1
+wild aspect 16 - solar radiance: 7
+wild aspect 2 - armaments of the bear: -1
+wild aspect 2 - climb: 0
+wild aspect 2 - senses: -1
+wild aspect 2 - woodland stride: -2
+wild aspect 4 - animal affinity: 0
+wild aspect 4 - constrict: 0
+wild aspect 4 - gore: 0
+wild aspect 4 - hawk: 0
+wild aspect 4 - lope: 1
+wild aspect 4 - slither: 1
+wild aspect 6 - enhanced natural weapons: 1
+wild aspect 6 - scent: 1
+wild aspect 6 - shrink: 1
+wild aspect 6 - spikes: 1
+wild aspect 6 - thousand faces: 1
+wild aspect 6 - totemic mind: 1
+wild aspect 6 - totemic power: 1
+wild aspect 6 - venom: 1
+wild aspect 8 - barkskin: 2
+wild aspect 8 - natural grab: 2
+wild aspect 8 - natural trip: 2
