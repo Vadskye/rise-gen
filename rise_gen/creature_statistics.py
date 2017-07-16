@@ -9,7 +9,6 @@ from rise_gen.rise_data import (
 )
 import random
 
-DEFENSE_BASE = 5
 AUTOMATIC_ABILITIES = [
     'size modifiers', 'challenge rating', 'automatic damage scaling',
     'strength', 'dexterity', 'constitution', 'intelligence', 'perception', 'willpower', 'overwhelmed',
@@ -425,7 +424,7 @@ class CreatureStatistics(object):
         return multiplier
 
     def _calculate_fortitude(self):
-        fortitude = DEFENSE_BASE + max(
+        fortitude = max(
             self.constitution,
             self.level,
         )
@@ -441,7 +440,7 @@ class CreatureStatistics(object):
         return hit_points
 
     def _calculate_mental(self):
-        mental = DEFENSE_BASE + max(
+        mental = max(
             self.willpower,
             self.level,
         )
@@ -451,7 +450,7 @@ class CreatureStatistics(object):
         return mental
 
     def _calculate_reflex(self):
-        reflex = DEFENSE_BASE + max(
+        reflex = max(
             self.dexterity,
             self.level,
         )
