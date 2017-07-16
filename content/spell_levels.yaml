@@ -1,26 +1,3 @@
-Warning: Leveler('blasphemy') has critical success with incorrect level 19 instead of 17
-Warning: Leveler('charm monster') has critical success with incorrect level 16 instead of 18
-Warning: Leveler('charm monster mass') has critical success with incorrect level 16 instead of 18
-Warning: Leveler('charm person') has critical success with incorrect level 16 instead of 18
-Warning: Leveler('charm person persistent') has critical success with incorrect level 16 instead of 20.5
-Warning: Leveler('charm person mass') has critical success with incorrect level 16 instead of 18
-Warning: Leveler('curse of the wayward mind') has critical success with incorrect level 14 instead of 17
-Warning: Leveler('death knell') has critical success with incorrect level 15.5 instead of 17
-Warning: Leveler('death knell') Should not have subeffects under success
-Warning: Leveler('dictum') has critical success with incorrect level 19 instead of 17
-Warning: Leveler('forget') has critical success with incorrect level 10 instead of 12
-Warning: Leveler('funny hats') has nonpositive property 'instant effect'
-Warning: Leveler('imprisonment') has critical success with incorrect level 17 instead of 22
-Warning: Leveler('orders wrath') has critical success with incorrect level 19 instead of 17
-Warning: Leveler('planar disruption') has critical success with incorrect level 12 instead of 14
-Warning: Leveler('planar disruption mass') has critical success with incorrect level 12 instead of 14
-Warning: Leveler('power word stun') has critical success with incorrect level 18 instead of 15
-Warning: Leveler('unholy blight') has critical success with incorrect level 19 instead of 17
-Warning: Leveler('sever magic') has failure with incorrect level 3 instead of 6
-Warning: Leveler('flare') has nonpositive property 'attack subeffects'
-Warning: Leveler('flare') has unexpected key 'conditions' in attack_subeffects
-Warning: Leveler('flare') has unexpected key 'duration' in attack_subeffects
-Warning: Leveler('flare') is missing critical success
 ablative shield: 0
 acid arrow: 3
 acid arrow greater: 6
