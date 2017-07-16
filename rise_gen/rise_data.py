@@ -148,6 +148,7 @@ class RiseClass(RiseData):
             mental=mental,
             class_features=class_features
         )
+        self.class_features = (self.class_features or []) + [f"base {name} defenses"]
 
     @classmethod
     def init_data(cls):

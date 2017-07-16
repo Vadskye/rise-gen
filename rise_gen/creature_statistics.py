@@ -22,7 +22,6 @@ class CreatureStatistics(object):
             armor=None,
             attack_type='physical',
             attributes=None,
-            base_class=None,
             encounter=None,
             feats=None,
             languages=None,
@@ -50,6 +49,8 @@ class CreatureStatistics(object):
         self.name = name
         # levels in each class
         self.levels = levels
+        # TODO: go back to single-class design
+        self.class_name = list(self.levels.keys())[0]
         # equipment is given as strings, but we we want them to be objects
         self.armor_name = armor
         self.shield_name = shield
@@ -61,7 +62,6 @@ class CreatureStatistics(object):
 
         # these are just stored directly
         self.attack_type = attack_type
-        self.base_class = base_class
         self.encounter = encounter
         self.feats = feats
         self.languages = languages
@@ -127,18 +127,6 @@ class CreatureStatistics(object):
                 rise_class.mental = self.monster_type.mental
                 rise_class.reflex = self.monster_type.reflex
             self.classes[class_name] = rise_class
-
-        # use the same object that we already created above
-        # rather than creating a separate RiseClass object
-        if isinstance(self.base_class, str):
-            self.base_class = self.classes[self.base_class]
-
-        # assume the base class if only one class is given
-        if self.base_class is None:
-            if len(self.classes) == 1:
-                self.base_class = next(iter(self.classes.values()))
-            else:
-                raise Exception("Error: No base class given")
 
         # use the race's size as a default if no size is specified
         if self.base_size is None and self.race is not None:
@@ -306,12 +294,6 @@ class CreatureStatistics(object):
         except AttributeError:
             return None
 
-    def base_progression(self, progression_type):
-        if self.rise_class is not None:
-            return getattr(self.rise_class, progression_type)
-        else:
-            raise Exception("Unable to determine progression: creature is invalid")
-
     def _calculate_accuracy(self):
         """The bonus the creature has with attacks (int)"""
         accuracy = 0
@@ -431,7 +413,6 @@ class CreatureStatistics(object):
             self.constitution,
             self.level,
         )
-        fortitude += base_class_defense_bonus(self.base_class.fortitude)
         for effect in self.active_effects_with_tag('fortitude'):
             fortitude = effect(self, fortitude)
         return fortitude
@@ -447,7 +428,6 @@ class CreatureStatistics(object):
             self.willpower,
             self.level,
         )
-        mental += base_class_defense_bonus(self.base_class.mental)
         for effect in self.active_effects_with_tag('mental'):
             mental = effect(self, mental)
         return mental
@@ -457,7 +437,6 @@ class CreatureStatistics(object):
             self.dexterity,
             self.level,
         )
-        reflex += base_class_defense_bonus(self.base_class.reflex)
         # add the modifier for shields
         if self.shield is not None:
             reflex += self.shield.bonus
@@ -583,7 +562,7 @@ class CreatureStatistics(object):
 
     def _to_string_levels(self):
         text = ", ".join(sorted([
-            "{} {}".format(name.capitalize() if name == self.base_class.name else name, level)
+            "{} {}".format(name.capitalize() if name == self.class_name else name, level)
             for name, level in self.levels.items()
         ]))
         if self.challenge_rating != 1:
@@ -719,14 +698,6 @@ create_cached_property(
     calculation_function='_calculate_numerical_statistic',
     calculation_args='damage reduction'
 )
-
-def base_class_defense_bonus(progression):
-    return {
-        'good': 4,
-        'average': 2,
-        'poor': 0,
-    }[progression]
-
 
 def default_land_speed(size):
     return {

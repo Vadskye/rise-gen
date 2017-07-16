@@ -62,7 +62,7 @@ def min_level(level, class_name=None, template=None):
 
 
 def base_calculations():
-    def accuracy_modifier(c, value):
+    def accuracy_effect(c, value):
         if c.attack_type == 'physical':
             return value + max(
                 c.level,
@@ -80,10 +80,7 @@ def base_calculations():
     abilities = {
         'base accuracy': {
             'effects': [
-                Modifier(
-                    ['accuracy'],
-                    accuracy_modifier,
-                ),
+                Modifier(['accuracy'], accuracy_effect),
             ],
         },
         'base spellpower': {
@@ -97,10 +94,7 @@ def base_calculations():
         },
     }
     for ability in abilities.values():
-        if 'tags' in ability:
-            ability['tags'].add('hidden')
-        else:
-            ability['tags'] = set(['hidden'])
+        ability['tags'] = ability.get('tags', set()) | set(['hidden'])
     return abilities
 
 
@@ -155,7 +149,7 @@ def class_abilities():
                 Modifier(['accuracy', 'armor defense', 'reflex', 'physical damage bonus'],
                          lambda creature, value: value + 1),
             ],
-            'prerequisite': lambda creature: creature.base_class.name == 'fighter'
+            'prerequisite': lambda creature: creature.class_name == 'fighter'
         },
         'greater weapon discipline': {
             'effects': [
@@ -265,6 +259,95 @@ def class_abilities():
         },
     }
 
+def class_defenses():
+    abilities = {
+        'base barbarian defenses': {
+            'effects': [
+                Modifier(['fortitude'], plus(3)),
+                Modifier(['reflex'], plus(2)),
+                Modifier(['mental'], plus(1)),
+            ],
+            'prerequisite': min_level(1, 'barbarian'),
+        },
+        'base cleric defenses': {
+            'effects': [
+                Modifier(['mental'], plus(3)),
+                Modifier(['fortitude'], plus(2)),
+                Modifier(['reflex'], plus(1)),
+            ],
+            'prerequisite': min_level(1, 'cleric'),
+        },
+        'base druid defenses': {
+            'effects': [
+                Modifier(['fortitude'], plus(3)),
+                Modifier(['mental'], plus(2)),
+                Modifier(['reflex'], plus(1)),
+            ],
+            'prerequisite': min_level(1, 'druid'),
+        },
+        'base fighter defenses': {
+            'effects': [
+                Modifier(['fortitude'], plus(3)),
+                Modifier(['mental'], plus(2)),
+                Modifier(['reflex'], plus(1)),
+            ],
+            'prerequisite': min_level(1, 'fighter'),
+        },
+        'base mage defenses': {
+            'effects': [
+                Modifier(['mental'], plus(3)),
+                Modifier(['reflex'], plus(2)),
+                Modifier(['fortitude'], plus(1)),
+            ],
+            'prerequisite': min_level(1, 'mage'),
+        },
+        'base monk defenses': {
+            'effects': [
+                Modifier(['reflex'], plus(3)),
+                Modifier(['mental'], plus(2)),
+                Modifier(['fortitude'], plus(1)),
+            ],
+            'prerequisite': min_level(1, 'monk'),
+        },
+        'base paladin defenses': {
+            'effects': [
+                Modifier(['fortitude'], plus(3)),
+                Modifier(['mental'], plus(3)),
+                Modifier(['reflex'], plus(1)),
+            ],
+            'prerequisite': min_level(1, 'paladin'),
+        },
+        'base ranger defenses': {
+            'effects': [
+                Modifier(['reflex'], plus(3)),
+                Modifier(['fortitude'], plus(2)),
+                Modifier(['mental'], plus(1)),
+            ],
+            'prerequisite': min_level(1, 'ranger'),
+        },
+        'base rogue defenses': {
+            'effects': [
+                Modifier(['reflex'], plus(3)),
+                Modifier(['mental'], plus(2)),
+                Modifier(['fortitude'], plus(1)),
+            ],
+            'prerequisite': min_level(1, 'rogue'),
+        },
+
+        # NPC classes
+        'base warrior defenses': {
+            'effects': [
+                Modifier(['fortitude'], plus(3)),
+                Modifier(['reflex'], plus(2)),
+                Modifier(['mental'], plus(1)),
+            ],
+            'prerequisite': min_level(1, 'warrior'),
+        },
+    }
+
+    for ability in abilities.values():
+        ability['tags'] = ability.get('tags', set()) | set(['hidden'])
+    return abilities
 
 def feats():
     return {
@@ -620,11 +703,23 @@ def misc():
         },
     }
     for ability in misc_abilities.values():
-        if 'tags' in ability:
-            ability['tags'].add('misc')
-        else:
-            ability['tags'] = set(['misc'])
+        ability['tags'] = ability.get('tags', set()) | set(['misc'])
     return misc_abilities
+
+
+def races():
+    abilities = {
+        'human': {
+            'effects': [
+                Modifier(['fortitude', 'reflex', 'mental'], plus(2)),
+            ],
+        },
+    }
+
+    for sense in abilities.values():
+        sense['tags'] = sense.get('tags', set()) | set(['hidden'])
+
+    return abilities
 
 
 def senses():
@@ -835,8 +930,10 @@ def get_ability_definitions():
     all_abilities = dict()
     all_abilities.update(base_calculations())
     all_abilities.update(class_abilities())
+    all_abilities.update(class_defenses())
     all_abilities.update(feats())
     all_abilities.update(misc())
+    all_abilities.update(races())
     all_abilities.update(senses())
     all_abilities.update(templates())
     all_abilities.update(traits())
