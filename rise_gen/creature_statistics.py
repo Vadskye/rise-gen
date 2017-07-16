@@ -660,10 +660,14 @@ class CreatureStatistics(object):
         )
 
     def _to_string_abilities(self):
-        text = '[Abil] ' + ', '.join(
-            [name.title() for name in
-             sorted([ability.name for ability in self.active_abilities])]
-        )
+        ability_names = [
+            ability.name for ability in
+            filter(lambda ability: not ability.has_tag('hidden'), self.active_abilities)
+        ]
+        text = '[Abil] ' + ', '.join([
+            name.title() for name in
+            sorted(ability_names)
+        ])
         return text
 
 
